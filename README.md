@@ -119,6 +119,9 @@ volumes:
 
 ## Configuration
 
+### InfluxDB
+After InfluxDB is started, go to http://(ip of host running InfluxDB):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your telegraf configuration.
+
 ### Grafana
 The Config for the dashboard relies on the variables defined within the dashboard in Grafana.  When importing the dashboard, make sure to select your datasource. 
 
@@ -138,15 +141,22 @@ You must manually install Telegraf on OPNsense, as OPNsense does not currently s
 
 In the [/config](config/telegraf.conf) directory you will find the telegraf config.
 
-You will need to place this config in "/usr/local/etc/".
+You must edit this file and put in your InfluxDB URL, InfluxDB API token, organization, and bucket under [[outputs.influxdb_v2]].
 
+You will need to place this config in "/usr/local/etc".
+
+After this is done, use
+
+`sudo service telegraf start`
+
+to start telegraf.
 
 ### Plugins
 [Plugins](plugins)
 
 **Plugins get copied to your OPNsense system**
 
-Place the plugins in /usr/local/bin and set them to 555
+Place the plugins in /usr/local/bin and chmod them to 755
    
 ## Troubleshooting
 
@@ -178,57 +188,36 @@ Now go read /var/log/telegraf/telegraf.log
     
 ### InfluxDB
 When in doubt, run a few queries to see if the data you are looking for is being populated.
+I recommend doing this in Grafana's Explore tab.
 
-    bash-4.4# influx
-    Connected to http://localhost:8086 version 1.8.3
-    InfluxDB shell version: 1.8.3
-    > auth
-    username: admin
-    password:
-    > show databases
-    name: databases
-    name
-    ----
-    pfsense
-    _internal
-    > use pfsense
-    Using database pfsense
-    > show measurements
-    name: measurements
-    name
-    ----
-    cpu
-    disk
-    diskio
-    gateways
-    interface
-    mem
-    net
-    netstat
-    pf
-    processes
-    swap
-    system
-    tail_dnsbl_log
-    tail_ip_block_log
-    temperature
-    > select * from system limit 20
-    name: system
-    time                host                     load1         load15        load5         n_cpus n_users uptime     uptime_format
-    ----                ----                     -----         ------        -----         ------ ------- ------     -------------
-    1585272640000000000 pfSense.home         0.0615234375  0.07861328125 0.0791015625  4      1       196870     2 days,  6:41
-    1585272650000000000 pfSense.home         0.05126953125 0.07763671875 0.076171875   4      1       196880     2 days,  6:41
-    1585272660000000000 pfSense.home         0.04296875    0.07666015625 0.0732421875  4      1       196890     2 days,  6:41
-    1585272670000000000 pfSense.home         0.03564453125 0.07568359375 0.0703125     4      1       196900     2 days,  6:41
-    1585272680000000000 pfSense.home         0.02978515625 0.07470703125 0.0673828125  4      1       196910     2 days,  6:41
-    1585272690000000000 pfSense.home         0.02490234375 0.07373046875 0.064453125   4      1       196920     2 days,  6:42
-    ...
+## View measurements
+    import "influxdata/influxdb/schema"
+
+    schema.measurements(bucket: "opnsense")
     
+## View field values
 
-How to drop influx v2 measurement
+    from(bucket: "opnsense")
+      |> range(start: -24h)
+      |> filter(fn: (r) => r["_measurement"] == "system")
+      |> limit(n:10)
+    
+## How to drop an InfluxDB v2 measurement
+
+You must access your influx instance's shell to do this.
+To do so run 
+`sudo docker exec -it influxdb /bin/bash`
+on your docker host.
+
+Then use the following
 
     bash-4.4# influx delete --bucket "$YourBucket" --predicate '_measurement="$Example"' -o $organization --start "1970-01-01T00:00:00Z" --stop "2050-12-31T23:59:00Z" --token "$YourAPIToken"
-    
-    
-## TODO
+
+## Learn more about Flux queries 
+
+https://docs.influxdata.com/influxdb/cloud/query-data/flux/query-fields/
+
+https://docs.influxdata.com/influxdb/cloud/query-data/flux/explore-schema/
+
+### TODO
 - Add Suricata section and panels
