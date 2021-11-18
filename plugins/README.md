@@ -3,6 +3,7 @@ Place these plugins in "/usr/local/bin". The easiest way of doing this would be 
 
 
 `curl https://raw.githubusercontent.com/Bsmith101/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php -o telegraf_pfifgw.php`
+
 `curl https://raw.githubusercontent.com/Bsmith101/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh -o telegraf_temperature.sh`
 
 Make sure to set the permissions to "755"
