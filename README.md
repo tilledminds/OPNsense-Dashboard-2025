@@ -14,8 +14,6 @@
 - WAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 - LAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 
-<<<<<<< HEAD
-![Screenshot](Grafana-OPNsense.png)
 =======
 ## Changelog
 
@@ -28,8 +26,7 @@ Converted pFSense functions to OPNsense.
 
 Added Firewall graphs.
 
-![Screenshot](Grafana-pfSense.png)
->>>>>>> b49ca862cec986cd2249bfdb7c20ef8594154d05
+![Screenshot](Grafana-OPNsense.png)
 
 ## Running on
 
