@@ -30,7 +30,7 @@ Added Firewall panels.
 ## Running on
 
     Grafana 8.2.4
-    Influxdb 2.1.1
+    InfluxDB 2.1.1
     Graylog 4.2
 
 ### docker-compose example with persistent storage
