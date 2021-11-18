@@ -14,7 +14,7 @@
 - WAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 - LAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 
-##Changelog
+## Changelog
 Converted InfluxQL queries to Flux.
 Converted pFSense functions to OPNsense.
 Added Firewall graphs
