@@ -34,57 +34,86 @@ Added Firewall panels.
     Graylog 4.2
 
 ### docker-compose example with persistent storage
-##### I've recently migrated my stack to Kubernetes, the image versions are updated but the docker-compose is untested.
-```docker-compose
 
-  grafana-pfSense:
-    image: "grafana/grafana:7.4.3"
-    container_name: grafana
-    hostname: grafana
-    mem_limit: 4gb
-    ports:
-      - "3000:3000"
-    environment:
-      TZ: "America/New_York"
-      GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-simple-json-datasource,grafana-piechart-panel,grafana-worldmap-panel"
-      GF_PATHS_DATA: "/var/lib/grafana"
-      GF_DEFAULT_INSTANCE_NAME: "home"
-      GF_ANALYTICS_REPORTING_ENABLED: "false"
-      GF_SERVER_ENABLE_GZIP: "true"
-      GF_SERVER_DOMAIN: "home.mydomain"
+```
+version: '3'
+services:
+  mongodb:
+    image: mongo:4.2
     volumes:
-      - '/share/ContainerData/grafana:/var/lib/grafana'
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100M"
-    network_mode: bridge
-
-  influxdb-pfsense:
-    image: "influxdb:1.8.3-alpine"
-    container_name: influxdb
-    hostname: influxdb
-    mem_limit: 10gb
-    ports:
-      - "2003:2003"
-      - "8086:8086"
-    environment:
-      TZ: "America/New_York"
-      INFLUXDB_DATA_QUERY_LOG_ENABLED: "false"
-      INFLUXDB_REPORTING_DISABLED: "true"
-      INFLUXDB_HTTP_AUTH_ENABLED: "true"
-      INFLUXDB_ADMIN_USER: "admin"
-      INFLUXDB_ADMIN_PASSWORD: "adminpassword"
-      INFLUXDB_USER: "pfsense"
-      INFLUXDB_USER_PASSWORD: "pfsenseuserpassword"
-      INFLUXDB_DB: "pfsense"
+      - mongodb_data:/data/db
+    restart: "unless-stopped"
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
     volumes:
-      - '/share/ContainerData/influxdb:/var/lib/influxdb'
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100M"
-    network_mode: bridge
+      - es_data:/usr/share/elasticsearch/data
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
+    restart: "unless-stopped"
+  graylog:
+    image: graylog/graylog:4.2
+    volumes:
+      - graylog_data:/usr/share/graylog/data
+    environment:
+      # CHANGE ME (must be at least 16 characters)!
+      - GRAYLOG_PASSWORD_SECRET=ZDcwMzQ3NTE4ZTIwM
+      # Username is "admin"
+      # Password is "admin", change this to your own hashed password. 'echo -n "password" | sha256sum' 
+      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+      entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
+    links:
+      - mongodb:mongo
+      - elasticsearch
+    depends_on:
+      - mongodb
+      - elasticsearch
+    ports:
+      # Graylog web interface and REST API
+      - 9000:9000
+      # Syslog UDP
+      - 1514:1514/udp
+      # Syslog TCP
+      - 1514:1514
+      # GELF TCP
+      - 12201:12201
+      # GELF UDP
+      - 12201:12201/udp
+    restart: "unless-stopped"
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - '8086:8086'
+    volumes:
+      - influxdb2_data:/var/lib/influxdb2
+    restart: "unless-stopped"
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - influxdb
+    environment:
+      # Change these
+      - GF_SECURITY_ADMIN_USER=opnsense
+      - GF_SECURITY_ADMIN_PASSWORD=opnsense
+    restart: "unless-stopped"
+volumes:
+  grafana_data:
+  influxdb2_data:
+  graylog_data:
+  es_data:
+  mongodb_data:
 ```
 
 
