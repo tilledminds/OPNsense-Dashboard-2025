@@ -92,16 +92,21 @@ LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as
 ### Telegraf
 [Telegraf Config](config/additional_config.conf)
 
-In the [/config](config/additional_config.conf) directory you will find all of the additional telegraf config. In pfSense, under Services -> Telegraf, at the bottom of the page with the teeny tiny text box is where you paste in the included config.
+You must manually install Telegraf on OPNsense, as OPNsense does not currently support custom telegraf configuration.  To do so, SSH into your OPNsense router and type in
 
-I also included the config for Unbound DNS and it's commented out.  I'm not currently using it, but it's fully functional, just uncomment if you want to use it.
+`sudo pkg install telegraf`
+
+In the [/config](config/additional_config.conf) directory you will find all of the telegraf config.
+
+You will need to place this config in /usr/local/etc/telegraf.conf in /usr/local/etc/
+
 
 ### Plugins
 [Plugins](plugins)
 
 **Plugins get copied to your OPNsense system**
 
-I put all my plugins in /usr/local/bin and set them to 555
+Place the plugins in /usr/local/bin and set them to 555
    
 ## Troubleshooting
 
