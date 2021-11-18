@@ -14,7 +14,7 @@
 - WAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 - LAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 
-![Screenshot](Grafana-pfSense.png)
+![Screenshot](Grafana-OPNsense.png)
 
 ## Running on
 
