@@ -1,5 +1,11 @@
 # Installing the Plugins
-Perhaps the easiest method of installing these plugins is by utlizing the "Filer" plugin in pfSense. Simply type the entire file name (i.e. "/usr/local/bin/plugin_name") and paste the code into the window. Make sure to set the permissions to be "0755", as they default to "0644" which is NOT executable!
+Place these plugins in "/usr/local/bin". The easiest way of doing this would be to SSH into your router, navigate to "/usr/local/bin" and use curl to download the files, like so:
+
+
+`curl https://raw.githubusercontent.com/Bsmith101/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php -o telegraf_pfifgw.php`
+`curl https://raw.githubusercontent.com/Bsmith101/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh -o telegraf_temperature.sh`
+
+Make sure to set the permissions to "755"
 
 # telegraf_pfifgw.php
 
