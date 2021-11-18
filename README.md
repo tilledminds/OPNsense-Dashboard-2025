@@ -23,7 +23,7 @@ Converted InfluxQL queries to Flux.
 Converted pFSense functions to OPNsense.
 
 
-Added Firewall graphs.
+Added Firewall panels.
 
 ![Screenshot](Grafana-OPNsense.png)
 
