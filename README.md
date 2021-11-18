@@ -199,3 +199,7 @@ When in doubt, run a few queries to see if the data you are looking for is being
 How to drop influx v2 measurement
 
     bash-4.4# influx delete --bucket "$YourBucket" --predicate '_measurement="$Example"' -o $organization --start "1970-01-01T00:00:00Z" --stop "2050-12-31T23:59:00Z" --token "$YourAPIToken"
+    
+    
+## TODO
+- Add Suricata section and panels
