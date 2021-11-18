@@ -101,13 +101,13 @@ LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as
 
 
 ### Telegraf
-[Telegraf Config](config/additional_config.conf)
+[Telegraf Config](config/telegraf.conf)
 
 You must manually install Telegraf on OPNsense, as OPNsense does not currently support custom telegraf configuration.  To do so, SSH into your OPNsense router and type in:
 
 `sudo pkg install telegraf`
 
-In the [/config](config/additional_config.conf) directory you will find the telegraf config.
+In the [/config](config/telegraf.conf) directory you will find the telegraf config.
 
 You will need to place this config in "/usr/local/etc/".
 
