@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637282526868,
+  "iteration": 1637283339574,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -174,12 +174,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${dataSource}",
-      "fieldConfig": {
-        "defaults": {
-          "displayName": "${__field.labels.cpu}"
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -233,6 +227,14 @@
         "sort": 2,
         "value_type": "individual"
       },
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "valueLabel": "cpu"
+          }
+        }
+      ],
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -363,12 +365,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${dataSource}",
-      "fieldConfig": {
-        "defaults": {
-          "displayName": "${__field.name}"
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -408,7 +404,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"system\" and\r\n    r._field =~ /load1|load5|load15/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: mean)\r\n  |> fill(usePrevious: true)",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"system\" and\r\n    r._field =~ /load1|load5|load15/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: mean)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -535,7 +531,6 @@
             "displayMode": "auto"
           },
           "decimals": 1,
-          "displayName": "${__field.name}",
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -830,12 +825,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${dataSource}",
-      "fieldConfig": {
-        "defaults": {
-          "displayName": "${__field.labels.sensor}"
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -889,6 +878,14 @@
         "sort": 0,
         "value_type": "individual"
       },
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {
+            "valueLabel": "sensor"
+          }
+        }
+      ],
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -2069,7 +2066,6 @@
             "mode": "thresholds"
           },
           "decimals": 2,
-          "displayName": "${__field.name}",
           "mappings": [
             {
               "options": {
@@ -2160,7 +2156,6 @@
             "mode": "thresholds"
           },
           "decimals": 2,
-          "displayName": "${__field.name}",
           "mappings": [
             {
               "options": {
@@ -2594,7 +2589,6 @@
             "mode": "thresholds"
           },
           "decimals": 2,
-          "displayName": "${__field.name}",
           "mappings": [
             {
               "options": {
@@ -2685,7 +2679,6 @@
             "mode": "thresholds"
           },
           "decimals": 2,
-          "displayName": "${__field.name}",
           "mappings": [
             {
               "options": {
@@ -2776,7 +2769,6 @@
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
-          "displayName": "${__field.name}",
           "unit": "short"
         },
         "overrides": []
@@ -2890,7 +2882,7 @@
       }
     }
   ],
-  "refresh": "5s",
+  "refresh": "",
   "schemaVersion": 32,
   "style": "dark",
   "tags": [
@@ -3230,5 +3222,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 225
+  "version": 232
 }
