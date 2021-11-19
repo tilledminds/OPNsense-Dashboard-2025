@@ -160,6 +160,14 @@ Once that's done, download the content pack and install it on Graylog by navigat
 
 Now, add your index set from earlier to the "OPNsense / filterlog" stream. Navigate to Streams -> More Actions -> Edit Stream -> select your index set and save.
 
+Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / targets. Add a new target with the following options: 
+
+Transport: UDP(4)
+Applications: filter (filterlog)
+Hostname: Hostname or IP address of your graylog server
+Port: 1514
+Add a description if you'd like, then click save.
+
 ### Plugins
 [Plugins](plugins)
 
