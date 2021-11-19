@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637306785120,
+  "iteration": 1637310224703,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -2022,8 +2022,8 @@
             "indexByName": {},
             "renameByName": {
               "Time": "",
-              "bytes_recv": "Bytes Recv",
-              "bytes_sent": "Bytes Sent"
+              "bytes_recv": "Bits Recv",
+              "bytes_sent": "Bits Sent"
             }
           }
         }
@@ -2889,7 +2889,7 @@
       }
     }
   ],
-  "refresh": "10s",
+  "refresh": "",
   "schemaVersion": 32,
   "style": "dark",
   "tags": [
@@ -3110,12 +3110,12 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
-            "igb0"
+            "All"
           ],
           "value": [
-            "igb0"
+            "$__all"
           ]
         },
         "datasource": null,
@@ -3138,7 +3138,7 @@
       {
         "allValue": "*",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -3166,7 +3166,7 @@
       {
         "allValue": "*",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -3205,5 +3205,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 264
+  "version": 265
 }
