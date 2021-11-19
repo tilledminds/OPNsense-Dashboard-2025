@@ -201,6 +201,10 @@ URL: elasticsearch:9200
 Time field name: timestamp
 Version: 7.0+
 
+#### Import Dashboard
+
+To import the dashboard, copy the JSON in [OPNsense-Grafana-Dashboard.json](OPNsense-Grafana-Dashboard.json) and navigate to Dashboards -> Import and paste under Import via panel json.
+
 The Config for the dashboard relies on the variables defined within the dashboard in Grafana.  When importing the dashboard, make sure to select your datasource. 
 
 Dashboard Settings -> Variables
