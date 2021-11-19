@@ -183,7 +183,7 @@ Add a description if you'd like, then click save.
 
 ### Grafana
 
-#### Add InfluxDB and ElasticSeearch data sources
+#### Add InfluxDB and ElasticSearch data sources
 
 You will need to add the data sources on Grafana. Navigate to http://(ip or hostname of docker server):3000, login and click on the cog wheel and Add a Data Source.
 
