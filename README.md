@@ -126,7 +126,7 @@ volumes:
 ## Configuration
 
 ### InfluxDB
-After InfluxDB is started, go to http://(ip of host running InfluxDB):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your telegraf configuration.
+After InfluxDB is started, go to http://(ip or hostname of docker server):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your telegraf configuration.
 
 ### Grafana
 The Config for the dashboard relies on the variables defined within the dashboard in Grafana.  When importing the dashboard, make sure to select your datasource. 
@@ -170,6 +170,8 @@ Then download the database file, replace YOUR_LICENSE_KEY with the key you gener
   && mv GeoLite2-Country_*/GeoLite2-Country.mmdb /usr/share/graylog/data/data/`
 
 ### Configuring Graylog
+
+In a browser navigate to http://(ip or hostname of docker server):9000 and login.
 
 For Graylog, it's recommended to create an index set. To do so, navigate to System -> Indices. Create an index set with the name "OPNsense / filterlog" and set the index prefix to "opnsense_filterlog".
 
