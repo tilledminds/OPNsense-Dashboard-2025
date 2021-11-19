@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637288980012,
+  "iteration": 1637295105009,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1016,7 +1016,7 @@
               "type": "count"
             }
           ],
-          "query": "interface:$iface AND src-ip:$src_ip AND dst-port:$dst_port AND action:\"block\"",
+          "query": "interface:$iface AND src_ip:$src_ip AND dst_port:$dst_port AND action:\"block\"",
           "refId": "A",
           "target": "",
           "timeField": "timestamp"
@@ -1105,7 +1105,7 @@
               "type": "count"
             }
           ],
-          "query": "interface:$iface AND src-ip:$src_ip AND action:\"block\"",
+          "query": "interface:$iface AND src_ip:$src_ip AND action:\"block\"",
           "refId": "A",
           "timeField": "timestamp"
         }
@@ -1160,7 +1160,7 @@
           "calcs": [
             "first"
           ],
-          "fields": "/^src\\-ip$/",
+          "fields": "/^src_ip$/",
           "values": true
         },
         "text": {},
@@ -1173,7 +1173,7 @@
             {
               "$$hashKey": "object:120",
               "fake": true,
-              "field": "src-ip",
+              "field": "src_ip",
               "id": "3",
               "settings": {
                 "min_doc_count": 1,
@@ -1193,7 +1193,7 @@
               "type": "count"
             }
           ],
-          "query": "action:\"block\" AND interface:$iface AND src-ip:$src_ip AND dst-port:$dst_port",
+          "query": "action:\"block\" AND interface:$iface AND src_ip:$src_ip AND dst_port:$dst_port",
           "refId": "A",
           "target": "",
           "timeField": "timestamp"
@@ -1262,7 +1262,7 @@
             {
               "$$hashKey": "object:1775",
               "fake": true,
-              "field": "dst-port",
+              "field": "dst_port",
               "id": "3",
               "settings": {
                 "min_doc_count": 1,
@@ -1293,7 +1293,7 @@
               "type": "count"
             }
           ],
-          "query": "interface:$iface AND src-ip:$src_ip AND dst-port:$dst_port AND action:\"block\"",
+          "query": "interface:$iface AND src_ip:$src_ip AND dst_port:$dst_port AND action:\"block\"",
           "refId": "A",
           "target": "",
           "timeField": "timestamp"
@@ -1360,7 +1360,7 @@
             {
               "$$hashKey": "object:1049",
               "fake": true,
-              "field": "protocol-name",
+              "field": "protocol_name",
               "id": "3",
               "settings": {
                 "min_doc_count": 1,
@@ -1391,7 +1391,7 @@
               "type": "count"
             }
           ],
-          "query": "interface:$iface AND src-ip:$src_ip AND dst-port:$dst_port AND action:\"block\"",
+          "query": "interface:$iface AND src_ip:$src_ip AND dst_port:$dst_port AND action:\"block\"",
           "refId": "A",
           "timeField": "timestamp"
         }
@@ -3019,10 +3019,10 @@
         "current": {
           "selected": true,
           "text": [
-            "igb1_vlan30"
+            "All"
           ],
           "value": [
-            "igb1_vlan30"
+            "$__all"
           ]
         },
         "datasource": "${dataSource}",
@@ -3075,10 +3075,10 @@
         "current": {
           "selected": true,
           "text": [
-            "igb0"
+            "All"
           ],
           "value": [
-            "igb0"
+            "$__all"
           ]
         },
         "description": null,
@@ -3090,12 +3090,12 @@
         "name": "WAN",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "All",
             "value": "$__all"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "igb0",
             "value": "igb0"
           }
@@ -3110,10 +3110,10 @@
         "current": {
           "selected": true,
           "text": [
-            "igb0"
+            "All"
           ],
           "value": [
-            "igb0"
+            "$__all"
           ]
         },
         "datasource": null,
@@ -3145,7 +3145,7 @@
           ]
         },
         "datasource": "Elasticsearch",
-        "definition": "{\"find\": \"terms\", \"field\": \"dst-port\", \"query\": \"dst-ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "definition": "{\"find\": \"terms\", \"field\": \"dst_port\", \"query\": \"dst_ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
         "description": null,
         "error": null,
         "hide": 0,
@@ -3154,7 +3154,7 @@
         "multi": true,
         "name": "dst_port",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"dst-port\", \"query\": \"dst-ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "query": "{\"find\": \"terms\", \"field\": \"dst_port\", \"query\": \"dst_ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -3173,7 +3173,7 @@
           ]
         },
         "datasource": "Elasticsearch",
-        "definition": "{\"find\": \"terms\", \"field\": \"src-ip\", \"query\": \"dst-ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "definition": "{\"find\": \"terms\", \"field\": \"src_ip\", \"query\": \"dst_ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
         "description": null,
         "error": null,
         "hide": 0,
@@ -3182,7 +3182,35 @@
         "multi": true,
         "name": "src_ip",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"src-ip\", \"query\": \"dst-ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "query": "{\"find\": \"terms\", \"field\": \"src_ip\", \"query\": \"dst_ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": null,
+        "definition": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"ip4_address\"])",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "Destination IP",
+        "multi": true,
+        "name": "wan_ip",
+        "options": [],
+        "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"ip4_address\"])",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -3203,5 +3231,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 243
+  "version": 252
 }
