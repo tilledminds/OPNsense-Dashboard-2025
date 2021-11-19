@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637276863528,
+  "iteration": 1637280718817,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -623,7 +623,7 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 5,
-        "w": 6,
+        "w": 7,
         "x": 0,
         "y": 7
       },
@@ -659,7 +659,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.device != \"devfs\" and\r\n    r._measurement == \"disk\" and\r\n    r._field == \"used_percent\"\r\n  )",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.device != \"devfs\" and\r\n    r.device =~ /^${Disk:regex}$/ and\r\n    r._measurement == \"disk\" and\r\n    r._field == \"used_percent\"\r\n  )",
           "refId": "A"
         }
       ],
@@ -731,7 +731,7 @@
       "gridPos": {
         "h": 5,
         "w": 9,
-        "x": 6,
+        "x": 7,
         "y": 7
       },
       "hiddenSeries": false,
@@ -840,8 +840,8 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 5,
-        "w": 9,
-        "x": 15,
+        "w": 8,
+        "x": 16,
         "y": 7
       },
       "hiddenSeries": false,
@@ -1018,7 +1018,7 @@
               "type": "count"
             }
           ],
-          "query": "interface:$iface AND src-ip:$src_ip AND dst-ip:$wan_ip AND dst-port:$dst_port AND action:\"block\"",
+          "query": "interface:$iface AND src-ip:$src_ip AND dst-port:$dst_port AND action:\"block\"",
           "refId": "A",
           "target": "",
           "timeField": "timestamp"
@@ -1043,7 +1043,7 @@
       "esLocationName": "src_ip",
       "esMetric": "Count",
       "gridPos": {
-        "h": 15,
+        "h": 11,
         "w": 13,
         "x": 6,
         "y": 13
@@ -1107,7 +1107,7 @@
               "type": "count"
             }
           ],
-          "query": "interface:$iface AND src-ip:$src_ip AND dst-ip:$wan_ip AND action:\"block\"",
+          "query": "interface:$iface AND src-ip:$src_ip AND action:\"block\"",
           "refId": "A",
           "timeField": "timestamp"
         }
@@ -1118,103 +1118,6 @@
       "unitPlural": "",
       "unitSingle": "",
       "valueName": "total"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "${ESdataSource}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 5,
-        "x": 19,
-        "y": 13
-      },
-      "id": 65,
-      "interval": null,
-      "links": [],
-      "maxDataPoints": 1,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "values": [
-            "value"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "bucketAggs": [
-            {
-              "$$hashKey": "object:1049",
-              "fake": true,
-              "field": "protocol-name",
-              "id": "3",
-              "settings": {
-                "min_doc_count": 1,
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "0"
-              },
-              "type": "terms"
-            },
-            {
-              "$$hashKey": "object:1050",
-              "field": "timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto",
-                "min_doc_count": 0,
-                "trimEdges": 0
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "dsType": "elasticsearch",
-          "metrics": [
-            {
-              "$$hashKey": "object:1047",
-              "field": "select field",
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "interface:$iface AND src-ip:$src_ip AND dst-ip:$wan_ip AND dst-port:$dst_port",
-          "refId": "A",
-          "timeField": "timestamp"
-        }
-      ],
-      "title": "Firewall Protocols on $iface",
-      "type": "piechart"
     },
     {
       "cacheTimeout": null,
@@ -1236,10 +1139,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 0,
-        "y": 16
+        "h": 3,
+        "w": 5,
+        "x": 19,
+        "y": 13
       },
       "id": 67,
       "interval": null,
@@ -1292,7 +1195,7 @@
               "type": "count"
             }
           ],
-          "query": "action:\"block\" AND interface:$iface AND src-ip:$src_ip AND dst-ip:$wan_ip AND dst-port:$dst_port",
+          "query": "action:\"block\" AND interface:$iface AND src-ip:$src_ip AND dst-port:$dst_port",
           "refId": "A",
           "target": "",
           "timeField": "timestamp"
@@ -1324,107 +1227,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
-        "w": 5,
-        "x": 19,
-        "y": 19
-      },
-      "id": 63,
-      "interval": null,
-      "links": [],
-      "maxDataPoints": 1,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "table",
-          "placement": "right",
-          "values": [
-            "value"
-          ]
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "targets": [
-        {
-          "alias": "",
-          "bucketAggs": [
-            {
-              "field": "dst-port",
-              "id": "3",
-              "settings": {
-                "min_doc_count": "1",
-                "order": "desc",
-                "orderBy": "_term",
-                "size": "10"
-              },
-              "type": "terms"
-            },
-            {
-              "$$hashKey": "object:1776",
-              "field": "timestamp",
-              "id": "2",
-              "settings": {
-                "interval": "auto",
-                "min_doc_count": 0,
-                "trimEdges": 0
-              },
-              "type": "date_histogram"
-            }
-          ],
-          "dsType": "elasticsearch",
-          "metrics": [
-            {
-              "$$hashKey": "object:1773",
-              "field": "select field",
-              "id": "1",
-              "type": "count"
-            }
-          ],
-          "query": "interface:$iface AND src-ip:$src_ip AND dst-ip:$wan_ip AND dst-port:$dst_port AND action:\"pass\"",
-          "refId": "A",
-          "target": "",
-          "timeField": "timestamp"
-        }
-      ],
-      "title": "Firewall Passed Destination Ports on $iface",
-      "type": "piechart"
-    },
-    {
-      "cacheTimeout": null,
-      "datasource": "${ESdataSource}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 20
+        "y": 16
       },
       "id": 61,
       "interval": null,
@@ -1489,7 +1295,7 @@
               "type": "count"
             }
           ],
-          "query": "interface:$iface AND src-ip:$src_ip AND dst-ip:$wan_ip AND dst-port:$dst_port AND action:\"block\"",
+          "query": "interface:$iface AND src-ip:$src_ip AND dst-port:$dst_port AND action:\"block\"",
           "refId": "A",
           "target": "",
           "timeField": "timestamp"
@@ -1499,13 +1305,110 @@
       "type": "piechart"
     },
     {
+      "cacheTimeout": null,
+      "datasource": "${ESdataSource}",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 19,
+        "y": 16
+      },
+      "id": 65,
+      "interval": null,
+      "links": [],
+      "maxDataPoints": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "bucketAggs": [
+            {
+              "$$hashKey": "object:1049",
+              "fake": true,
+              "field": "protocol-name",
+              "id": "3",
+              "settings": {
+                "min_doc_count": 1,
+                "order": "desc",
+                "orderBy": "_term",
+                "size": "0"
+              },
+              "type": "terms"
+            },
+            {
+              "$$hashKey": "object:1050",
+              "field": "timestamp",
+              "id": "2",
+              "settings": {
+                "interval": "auto",
+                "min_doc_count": 0,
+                "trimEdges": 0
+              },
+              "type": "date_histogram"
+            }
+          ],
+          "dsType": "elasticsearch",
+          "metrics": [
+            {
+              "$$hashKey": "object:1047",
+              "field": "select field",
+              "id": "1",
+              "type": "count"
+            }
+          ],
+          "query": "interface:$iface AND src-ip:$src_ip AND dst-port:$dst_port AND action:\"block\"",
+          "refId": "A",
+          "timeField": "timestamp"
+        }
+      ],
+      "title": "Firewall Blocked Protocols on $iface",
+      "type": "piechart"
+    },
+    {
       "collapsed": false,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 24
       },
       "id": 24,
       "panels": [],
@@ -1524,7 +1427,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 29
+        "y": 25
       },
       "hiddenSeries": false,
       "id": 26,
@@ -1691,7 +1594,7 @@
         "h": 10,
         "w": 16,
         "x": 8,
-        "y": 29
+        "y": 25
       },
       "id": 32,
       "options": {
@@ -1747,7 +1650,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 37
+        "y": 33
       },
       "hiddenSeries": false,
       "id": 38,
@@ -1874,7 +1777,7 @@
         "h": 6,
         "w": 16,
         "x": 8,
-        "y": 39
+        "y": 35
       },
       "id": 46,
       "options": {
@@ -1938,7 +1841,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 41
       },
       "id": 30,
       "panels": [],
@@ -2004,7 +1907,7 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 42
       },
       "id": 28,
       "options": {
@@ -2056,7 +1959,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 49
+        "y": 45
       },
       "hiddenSeries": false,
       "id": 34,
@@ -2196,7 +2099,7 @@
         "h": 7,
         "w": 5,
         "x": 6,
-        "y": 49
+        "y": 45
       },
       "id": 36,
       "maxDataPoints": 9000,
@@ -2287,7 +2190,7 @@
         "h": 7,
         "w": 5,
         "x": 11,
-        "y": 49
+        "y": 45
       },
       "hideTimeOverride": true,
       "id": 40,
@@ -2357,18 +2260,19 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 49
+        "y": 45
       },
       "hiddenSeries": false,
       "id": 42,
       "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
         "show": true,
         "total": false,
-        "values": false
+        "values": true
       },
       "lines": true,
       "linewidth": 1,
@@ -2463,7 +2367,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 52
       },
       "id": 48,
       "panels": [],
@@ -2529,7 +2433,7 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 57
+        "y": 53
       },
       "id": 52,
       "options": {
@@ -2581,7 +2485,7 @@
         "h": 7,
         "w": 6,
         "x": 0,
-        "y": 60
+        "y": 56
       },
       "hiddenSeries": false,
       "id": 49,
@@ -2720,7 +2624,7 @@
         "h": 7,
         "w": 5,
         "x": 6,
-        "y": 60
+        "y": 56
       },
       "id": 51,
       "maxDataPoints": 9000,
@@ -2811,7 +2715,7 @@
         "h": 7,
         "w": 5,
         "x": 11,
-        "y": 60
+        "y": 56
       },
       "hideTimeOverride": true,
       "id": 50,
@@ -2883,7 +2787,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 60
+        "y": 56
       },
       "hiddenSeries": false,
       "id": 53,
@@ -2997,6 +2901,47 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "selected": false,
+          "text": "InfluxDB",
+          "value": "InfluxDB"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "InfluxDB",
+        "multi": false,
+        "name": "dataSource",
+        "options": [],
+        "query": "influxdb",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "Elasticsearch",
+          "value": "Elasticsearch"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": "ElasticSearch",
+        "multi": false,
+        "name": "ESdataSource",
+        "options": [],
+        "query": "elasticsearch",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
         "allValue": null,
         "current": {
           "selected": true,
@@ -3044,6 +2989,58 @@
         "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn:(r) => r._measurement == \"disk\" and\r\n  r.host =~ /^${Host:regex}$/)\r\n  |> keyValues(keyColumns: [\"device\"])\r\n  |> group()\r\n  |> keep(columns: [\"device\"])\r\n  |> distinct(column: \"device\")",
         "refresh": 1,
         "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "${dataSource}",
+        "definition": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn:(r) => r._measurement == \"temperature\" and\r\n    r.host =~ /^${Host:regex}$/)\r\n  |> keyValues(keyColumns: [\"sensor\"])\r\n  |> group()\r\n  |> keep(columns: [\"sensor\"])\r\n  |> distinct(column: \"sensor\")",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": null,
+        "multi": false,
+        "name": "Sensor",
+        "options": [],
+        "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn:(r) => r._measurement == \"temperature\" and\r\n    r.host =~ /^${Host:regex}$/)\r\n  |> keyValues(keyColumns: [\"sensor\"])\r\n  |> group()\r\n  |> keep(columns: [\"sensor\"])\r\n  |> distinct(column: \"sensor\")",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": "${dataSource}",
+        "definition": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\"\r\n  )\r\n  |> keyValues(keyColumns: [\"interface\"])\r\n  |> group()\r\n  |> keep(columns: [\"interface\"])\r\n  |> distinct(column: \"interface\")",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "",
+        "multi": true,
+        "name": "LAN",
+        "options": [],
+        "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\"\r\n  )\r\n  |> keyValues(keyColumns: [\"interface\"])\r\n  |> group()\r\n  |> keep(columns: [\"interface\"])\r\n  |> distinct(column: \"interface\")",
+        "refresh": 1,
+        "regex": "/^(?!enc0$|igb0$|igb2$|igb3$|ovpnc1$)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -3114,51 +3111,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "${dataSource}",
-        "definition": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn:(r) => r._measurement == \"temperature\" and\r\n    r.host =~ /^${Host:regex}$/)\r\n  |> keyValues(keyColumns: [\"sensor\"])\r\n  |> group()\r\n  |> keep(columns: [\"sensor\"])\r\n  |> distinct(column: \"sensor\")",
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": true,
-        "label": null,
-        "multi": false,
-        "name": "Sensor",
-        "options": [],
-        "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn:(r) => r._measurement == \"temperature\" and\r\n    r.host =~ /^${Host:regex}$/)\r\n  |> keyValues(keyColumns: [\"sensor\"])\r\n  |> group()\r\n  |> keep(columns: [\"sensor\"])\r\n  |> distinct(column: \"sensor\")",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "InfluxDB",
-          "value": "InfluxDB"
-        },
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "InfluxDB",
-        "multi": false,
-        "name": "dataSource",
-        "options": [],
-        "query": "influxdb",
-        "queryValue": "",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "type": "datasource"
-      },
-      {
-        "allValue": null,
-        "current": {
           "selected": true,
           "text": [
             "All"
@@ -3167,45 +3119,17 @@
             "$__all"
           ]
         },
-        "datasource": "${dataSource}",
-        "definition": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\"\r\n  )\r\n  |> keyValues(keyColumns: [\"interface\"])\r\n  |> group()\r\n  |> keep(columns: [\"interface\"])\r\n  |> distinct(column: \"interface\")",
+        "datasource": null,
+        "definition": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\"\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"name\"])",
         "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": "",
-        "multi": true,
-        "name": "LAN",
-        "options": [],
-        "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\"\r\n  )\r\n  |> keyValues(keyColumns: [\"interface\"])\r\n  |> group()\r\n  |> keep(columns: [\"interface\"])\r\n  |> distinct(column: \"interface\")",
-        "refresh": 1,
-        "regex": "/^(?!enc0$|igb0$|igb2$|igb3$|ovpnc1$)/",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": "Elasticsearch",
-        "definition": "{\"find\": \"terms\", \"field\":\"interface\",\"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": true,
-        "label": "Interface",
+        "label": "FW_Interface",
         "multi": true,
         "name": "iface",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\":\"interface\",\"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\"\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"name\"])",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -3229,7 +3153,7 @@
         "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": "Destination Port",
+        "label": "FW_Destination Port",
         "multi": true,
         "name": "dst_port",
         "options": [],
@@ -3257,7 +3181,7 @@
         "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": "Source IP",
+        "label": "FW_Source IP",
         "multi": true,
         "name": "src_ip",
         "options": [],
@@ -3269,7 +3193,7 @@
         "type": "query"
       },
       {
-        "allValue": "*",
+        "allValue": "",
         "current": {
           "selected": true,
           "text": [
@@ -3279,42 +3203,22 @@
             "$__all"
           ]
         },
-        "datasource": "Elasticsearch",
-        "definition": "{\"find\": \"terms\", \"field\":\"dst-ip\",\"query\":\"interface:$iface\",\"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "datasource": null,
+        "definition": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"ip4_address\"])",
         "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": "Destination IP",
+        "label": "FW_Destination IP",
         "multi": true,
         "name": "wan_ip",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\":\"dst-ip\",\"query\":\"interface:$iface\",\"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"ip4_address\"])",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "current": {
-          "selected": false,
-          "text": "Elasticsearch",
-          "value": "Elasticsearch"
-        },
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": false,
-        "label": "ElasticSearch",
-        "multi": false,
-        "name": "ESdataSource",
-        "options": [],
-        "query": "elasticsearch",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "type": "datasource"
       }
     ]
   },
@@ -3326,5 +3230,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 212
+  "version": 223
 }
