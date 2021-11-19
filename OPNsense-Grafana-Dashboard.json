@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637287013745,
+  "iteration": 1637288980012,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -281,7 +281,7 @@
             "align": "center",
             "displayMode": "auto",
             "filterable": false,
-            "width": 83
+            "minWidth": 1
           },
           "decimals": 0,
           "mappings": [],
@@ -528,7 +528,8 @@
           },
           "custom": {
             "align": "center",
-            "displayMode": "auto"
+            "displayMode": "auto",
+            "minWidth": 1
           },
           "decimals": 1,
           "mappings": [],
@@ -1521,7 +1522,8 @@
           "custom": {
             "align": "center",
             "displayMode": "color-text",
-            "filterable": true
+            "filterable": true,
+            "minWidth": 1
           },
           "mappings": [
             {
@@ -1625,7 +1627,7 @@
             },
             "renameByName": {
               "_value": "Status",
-              "friendlyname": "FriendlyName",
+              "friendlyname": "Friendly Name",
               "ip4_address": "IPv4 Address",
               "mac_address": "Physical Address",
               "name": "Interface"
@@ -1745,7 +1747,8 @@
           "custom": {
             "align": "center",
             "displayMode": "color-text",
-            "filterable": true
+            "filterable": true,
+            "minWidth": 1
           },
           "mappings": [
             {
@@ -1855,7 +1858,8 @@
           "custom": {
             "align": "center",
             "displayMode": "color-text",
-            "filterable": true
+            "filterable": true,
+            "minWidth": 1
           },
           "mappings": [
             {
@@ -1932,7 +1936,7 @@
             },
             "renameByName": {
               "_value": "Status",
-              "friendlyname": "FriendlyName",
+              "friendlyname": "Friendly Name",
               "ip4_address": "IPV4 Address",
               "mac_address": "Physical Address",
               "name": "Interface"
@@ -2379,7 +2383,8 @@
           "custom": {
             "align": "center",
             "displayMode": "color-text",
-            "filterable": true
+            "filterable": true,
+            "minWidth": 1
           },
           "mappings": [
             {
@@ -2456,7 +2461,7 @@
             },
             "renameByName": {
               "_value": "Status",
-              "friendlyname": "FriendlyName",
+              "friendlyname": "Friendly Name",
               "ip4_address": "IPV4 Address",
               "mac_address": "Physical Address",
               "name": "Interface"
@@ -3198,5 +3203,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 241
+  "version": 243
 }
