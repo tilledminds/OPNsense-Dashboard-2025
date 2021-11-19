@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637304320039,
+  "iteration": 1637306212043,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1993,7 +1993,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and \r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> fill(usePrevious: true)",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and \r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -2001,7 +2001,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "WAN Traffic - $WAN (Bytes/sec)",
+      "title": "WAN Traffic - $WAN (Bits/sec)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2040,7 +2040,7 @@
         {
           "$$hashKey": "object:63",
           "decimals": 2,
-          "format": "decbytes",
+          "format": "bps",
           "label": null,
           "logBase": 2,
           "max": null,
@@ -2519,7 +2519,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and \r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and \r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -2527,7 +2527,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "LAN Traffic - $LAN (Bytes/sec)",
+      "title": "LAN Traffic - $LAN (Bits/sec)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2565,7 +2565,7 @@
         {
           "$$hashKey": "object:63",
           "decimals": 2,
-          "format": "decbytes",
+          "format": "bps",
           "label": null,
           "logBase": 2,
           "max": null,
@@ -3075,7 +3075,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -3205,5 +3205,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 257
+  "version": 262
 }
