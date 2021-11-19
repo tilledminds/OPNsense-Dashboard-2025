@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637359135524,
+  "iteration": 1637362211143,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -1608,7 +1608,7 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"interface\"\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"mac_address\", \"name\", \"_value\"])\r\n  |> sort(columns:[\"name\"])",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"interface\"\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"ip4_subnet\", \"mac_address\", \"name\", \"_value\"])\r\n  |> sort(columns:[\"name\"])",
           "refId": "A"
         }
       ],
@@ -1619,16 +1619,18 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
-              "_value": 4,
+              "_value": 5,
               "friendlyname": 1,
               "ip4_address": 2,
-              "mac_address": 3,
+              "ip4_subnet": 3,
+              "mac_address": 4,
               "name": 0
             },
             "renameByName": {
               "_value": "Status",
               "friendlyname": "Friendly Name",
               "ip4_address": "IPv4 Address",
+              "ip4_subnet": "Subnet",
               "mac_address": "Physical Address",
               "name": "Interface"
             }
@@ -1919,7 +1921,7 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"mac_address\", \"_value\"])",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
           "refId": "A"
         }
       ],
@@ -1930,15 +1932,18 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
+              "_value": 5,
               "friendlyname": 1,
               "ip4_address": 2,
-              "mac_address": 3,
+              "ip4_subnet": 3,
+              "mac_address": 4,
               "name": 0
             },
             "renameByName": {
               "_value": "Status",
               "friendlyname": "Friendly Name",
               "ip4_address": "IPV4 Address",
+              "ip4_subnet": "Subnet",
               "mac_address": "Physical Address",
               "name": "Interface"
             }
@@ -2445,7 +2450,7 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"mac_address\", \"_value\"])",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\", \"mac_address\", \"_value\"])",
           "refId": "A"
         }
       ],
@@ -2456,15 +2461,18 @@
           "options": {
             "excludeByName": {},
             "indexByName": {
+              "_value": 5,
               "friendlyname": 1,
               "ip4_address": 2,
-              "mac_address": 3,
+              "ip4_subnet": 3,
+              "mac_address": 4,
               "name": 0
             },
             "renameByName": {
               "_value": "Status",
               "friendlyname": "Friendly Name",
               "ip4_address": "IPV4 Address",
+              "ip4_subnet": "Subnet",
               "mac_address": "Physical Address",
               "name": "Interface"
             }
@@ -3201,5 +3209,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 267
+  "version": 270
 }
