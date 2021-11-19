@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637280718817,
+  "iteration": 1637282526868,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -161,7 +161,7 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_user\" and\r\n    r.cpu == \"cpu-total\"\r\n  )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu == \"cpu-total\"\r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -219,7 +219,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_user\" and\r\n    r.cpu =~ /cpu[0-3]$/ \r\n  )\r\n  |> aggregateWindow(every: 10s, fn: mean)\r\n  |> fill(usePrevious: true)",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu =~ /cpu[0-3]$/ \r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> aggregateWindow(every: 10s, fn: mean)\r\n  |> fill(usePrevious: true)",
           "refId": "A"
         }
       ],
@@ -3230,5 +3230,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 223
+  "version": 225
 }
