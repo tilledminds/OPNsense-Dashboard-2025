@@ -1,6 +1,6 @@
 {
-  "v": "1",
-  "id": "d9656de3-de80-4ba8-9bb0-73345c13dadb",
+  "v": 1,
+  "id": "18182b58-b61f-429b-baeb-3c28916d5541",
   "rev": 1,
   "name": "OPNsense Dashboard",
   "summary": "This pack includes everything needed to setup Graylog for the dashboard.",
@@ -12,10 +12,291 @@
     {
       "v": "1",
       "type": {
+        "name": "lookup_cache",
+        "version": "1"
+      },
+      "id": "a28e2142-8680-4f19-84e8-5f80380f5685",
+      "data": {
+        "name": {
+          "@type": "string",
+          "@value": "geoip"
+        },
+        "title": {
+          "@type": "string",
+          "@value": "GeoIP"
+        },
+        "description": {
+          "@type": "string",
+          "@value": "GeoIP Cache"
+        },
+        "configuration": {
+          "type": {
+            "@type": "string",
+            "@value": "guava_cache"
+          },
+          "max_size": {
+            "@type": "integer",
+            "@value": 1000
+          },
+          "expire_after_access": {
+            "@type": "long",
+            "@value": 1
+          },
+          "expire_after_access_unit": {
+            "@type": "string",
+            "@value": "SECONDS"
+          },
+          "expire_after_write": {
+            "@type": "long",
+            "@value": 0
+          }
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=4.2.1+5442e44"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "stream",
+        "version": "1"
+      },
+      "id": "30310c34-94ed-4733-b850-2aa7394f453a",
+      "data": {
+        "alarm_callbacks": [],
+        "outputs": [],
+        "remove_matches": {
+          "@type": "boolean",
+          "@value": false
+        },
+        "title": {
+          "@type": "string",
+          "@value": "OPNsense / filterlog"
+        },
+        "stream_rules": [
+          {
+            "type": {
+              "@type": "string",
+              "@value": "CONTAINS"
+            },
+            "field": {
+              "@type": "string",
+              "@value": "message"
+            },
+            "value": {
+              "@type": "string",
+              "@value": "filterlog"
+            },
+            "inverted": {
+              "@type": "boolean",
+              "@value": false
+            },
+            "description": {
+              "@type": "string",
+              "@value": ""
+            }
+          }
+        ],
+        "alert_conditions": [],
+        "matching_type": {
+          "@type": "string",
+          "@value": "AND"
+        },
+        "disabled": {
+          "@type": "boolean",
+          "@value": false
+        },
+        "description": {
+          "@type": "string",
+          "@value": "OPNsense filter logs"
+        },
+        "default_stream": {
+          "@type": "boolean",
+          "@value": false
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=4.2.1+5442e44"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "pipeline",
+        "version": "1"
+      },
+      "id": "04716e76-d03f-47da-8f96-826edfa201d4",
+      "data": {
+        "title": {
+          "@type": "string",
+          "@value": "GeoIP"
+        },
+        "description": {
+          "@type": "string",
+          "@value": "GeoIP"
+        },
+        "source": {
+          "@type": "string",
+          "@value": "pipeline \"GeoIP\"\nstage 0 match either\nrule \"GeoIP lookup: src_ip\"\nend"
+        },
+        "connected_streams": [
+          {
+            "@type": "string",
+            "@value": "30310c34-94ed-4733-b850-2aa7394f453a"
+          }
+        ]
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=4.2.1+5442e44"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "lookup_adapter",
+        "version": "1"
+      },
+      "id": "77e1882f-e27f-4ad6-8e59-a08396073654",
+      "data": {
+        "name": {
+          "@type": "string",
+          "@value": "geoip"
+        },
+        "title": {
+          "@type": "string",
+          "@value": "GeoIP"
+        },
+        "description": {
+          "@type": "string",
+          "@value": "Geo IP Lookup Table"
+        },
+        "configuration": {
+          "type": {
+            "@type": "string",
+            "@value": "maxmind_geoip"
+          },
+          "path": {
+            "@type": "string",
+            "@value": "/usr/share/graylog/data/data/GeoLite2-Country.mmdb"
+          },
+          "database_type": {
+            "@type": "string",
+            "@value": "MAXMIND_COUNTRY"
+          },
+          "check_interval": {
+            "@type": "long",
+            "@value": 1
+          },
+          "check_interval_unit": {
+            "@type": "string",
+            "@value": "MINUTES"
+          }
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=4.2.1+5442e44"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "pipeline_rule",
+        "version": "1"
+      },
+      "id": "69838991-3e6b-418c-97af-77ba3b3774c4",
+      "data": {
+        "title": {
+          "@type": "string",
+          "@value": "GeoIP lookup: src_ip"
+        },
+        "description": {
+          "@type": "string",
+          "@value": ""
+        },
+        "source": {
+          "@type": "string",
+          "@value": "rule \"GeoIP lookup: src_ip\"\nwhen\nhas_field(\"src_ip\")\nthen\nlet geo = lookup(\"geoip\", to_string($message.\"src_ip\"));\nset_field(\"src_ip_geo_location\", geo[\"coordinates\"]);\nset_field(\"src_ip_geo_country\", geo[\"country\"].iso_code);\nset_field(\"src_ip_geo_city\", geo[\"city\"].names.en);\nend"
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=4.2.1+5442e44"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "lookup_table",
+        "version": "1"
+      },
+      "id": "1dd3a84d-8767-4032-8ec6-59a3e6248be2",
+      "data": {
+        "default_single_value_type": {
+          "@type": "string",
+          "@value": "NULL"
+        },
+        "cache_name": {
+          "@type": "string",
+          "@value": "a28e2142-8680-4f19-84e8-5f80380f5685"
+        },
+        "name": {
+          "@type": "string",
+          "@value": "geoip"
+        },
+        "default_multi_value_type": {
+          "@type": "string",
+          "@value": "NULL"
+        },
+        "default_multi_value": {
+          "@type": "string",
+          "@value": ""
+        },
+        "data_adapter_name": {
+          "@type": "string",
+          "@value": "77e1882f-e27f-4ad6-8e59-a08396073654"
+        },
+        "title": {
+          "@type": "string",
+          "@value": "GeoIP"
+        },
+        "default_single_value": {
+          "@type": "string",
+          "@value": ""
+        },
+        "description": {
+          "@type": "string",
+          "@value": "Geo IP Lookup"
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=4.2.1+5442e44"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
         "name": "input",
         "version": "1"
       },
-      "id": "29027b15-a4e5-4786-9f4f-ec17bade104e",
+      "id": "9a48cd75-bbd9-48dd-bf34-21014842be82",
       "data": {
         "title": {
           "@type": "string",
@@ -64,625 +345,7 @@
           "@type": "boolean",
           "@value": false
         },
-        "extractors": [
-          {
-            "target_field": {
-              "@type": "string",
-              "@value": "filterlog_ipv4_udp"
-            },
-            "condition_value": {
-              "@type": "string",
-              "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),4,.*,udp,.*)$"
-            },
-            "order": {
-              "@type": "integer",
-              "@value": 2
-            },
-            "converters": [
-              {
-                "type": {
-                  "@type": "string",
-                  "@value": "CSV"
-                },
-                "configuration": {
-                  "column_header": {
-                    "@type": "string",
-                    "@value": "rule_number,sub_rule_number,anchor,tracker,interface,reason,action,direction,ip_version,tos,ecn,ttl,id,offset,flags,protocol_id,protocol_name,length,src_ip,dst_ip,src_port,dst_port,datalen"
-                  },
-                  "trim_leading_whitespace": {
-                    "@type": "boolean",
-                    "@value": true
-                  }
-                }
-              }
-            ],
-            "configuration": {
-              "regex_value": {
-                "@type": "string",
-                "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
-              }
-            },
-            "source_field": {
-              "@type": "string",
-              "@value": "message"
-            },
-            "title": {
-              "@type": "string",
-              "@value": "OPNsense: IPv4 UDP"
-            },
-            "type": {
-              "@type": "string",
-              "@value": "REGEX"
-            },
-            "cursor_strategy": {
-              "@type": "string",
-              "@value": "COPY"
-            },
-            "condition_type": {
-              "@type": "string",
-              "@value": "REGEX"
-            }
-          },
-          {
-            "target_field": {
-              "@type": "string",
-              "@value": "filterlog_ipv4_icmp"
-            },
-            "condition_value": {
-              "@type": "string",
-              "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),4,.*,icmp,.*)$"
-            },
-            "order": {
-              "@type": "integer",
-              "@value": 4
-            },
-            "converters": [
-              {
-                "type": {
-                  "@type": "string",
-                  "@value": "CSV"
-                },
-                "configuration": {
-                  "column_header": {
-                    "@type": "string",
-                    "@value": "rule_number,sub_rule_number,anchor,tracker,interface,reason,action,direction,ip_version,tos,ecn,ttl,id,offset,flags,protocol_id,protocol_name,length,src_ip,dst_ip,datalen"
-                  }
-                }
-              }
-            ],
-            "configuration": {
-              "regex_value": {
-                "@type": "string",
-                "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
-              }
-            },
-            "source_field": {
-              "@type": "string",
-              "@value": "message"
-            },
-            "title": {
-              "@type": "string",
-              "@value": "OPNsense: IPv4 ICMP"
-            },
-            "type": {
-              "@type": "string",
-              "@value": "REGEX"
-            },
-            "cursor_strategy": {
-              "@type": "string",
-              "@value": "COPY"
-            },
-            "condition_type": {
-              "@type": "string",
-              "@value": "REGEX"
-            }
-          },
-          {
-            "target_field": {
-              "@type": "string",
-              "@value": "filterlog_ipv6_icmp"
-            },
-            "condition_value": {
-              "@type": "string",
-              "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),6,.*,ipv6-icmp,.*)$"
-            },
-            "order": {
-              "@type": "integer",
-              "@value": 5
-            },
-            "converters": [
-              {
-                "type": {
-                  "@type": "string",
-                  "@value": "CSV"
-                },
-                "configuration": {
-                  "column_header": {
-                    "@type": "string",
-                    "@value": "rule_number,sub_rule_number,anchor,tracker,interface,reason,action,direction,ip_version,class,flow,hoplimit,protocol_name,protocol_id,length,src_ip,dst_ip,datalen"
-                  }
-                }
-              }
-            ],
-            "configuration": {
-              "regex_value": {
-                "@type": "string",
-                "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
-              }
-            },
-            "source_field": {
-              "@type": "string",
-              "@value": "message"
-            },
-            "title": {
-              "@type": "string",
-              "@value": "OPNsense: IPv6 ICMP"
-            },
-            "type": {
-              "@type": "string",
-              "@value": "REGEX"
-            },
-            "cursor_strategy": {
-              "@type": "string",
-              "@value": "COPY"
-            },
-            "condition_type": {
-              "@type": "string",
-              "@value": "REGEX"
-            }
-          },
-          {
-            "target_field": {
-              "@type": "string",
-              "@value": "filterlog_ipv6_udp"
-            },
-            "condition_value": {
-              "@type": "string",
-              "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),6,.*,udp,.*)$"
-            },
-            "order": {
-              "@type": "integer",
-              "@value": 3
-            },
-            "converters": [
-              {
-                "type": {
-                  "@type": "string",
-                  "@value": "CSV"
-                },
-                "configuration": {
-                  "column_header": {
-                    "@type": "string",
-                    "@value": "rule_number,sub_rule_number,anchor,tracker,interface,reason,action,direction,ip_version,class,flowlabel,hoplimit,protocol_name,protocol_id,length,src_ip,dst_ip,src_port,dst_port,datalength"
-                  }
-                }
-              }
-            ],
-            "configuration": {
-              "regex_value": {
-                "@type": "string",
-                "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
-              }
-            },
-            "source_field": {
-              "@type": "string",
-              "@value": "message"
-            },
-            "title": {
-              "@type": "string",
-              "@value": "OPNsense: IPv6 UDP"
-            },
-            "type": {
-              "@type": "string",
-              "@value": "REGEX"
-            },
-            "cursor_strategy": {
-              "@type": "string",
-              "@value": "COPY"
-            },
-            "condition_type": {
-              "@type": "string",
-              "@value": "REGEX"
-            }
-          },
-          {
-            "target_field": {
-              "@type": "string",
-              "@value": "filterlog_ipv6_tcp"
-            },
-            "condition_value": {
-              "@type": "string",
-              "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),6,.*,tcp,.*)$"
-            },
-            "order": {
-              "@type": "integer",
-              "@value": 1
-            },
-            "converters": [
-              {
-                "type": {
-                  "@type": "string",
-                  "@value": "CSV"
-                },
-                "configuration": {
-                  "column_header": {
-                    "@type": "string",
-                    "@value": "rule_number,sub_rule_number,anchor,tracker,interface,reason,action,direction,ipversion,class,flowlabel,hoplimit,protocol_name,protocol_id,length,src_ip,dst_ip,src_port,dst_port,datalength,flags,sequence,ack,window,urg,options"
-                  },
-                  "trim_leading_whitespace": {
-                    "@type": "boolean",
-                    "@value": true
-                  }
-                }
-              }
-            ],
-            "configuration": {
-              "regex_value": {
-                "@type": "string",
-                "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
-              }
-            },
-            "source_field": {
-              "@type": "string",
-              "@value": "message"
-            },
-            "title": {
-              "@type": "string",
-              "@value": "OPNsense: IPv6 TCP"
-            },
-            "type": {
-              "@type": "string",
-              "@value": "REGEX"
-            },
-            "cursor_strategy": {
-              "@type": "string",
-              "@value": "COPY"
-            },
-            "condition_type": {
-              "@type": "string",
-              "@value": "REGEX"
-            }
-          },
-          {
-            "target_field": {
-              "@type": "string",
-              "@value": "filterlog_ipv4_tcp"
-            },
-            "condition_value": {
-              "@type": "string",
-              "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*,(in|out),4,.*,tcp,.*)$"
-            },
-            "order": {
-              "@type": "integer",
-              "@value": 0
-            },
-            "converters": [
-              {
-                "type": {
-                  "@type": "string",
-                  "@value": "CSV"
-                },
-                "configuration": {
-                  "column_header": {
-                    "@type": "string",
-                    "@value": "rule_number,sub_rule_number,anchor,tracker,interface,reason,action,direction,ip_version,tos,ecn,ttl,id,offset,ip_flags,protocol_id,protocol_name,length,src_ip,dst_ip,src_port,dst_port,datalen,flags,sequence,ack,window,urg,options"
-                  },
-                  "trim_leading_whitespace": {
-                    "@type": "boolean",
-                    "@value": true
-                  }
-                }
-              }
-            ],
-            "configuration": {
-              "regex_value": {
-                "@type": "string",
-                "@value": "^(?i).*\\sfilterlog\\[[0-9]+\\]:\\s(.*)$"
-              }
-            },
-            "source_field": {
-              "@type": "string",
-              "@value": "message"
-            },
-            "title": {
-              "@type": "string",
-              "@value": "OPNsense: IPv4 TCP"
-            },
-            "type": {
-              "@type": "string",
-              "@value": "REGEX"
-            },
-            "cursor_strategy": {
-              "@type": "string",
-              "@value": "COPY"
-            },
-            "condition_type": {
-              "@type": "string",
-              "@value": "REGEX"
-            }
-          }
-        ]
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=4.2.1+5442e44"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "lookup_adapter",
-        "version": "1"
-      },
-      "id": "a51ae423-52bb-46fe-848d-a2a51e30b994",
-      "data": {
-        "name": {
-          "@type": "string",
-          "@value": "geoip"
-        },
-        "title": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "description": {
-          "@type": "string",
-          "@value": "Geo IP Lookup Table"
-        },
-        "configuration": {
-          "type": {
-            "@type": "string",
-            "@value": "maxmind_geoip"
-          },
-          "path": {
-            "@type": "string",
-            "@value": "/usr/share/graylog/data/data/GeoLite2-Country.mmdb"
-          },
-          "database_type": {
-            "@type": "string",
-            "@value": "MAXMIND_COUNTRY"
-          },
-          "check_interval": {
-            "@type": "long",
-            "@value": 1
-          },
-          "check_interval_unit": {
-            "@type": "string",
-            "@value": "MINUTES"
-          }
-        }
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=4.2.1+5442e44"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "lookup_cache",
-        "version": "1"
-      },
-      "id": "714d72d6-f371-4cf0-ac38-9d071b5ab2ac",
-      "data": {
-        "name": {
-          "@type": "string",
-          "@value": "geoip"
-        },
-        "title": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "description": {
-          "@type": "string",
-          "@value": "GeoIP Cache"
-        },
-        "configuration": {
-          "type": {
-            "@type": "string",
-            "@value": "guava_cache"
-          },
-          "max_size": {
-            "@type": "integer",
-            "@value": 1000
-          },
-          "expire_after_access": {
-            "@type": "long",
-            "@value": 1
-          },
-          "expire_after_access_unit": {
-            "@type": "string",
-            "@value": "SECONDS"
-          },
-          "expire_after_write": {
-            "@type": "long",
-            "@value": 0
-          }
-        }
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=4.2.1+5442e44"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "lookup_table",
-        "version": "1"
-      },
-      "id": "fe44f680-759d-474d-a87d-ecae6856e592",
-      "data": {
-        "default_single_value_type": {
-          "@type": "string",
-          "@value": "NULL"
-        },
-        "cache_name": {
-          "@type": "string",
-          "@value": "714d72d6-f371-4cf0-ac38-9d071b5ab2ac"
-        },
-        "name": {
-          "@type": "string",
-          "@value": "geoip"
-        },
-        "default_multi_value_type": {
-          "@type": "string",
-          "@value": "NULL"
-        },
-        "default_multi_value": {
-          "@type": "string",
-          "@value": ""
-        },
-        "data_adapter_name": {
-          "@type": "string",
-          "@value": "a51ae423-52bb-46fe-848d-a2a51e30b994"
-        },
-        "title": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "default_single_value": {
-          "@type": "string",
-          "@value": ""
-        },
-        "description": {
-          "@type": "string",
-          "@value": "Geo IP Lookup"
-        }
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=4.2.1+5442e44"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "pipeline",
-        "version": "1"
-      },
-      "id": "82225d49-4271-4286-8afb-bcc8075f999a",
-      "data": {
-        "title": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "description": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "source": {
-          "@type": "string",
-          "@value": "pipeline \"GeoIP\"\nstage 0 match either\nrule \"GeoIP lookup: src_ip\"\nend"
-        },
-        "connected_streams": [
-          {
-            "@type": "string",
-            "@value": "014e5e7c-0da8-4482-9864-fd04bc00816a"
-          }
-        ]
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=4.2.1+5442e44"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "pipeline_rule",
-        "version": "1"
-      },
-      "id": "59b8a9ba-a264-492c-b2d0-74f520d116f0",
-      "data": {
-        "title": {
-          "@type": "string",
-          "@value": "GeoIP lookup: src_ip"
-        },
-        "description": {
-          "@type": "string",
-          "@value": ""
-        },
-        "source": {
-          "@type": "string",
-          "@value": "rule \"GeoIP lookup: src_ip\"\nwhen\nhas_field(\"src_ip\")\nthen\nlet geo = lookup(\"geoip\", to_string($message.\"src_ip\"));\nset_field(\"src_ip_geo_location\", geo[\"coordinates\"]);\nset_field(\"src_ip_geo_country\", geo[\"country\"].iso_code);\nset_field(\"src_ip_geo_city\", geo[\"city\"].names.en);\nend"
-        }
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=4.2.1+5442e44"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "stream",
-        "version": "1"
-      },
-      "id": "a355763d-9a17-46a1-a994-cdd2c181edcd",
-      "data": {
-        "alarm_callbacks": [],
-        "outputs": [],
-        "remove_matches": {
-          "@type": "boolean",
-          "@value": true
-        },
-        "title": {
-          "@type": "string",
-          "@value": "OPNsense / filterlog"
-        },
-        "stream_rules": [
-          {
-            "type": {
-              "@type": "string",
-              "@value": "CONTAINS"
-            },
-            "field": {
-              "@type": "string",
-              "@value": "source"
-            },
-            "value": {
-              "@type": "string",
-              "@value": "OPNsense"
-            },
-            "inverted": {
-              "@type": "boolean",
-              "@value": false
-            },
-            "description": {
-              "@type": "string",
-              "@value": ""
-            }
-          }
-        ],
-        "alert_conditions": [],
-        "matching_type": {
-          "@type": "string",
-          "@value": "OR"
-        },
-        "disabled": {
-          "@type": "boolean",
-          "@value": false
-        },
-        "description": {
-          "@type": "string",
-          "@value": "OPNsense"
-        },
-        "default_stream": {
-          "@type": "boolean",
-          "@value": false
-        }
+        "extractors": []
       },
       "constraints": [
         {
