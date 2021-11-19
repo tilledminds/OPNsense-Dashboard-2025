@@ -26,10 +26,8 @@ This single script collects information for Interfaces and gateways.
 * Interface name
 * Monitor IP
 * Source IP
-* Default gw (True/False)
 * GW Description
 * Delay
 * Stddev
 * Loss (%)
 * Status (Online/Offline/etc.)
-* Substatus (None/Packetloss/Latency/Etc.)
