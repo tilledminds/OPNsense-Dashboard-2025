@@ -126,17 +126,7 @@ volumes:
 ## Configuration
 
 ### InfluxDB
-After InfluxDB is started, go to http://(ip of host running InfluxDB):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your telegraf configuration.
-
-### Grafana
-The Config for the dashboard relies on the variables defined within the dashboard in Grafana.  When importing the dashboard, make sure to select your datasource. 
-
-Dashboard Settings -> Variables
-
-WAN - $WAN is a static variable defined so that a separate dashboard panel can be created for WAN interfaces stats.  Use a comma-separated list for multiple WAN interfaces.
-
-LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as LAN. The filtering happens in the "Regex" field. I use a negative lookahead regex to match the interfaces I want excluded.  It should be pretty easy to understand what you need to do here. I have excluded igb0 (WAN) and igb1,igb2,igb3 (only used to host vlans). 
-
+After InfluxDB is started, go to http://(ip or hostname of docker server):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your telegraf configuration. I recommend generating another API token for Grafana. Click on API tokens -> Generate API Token -> Read/Write Access -> Click on your bucket under Read -> and Save. Copy this somewhere as well, you'll need it for Grafana.
 
 ### Telegraf
 
@@ -171,6 +161,8 @@ Then download the database file, replace YOUR_LICENSE_KEY with the key you gener
 
 ### Configuring Graylog
 
+In a browser navigate to http://(ip or hostname of docker server):9000 and login.
+
 For Graylog, it's recommended to create an index set. To do so, navigate to System -> Indices. Create an index set with the name "OPNsense / filterlog" and set the index prefix to "opnsense_filterlog".
 
 Once that's done, download the [content pack](config/OPNsense-pack.json) and install it on Graylog by navigating to System -> Content Packs -> Upload, choose the pack, and then click install.
@@ -188,6 +180,39 @@ Hostname: Hostname or IP address of your graylog server
 Port: 1514
 
 Add a description if you'd like, then click save.
+
+### Grafana
+
+#### Add InfluxDB and ElasticSearch data sources
+
+You will need to add the data sources on Grafana. Navigate to http://(ip or hostname of docker server):3000, login and click on the cog wheel and Add a Data Source.
+
+For InfluxDB, make the following configurations
+
+Query Language: Flux
+URL: influxdb:9000
+Organization: Your InfluxDB organization
+Token: Your InfluxDB Grafana token
+Default Bucket: Your bucket
+
+For ElasticSearch, make the following configurations
+
+URL: elasticsearch:9200
+Time field name: timestamp
+Version: 7.0+
+
+#### Import Dashboard
+
+To import the dashboard, copy the JSON in [OPNsense-Grafana-Dashboard.json](OPNsense-Grafana-Dashboard.json) and navigate to Dashboards -> Import and paste under Import via panel json.
+
+The Config for the dashboard relies on the variables defined within the dashboard in Grafana.  When importing the dashboard, make sure to select your datasource. 
+
+Dashboard Settings -> Variables
+
+WAN - $WAN is a static variable defined so that a separate dashboard panel can be created for WAN interfaces stats.  Use a comma-separated list for multiple WAN interfaces.
+
+LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as LAN. The filtering happens in the "Regex" field. I use a negative lookahead regex to match the interfaces I want excluded.  It should be pretty easy to understand what you need to do here. I have excluded igb0 (WAN) and igb1,igb2,igb3 (only used to host vlans).
+
 
 ### Plugins
 [Plugins](plugins)
