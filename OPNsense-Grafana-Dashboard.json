@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637283339574,
+  "iteration": 1637287013745,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -2140,8 +2140,8 @@
             },
             "indexByName": {},
             "renameByName": {
-              "bytes_recv": "${WAN} - Bytes Recv",
-              "bytes_sent": "${WAN} - Bytes Sent"
+              "bytes_recv": "${WAN} - Bits Recv",
+              "bytes_sent": "${WAN} - Bits Sent"
             }
           }
         }
@@ -2229,8 +2229,8 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "bytes_recv": "${WAN} - Bytes Recv",
-              "bytes_sent": "${WAN} - Bytes Sent"
+              "bytes_recv": "${WAN} - Bytes Recv - This Month",
+              "bytes_sent": "${WAN} - Bytes Sent - This Month"
             }
           }
         }
@@ -2663,8 +2663,8 @@
             },
             "indexByName": {},
             "renameByName": {
-              "bytes_recv": "${LAN} - Bytes Recv",
-              "bytes_sent": "${LAN} - Bytes Sent"
+              "bytes_recv": "${LAN} - Bits Recv",
+              "bytes_sent": "${LAN} - Bits Sent"
             }
           }
         }
@@ -2752,8 +2752,8 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "bytes_recv": "${LAN} - Bytes Recv",
-              "bytes_sent": "${LAN} - Bytes Sent"
+              "bytes_recv": "${LAN} - Bytes Recv - This Month",
+              "bytes_sent": "${LAN} - Bytes Sent - This Month"
             }
           }
         }
@@ -2882,7 +2882,7 @@
       }
     }
   ],
-  "refresh": "",
+  "refresh": "10s",
   "schemaVersion": 32,
   "style": "dark",
   "tags": [
@@ -3014,10 +3014,10 @@
         "current": {
           "selected": true,
           "text": [
-            "All"
+            "igb1_vlan30"
           ],
           "value": [
-            "$__all"
+            "igb1_vlan30"
           ]
         },
         "datasource": "${dataSource}",
@@ -3070,10 +3070,10 @@
         "current": {
           "selected": true,
           "text": [
-            "All"
+            "igb0"
           ],
           "value": [
-            "$__all"
+            "igb0"
           ]
         },
         "description": null,
@@ -3085,12 +3085,12 @@
         "name": "WAN",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "All",
             "value": "$__all"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "igb0",
             "value": "igb0"
           }
@@ -3105,10 +3105,10 @@
         "current": {
           "selected": true,
           "text": [
-            "All"
+            "igb0"
           ],
           "value": [
-            "$__all"
+            "igb0"
           ]
         },
         "datasource": null,
@@ -3183,34 +3183,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "allValue": "",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": null,
-        "definition": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"ip4_address\"])",
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": true,
-        "label": "FW_Destination IP",
-        "multi": true,
-        "name": "wan_ip",
-        "options": [],
-        "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"ip4_address\"])",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
       }
     ]
   },
@@ -3218,9 +3190,13 @@
     "from": "now-24h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "10s"
+    ]
+  },
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 232
+  "version": 241
 }
