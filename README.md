@@ -151,6 +151,14 @@ After this is done, use
 
 to start telegraf.
 
+### Graylog
+[Graylog Content Pack](config/OPNsense-pack.json)
+For Graylog, it's recommended to create an index set. To do so, navigate to System -> Indices. Create an index set with the name "OPNsense / filterlog" and set the index prefix to "opnssense_filterlog".
+
+Once that's done, download the content pack and install it on Graylog by navigating to System -> Content Packs -> Upload, choose the pack, and then click install.
+
+Now, add your index set from earlier to the "OPNsense / filterlog" stream. Navigate to Streams -> More Actions -> Edit Stream -> select your index set and save.
+
 ### Plugins
 [Plugins](plugins)
 
