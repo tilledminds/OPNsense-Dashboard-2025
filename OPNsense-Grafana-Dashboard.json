@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637306212043,
+  "iteration": 1637306785120,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -2547,8 +2547,8 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "bytes_recv": "Bytes Recv",
-              "bytes_sent": "Bytes Sent"
+              "bytes_recv": "Bits Recv",
+              "bytes_sent": "Bits Sent"
             }
           }
         }
@@ -2943,7 +2943,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -3047,7 +3047,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -3110,12 +3110,12 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
-            "All"
+            "igb0"
           ],
           "value": [
-            "$__all"
+            "igb0"
           ]
         },
         "datasource": null,
@@ -3138,7 +3138,7 @@
       {
         "allValue": "*",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -3166,7 +3166,7 @@
       {
         "allValue": "*",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -3205,5 +3205,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 262
+  "version": 264
 }
