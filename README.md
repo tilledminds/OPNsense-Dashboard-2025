@@ -13,6 +13,7 @@
 - List of interfaces with IPv4, IPv6, Subnet, MAC, Status and pfSense labels thanks to [/u/trumee](https://www.reddit.com/r/PFSENSE/comments/fsss8r/additional_grafana_dashboard/fmal0t6/)
 - WAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 - LAN Statistics - Traffic & Throughput (Identified by dashboard variable)
+- Firewall Statistics - Blocked Ports, Protocols, Events, Blocked IP Locations, and Top Blocked IP
 
 ## Changelog
 
@@ -39,11 +40,13 @@ Added Firewall panels.
 version: '3'
 services:
   mongodb:
+    container_name: mongodb
     image: mongo:4.2
     volumes:
       - mongodb_data:/data/db
     restart: "unless-stopped"
   elasticsearch:
+    container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
     volumes:
       - es_data:/usr/share/elasticsearch/data
@@ -59,6 +62,7 @@ services:
     mem_limit: 1g
     restart: "unless-stopped"
   graylog:
+    container_name: graylog
     image: graylog/graylog:4.2
     volumes:
       - graylog_data:/usr/share/graylog/data
@@ -89,6 +93,7 @@ services:
       - 12201:12201/udp
     restart: "unless-stopped"
   influxdb:
+    container_name: influxdb
     image: influxdb:latest
     ports:
       - '8086:8086'
@@ -96,6 +101,7 @@ services:
       - influxdb2_data:/var/lib/influxdb2
     restart: "unless-stopped"
   grafana:
+    container_name: grafana
     image: grafana/grafana:latest
     ports:
       - '3000:3000'
@@ -133,32 +139,55 @@ LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as
 
 
 ### Telegraf
-[Telegraf Config](config/telegraf.conf)
 
 You must manually install Telegraf on OPNsense, as OPNsense does not currently support custom telegraf configuration.  To do so, SSH into your OPNsense router and type in:
 
 `sudo pkg install telegraf`
 
-In the [/config](config/telegraf.conf) directory you will find the telegraf config.
+You will need the [telegraf config](config/telegraf.conf) file. 
 
 You must edit this file and put in your InfluxDB URL, InfluxDB API token, organization, and bucket under [[outputs.influxdb_v2]].
 
-You will need to place this config in "/usr/local/etc".
+You will need to place this config in /usr/local/etc on the router.
 
-After this is done, use
-
-`sudo service telegraf start`
-
-to start telegraf.
+After this is done, use `sudo service telegraf start` to start telegraf.
 
 ### Graylog
-[Graylog Content Pack](config/OPNsense-pack.json)
 
-For Graylog, it's recommended to create an index set. To do so, navigate to System -> Indices. Create an index set with the name "OPNsense / filterlog" and set the index prefix to "opnssense_filterlog".
+#### Add GeoIP to Graylog
 
-Once that's done, download the content pack and install it on Graylog by navigating to System -> Content Packs -> Upload, choose the pack, and then click install.
+To make the map work on Grafana, you must create a MaxMind account here https://www.maxmind.com/en/geolite2/signup. Then generate a license key by going to Account -> Manage License Keys -> Generate New License Key. Copy this key somewhere else because you'll need it again soon.
+
+You'll need to download the GeoIP database file to your Graylog container. Access your Graylog container's shell from your Docker host like so
+
+`sudo docker exec -it graylog /bin/bash`
+
+Then download the database file, replace YOUR_LICENSE_KEY with the key you generated above.
+
+`curl "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=YOUR_LICENSE_KEY&suffix=tar.gz" -o GeoLite2-Country.tar.gz \
+  && tar -xzvf GeoLite2-Country.tar.gz \
+  && mkdir -p /var/opt/maxmind/ \
+  && mv GeoLite2-Country_*/GeoLite2-Country.mmdb /usr/share/graylog/data/data/`
+
+### Configuring Graylog
+
+For Graylog, it's recommended to create an index set. To do so, navigate to System -> Indices. Create an index set with the name "OPNsense / filterlog" and set the index prefix to "opnsense_filterlog".
+
+Once that's done, download the [content pack](config/OPNsense-pack.json) and install it on Graylog by navigating to System -> Content Packs -> Upload, choose the pack, and then click install.
 
 Now, add your index set from earlier to the "OPNsense / filterlog" stream. Navigate to Streams -> More Actions -> Edit Stream -> select your index set and save.
+
+Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / targets. Add a new target with the following options: 
+
+Transport: UDP(4)
+
+Applications: filter (filterlog)
+
+Hostname: Hostname or IP address of your graylog server
+
+Port: 1514
+
+Add a description if you'd like, then click save.
 
 ### Plugins
 [Plugins](plugins)
