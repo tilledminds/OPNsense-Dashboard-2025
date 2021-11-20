@@ -13,7 +13,6 @@ foreach ($iflist as $ifname => $friendly) {
     $ifsinfo = get_interfaces_info();
     $ifinfo = $ifsinfo[$ifname];
     $ifstatus = $ifinfo['status'];
-    $iswireless = is_interface_wireless($ifdescr);
     $realif = get_real_interface($ifname);
     $ip4addr = get_interface_ip($ifname);
     $ip4subnet = find_interface_network($realif, true, $ifconfig_details);
