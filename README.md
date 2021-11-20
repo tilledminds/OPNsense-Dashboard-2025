@@ -100,6 +100,8 @@ GeoIP Resolver
 
 Ensure that all of these are enabled, and click save.
 
+#### Add Graylog server as syslog target on OPNsense
+
 Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / targets. Add a new target with the following options: 
 
 Transport: UDP(4)
