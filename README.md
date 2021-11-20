@@ -130,17 +130,17 @@ Version: 7.0+
 
 To import the dashboard, copy the JSON in [OPNsense-Grafana-Dashboard.json](OPNsense-Grafana-Dashboard.json) and navigate to Dashboards -> Import and paste under Import via panel json.
 
+#### Install Worldmap Panel
+
+You will also need to install the world map panel on Grafana. Navigate to the cog wheel -> Plugins -> search for "Worldmap" and install the plugin
+
 The Config for the dashboard relies on the variables defined within the dashboard in Grafana.  When importing the dashboard, make sure to select your datasource. 
 
 Dashboard Settings -> Variables
 
 WAN - $WAN is a static variable defined so that a separate dashboard panel can be created for WAN interfaces stats.  Use a comma-separated list for multiple WAN interfaces.
 
-LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as LAN. The filtering happens in the "Regex" field. I use a negative lookahead regex to match the interfaces I want excluded.  It should be pretty easy to understand what you need to do here. I have excluded igb0 (WAN) and igb1,igb2,igb3 (only used to host vlans).
-
-### Install world-map panel
-
-You will also need to install the world map panel on Grafana. Navigate to the cog wheel -> Plugins -> search for "Worldmap" and install the plugin.
+LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as LAN. The filtering happens in the "Regex" field. I use a negative lookahead regex to match the interfaces I want excluded.  It should be pretty easy to understand what you need to do here. I have excluded igb0 (WAN) and igb1,igb2,igb3 (only used to host vlans)..
 
 Lastly, I don't recommend setting the time range beyond 24 hours, due to how many data points that will return in grafana.
 
