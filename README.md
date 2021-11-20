@@ -111,7 +111,7 @@ For InfluxDB, make the following configurations
 
 Query Language: Flux
 
-URL: influxdb:9000
+URL: influxdb:8086
 
 Organization: Your InfluxDB organization
 
