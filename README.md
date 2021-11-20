@@ -88,6 +88,18 @@ Once that's done, download the [content pack](config/OPNsense-pack.json) and ins
 
 Now, add your index set from earlier to the "OPNsense / filterlog" stream. Navigate to Streams -> More Actions -> Edit Stream -> select your index set and save.
 
+There's one more step we need to do here, navigate to System -> Configurations -> click on Update under Message Processors, and reorder like so:
+
+Message Filter Chain
+
+Pipeline Processor
+
+AWS Instance Name Lookup
+
+GeoIP Resolver
+
+Ensure that all of these are enabled, and click save.
+
 Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / targets. Add a new target with the following options: 
 
 Transport: UDP(4)
@@ -110,7 +122,7 @@ For InfluxDB, make the following configurations
 
 Query Language: Flux
 
-URL: influxdb:8086
+URL: http://influxdb:8086
 
 Organization: Your InfluxDB organization
 
@@ -120,7 +132,7 @@ Default Bucket: Your bucket
 
 For ElasticSearch, make the following configurations
 
-URL: elasticsearch:9200
+URL: http://elasticsearch:9200
 
 Time field name: timestamp
 
