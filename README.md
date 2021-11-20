@@ -1,4 +1,4 @@
-## What's Monitored
+# What's Monitored
 - Active Users
 - Uptime
 - CPU Load total
@@ -15,7 +15,7 @@
 - LAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 - Firewall Statistics - Blocked Ports, Protocols, Events, Blocked IP Locations, and Top Blocked IP
 
-## Changelog
+# Changelog
 
 
 Converted InfluxQL queries to Flux.
@@ -28,7 +28,7 @@ Added Firewall panels.
 
 ![Screenshot](Grafana-OPNsense.png)
 
-## Running on
+# Running on
 
     Grafana 8.2.4
     InfluxDB 2.1.1
@@ -36,12 +36,12 @@ Added Firewall panels.
 
 I've included a docker-compose.yaml that should have everything needed for the dashboard. After you bring up your docker-compose, follow the configuration below.
 
-## Configuration
+# Configuration
 
-### InfluxDB
+## InfluxDB
 After InfluxDB is started, go to http://(ip or hostname of docker server):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your telegraf configuration. I recommend generating another API token for Grafana. Click on API tokens -> Generate API Token -> Read/Write Access -> Click on your bucket under Read -> and Save. Copy this somewhere as well, you'll need it for Grafana.
 
-### Telegraf
+## Telegraf
 
 You must manually install Telegraf on OPNsense, as OPNsense does not currently support custom telegraf configuration.  To do so, SSH into your OPNsense router and type in:
 
@@ -55,7 +55,7 @@ You will need to place this config in /usr/local/etc on the router.
 
 After this is done, use `sudo service telegraf start` to start telegraf.
 
-### Graylog
+## Graylog
 
 #### Add GeoIP to Graylog
 
@@ -72,7 +72,7 @@ Then download the database file, replace YOUR_LICENSE_KEY with the key you gener
   && mkdir -p /var/opt/maxmind/ \
   && mv GeoLite2-Country_*/GeoLite2-Country.mmdb /usr/share/graylog/data/data/`
 
-### Configuring Graylog
+#### Configuring Graylog
 
 In a browser navigate to http://(ip or hostname of docker server):9000 and login.
 
@@ -94,7 +94,7 @@ Port: 1514
 
 Add a description if you'd like, then click save.
 
-### Grafana
+## Grafana
 
 #### Add InfluxDB and ElasticSearch data sources
 
