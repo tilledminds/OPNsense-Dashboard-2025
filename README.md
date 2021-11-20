@@ -48,9 +48,11 @@ You must manually install Telegraf on OPNsense, as the OPNsense Telegraf plugin 
 
 `sudo pkg install telegraf`
 
+After this, install the OPNsense Telegraf plugin in the UI, this is done solely to build the initial configuration that is needed for Telegraf to start on boot, uninstall the plugin after it installs.
+
 You will need the [telegraf config](config/telegraf.conf) file. 
 
-You must edit this file and put in your InfluxDB URL, InfluxDB Telegraf API token, organization, and bucket under [[outputs.influxdb_v2]].
+You must edit this file and type in your InfluxDB URL, InfluxDB Telegraf API token, organization, and bucket under [[outputs.influxdb_v2]].
 
 You will need to place this config in /usr/local/etc on your OPNsense system.
 
@@ -69,7 +71,7 @@ Test these out before starting the telegraf service by executing them
 The temperature plugin may not work on every system, if you receive `sysctl: unknown oid 'hw.acpi.thermal'` comment out or remove that line from the plugin.
 
 
-After this is done, use `sudo service telegraf restart` to start telegraf with the new configurations.
+After this is done, use `sudo service telegraf restart` to start telegraf with the new configuration.
 
 ## Graylog
 
