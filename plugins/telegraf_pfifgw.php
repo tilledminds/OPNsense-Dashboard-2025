@@ -14,7 +14,6 @@ foreach ($iflist as $ifname => $friendly) {
     $ifinfo = $ifsinfo[$ifname];
     $ifstatus = $ifinfo['status'];
     $iswireless = is_interface_wireless($ifdescr);
-    $ifconf = $config['interfaces'][$ifname];
     $realif = get_real_interface($ifname);
     $ip4addr = get_interface_ip($ifname);
     $ip4subnet = find_interface_network($realif, true, $ifconfig_details);
@@ -40,9 +39,6 @@ foreach ($iflist as $ifname => $friendly) {
     if (!isset($ifstatus)) {
         $ifstatus = 2;
     }
-    if (!isset($ifconf)) {
-        $ifconf = "Unassigned";
-    }
     if (!isset($ip4addr)) {
         $ip4addr = "Unassigned";
     }
@@ -61,7 +57,6 @@ foreach ($iflist as $ifname => $friendly) {
     if (!isset($mac)) {
         $mac = "Unavailable";
     }
-
 
     printf(
         "interface,host=%s,name=%s,ip4_address=%s,ip4_subnet=%s,ip6_address=%s,ip6_subnet=%s,mac_address=%s,friendlyname=%s,source=%s status=%s\n",
@@ -99,8 +94,6 @@ foreach ($gw_array as $gw => $gateway) {
     $status = $gw_statuses[$gw]["status"];
 
     $interface = $gateway["interface"];
-    $friendlyname = $gateway["friendlyiface"]; # This is not the friendly interface name so I'm not using it
-    $friendlyifdescr = $gateway["friendlyifdescr"];
     $gwdescr = $gateway["descr"];
     $monitor = $gateway["monitor"];
     $source = $gateway["gateway"];
@@ -135,16 +128,9 @@ foreach ($gw_array as $gw => $gateway) {
     if (!isset($interface)) {
         $interface = "Unassigned";
     }
-    if (!isset($friendlyname)) {
-        $friendlyname = "Unassigned";
-    }
-    if (!isset($friendlyifdescr)) {
-        $friendlyifdescr = "Unassigned";
-    }
     if (!isset($gwdescr)) {
         $gwdescr = "Unassigned";
     }
-
     if (isset($gateway['monitor_disable'])) {
         $monitor = "Unmonitored";
     }
