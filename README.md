@@ -66,7 +66,7 @@ Place the [plugins](plugins) in /usr/local/bin and chmod them to 755
 
 #### Add GeoIP to Graylog
 
-To make the map work on Grafana, you must create a MaxMind account here https://www.maxmind.com/en/geolite2/signup. Then generate a license key by going to Account -> Manage License Keys -> Generate New License Key. Copy this key somewhere else because you'll need it again soon.
+To make the map work on Grafana, you must create a MaxMind account here https://www.maxmind.com/en/geolite2/signup. Then generate a license key by going to Account -> Manage License Keys -> Generate New License Key. Copy this key somewhere because you'll need it again soon.
 
 You'll need to download the GeoIP database file to your Graylog container. Access your Graylog container's shell from your Docker host like so
 
