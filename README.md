@@ -60,7 +60,7 @@ After this is done, use `sudo service telegraf start` to start telegraf.
 
 **Plugins must be copied to your OPNsense system**
 
-Place the [plugins](plugins) in /usr/local/bin and chmod them to 755
+Place [telegraf_pfifgw.php](plugins/telegraf_pfifgw.php) and [telegraf_temperature.sh](plugins/telegraf_temperature.sh) in /usr/local/bin and chmod them to 755.
    
 ## Graylog
 
