@@ -69,7 +69,7 @@ Test these out before starting the telegraf service by executing them
 The temperature plugin may not work on every system, if you receive `sysctl: unknown oid 'hw.acpi.thermal'` comment out or remove that line from the plugin.
 
 
-After this is done, use `sudo service telegraf start` to start telegraf.
+After this is done, use `sudo service telegraf restart` to start telegraf with the new configurations.
 
 ## Graylog
 
