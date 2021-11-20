@@ -56,12 +56,11 @@ You will need to place this config in /usr/local/etc on the router.
 
 After this is done, use `sudo service telegraf start` to start telegraf.
 
-#### Plugins
-[Plugins](plugins)
+#### Telegraf Plugins
 
 **Plugins get copied to your OPNsense system**
 
-Place the plugins in /usr/local/bin and chmod them to 755
+Place the [plugins](plugins) in /usr/local/bin and chmod them to 755
    
 ## Graylog
 
