@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637434526925,
+  "iteration": 1637437431753,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -1612,7 +1612,7 @@
           "refId": "A"
         }
       ],
-      "title": "Interface summary",
+      "title": "Interface Summary",
       "transformations": [
         {
           "id": "organize",
@@ -2979,7 +2979,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -3202,7 +3202,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -3214,5 +3214,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 289
+  "version": 293
 }
