@@ -110,15 +110,21 @@ You will need to add the data sources on Grafana. Navigate to http://(ip of dock
 For InfluxDB, make the following configurations
 
 Query Language: Flux
+
 URL: influxdb:9000
+
 Organization: Your InfluxDB organization
+
 Token: Your InfluxDB Grafana token
+
 Default Bucket: Your bucket
 
 For ElasticSearch, make the following configurations
 
 URL: elasticsearch:9200
+
 Time field name: timestamp
+
 Version: 7.0+
 
 #### Import Dashboard
