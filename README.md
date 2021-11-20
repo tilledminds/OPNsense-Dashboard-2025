@@ -138,6 +138,10 @@ WAN - $WAN is a static variable defined so that a separate dashboard panel can b
 
 LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as LAN. The filtering happens in the "Regex" field. I use a negative lookahead regex to match the interfaces I want excluded.  It should be pretty easy to understand what you need to do here. I have excluded igb0 (WAN) and igb1,igb2,igb3 (only used to host vlans).
 
+### Install world-map panel
+
+You will also need to install the world map panel on Grafana. Navigate to the cog wheel -> Plugins -> search for "Worldmap" and install the plugin.
+
 Lastly, I don't recommend setting the time range beyond 24 hours, due to how many data points that will return in grafana.
 
 ## Troubleshooting
