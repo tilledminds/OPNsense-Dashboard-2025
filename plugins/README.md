@@ -35,4 +35,4 @@ This single script collects information for Interfaces and gateways.
 
 # telegraf_temperature.sh
 
-Provides information for temperature sensors. 
+Provides temperature sensor information.
