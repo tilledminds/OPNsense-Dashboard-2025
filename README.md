@@ -76,7 +76,6 @@ Then download the database file, replace YOUR_LICENSE_KEY with the key you gener
 
 `curl "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=YOUR_LICENSE_KEY&suffix=tar.gz" -o GeoLite2-Country.tar.gz \
   && tar -xzvf GeoLite2-Country.tar.gz \
-  && mkdir -p /var/opt/maxmind/ \
   && mv GeoLite2-Country_*/GeoLite2-Country.mmdb /usr/share/graylog/data/data/`
 
 #### Configuring Graylog
