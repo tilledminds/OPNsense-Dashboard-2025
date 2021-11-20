@@ -23,9 +23,9 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637362211143,
+  "iteration": 1637402185530,
   "links": [],
-  "liveNow": false,
+  "liveNow": true,
   "panels": [
     {
       "collapsed": false,
@@ -161,7 +161,7 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu == \"cpu-total\"\r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu == \"cpu-total\"\r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -213,7 +213,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu =~ /cpu[0-3]$/ \r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> aggregateWindow(every: 10s, fn: mean)\r\n  |> fill(usePrevious: true)",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu =~ /cpu[0-3]$/ \r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> aggregateWindow(every: 10s, fn: last)",
           "refId": "A"
         }
       ],
@@ -404,7 +404,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"system\" and\r\n    r._field =~ /load1|load5|load15/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: mean)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"system\" and\r\n    r._field =~ /load1|load5|load15/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -655,7 +655,7 @@
       "targets": [
         {
           "hide": false,
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.device != \"devfs\" and\r\n    r.device =~ /^${Disk:regex}$/ and\r\n    r._measurement == \"disk\" and\r\n    r._field == \"used_percent\"\r\n  )",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.device != \"devfs\" and\r\n    r.device =~ /^${Disk:regex}$/ and\r\n    r._measurement == \"disk\" and\r\n    r._field == \"used_percent\"\r\n  )\r\n  |> aggregateWindow(every: 30m, fn: last)",
           "refId": "A"
         }
       ],
@@ -761,7 +761,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"mem\" and\r\n    r._field == \"used_percent\"\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  ",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"mem\" and\r\n    r._field == \"used_percent\"\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  ",
           "refId": "A"
         }
       ],
@@ -865,7 +865,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.sensor =~ /^${Sensor:regex}$/ and\r\n    r._measurement == \"temperature\" and\r\n    r._field == \"degrees\"\r\n  )\r\n  |> aggregateWindow(every:10s, fn: mean)\r\n  |> fill(usePrevious: true)",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.sensor =~ /^${Sensor:regex}$/ and\r\n    r._measurement == \"temperature\" and\r\n    r._field == \"degrees\"\r\n  )\r\n  |> aggregateWindow(every:10s, fn: last)",
           "refId": "A"
         }
       ],
@@ -969,7 +969,7 @@
         "x": 0,
         "y": 13
       },
-      "id": 57,
+      "id": 111,
       "interval": null,
       "links": [],
       "options": {
@@ -1457,7 +1457,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.gateway_name =~ /^${Gateway:regex}$/ and\r\n    r._measurement == \"gateways\" and\r\n    r._field == \"delay\"\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: mean)\r\n  |> fill(usePrevious: true)",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.gateway_name =~ /^${Gateway:regex}$/ and\r\n    r._measurement == \"gateways\" and\r\n    r._field == \"delay\"\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)",
           "refId": "A"
         }
       ],
@@ -1683,7 +1683,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.gateway_name =~ /^${Gateway:regex}$/ and\r\n    r._measurement == \"gateways\" and\r\n    r._field == \"loss\"\r\n  )\r\n  |> aggregateWindow(every: 10s, fn:mean)\r\n  |> fill(usePrevious: true)",
+          "query": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.gateway_name =~ /^${Gateway:regex}$/ and\r\n    r._measurement == \"gateways\" and\r\n    r._field == \"loss\"\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)",
           "refId": "A"
         }
       ],
@@ -1998,7 +1998,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and \r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and \r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -2127,7 +2127,7 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -1m)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -2218,7 +2218,7 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> difference(nonNegative: true)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: first)\r\n  |> difference(nonNegative: true)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -2297,7 +2297,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.interface =~ /^${WAN:regex}$/ and \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /packets_recv|packets_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.interface =~ /^${WAN:regex}$/ and \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /packets_recv|packets_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -2527,7 +2527,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and \r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and \r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -2655,7 +2655,7 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -1m)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
           "refId": "A"
         }
       ],
@@ -2746,7 +2746,7 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> difference(nonNegative: true)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: first)\r\n  |> difference(nonNegative: true)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -2827,7 +2827,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r.interface =~ /^${LAN:regex}$/ and \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /packets_recv|packets_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: \"opnsense\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.interface =~ /^${LAN:regex}$/ and \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /packets_recv|packets_sent/\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: first)\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -3118,9 +3118,13 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": null,
         "definition": "from(bucket:\"opnsense\")\r\n  |> range(start: -24h)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"name\"])",
@@ -3151,7 +3155,7 @@
           ]
         },
         "datasource": "Elasticsearch",
-        "definition": "{\"find\": \"terms\", \"field\": \"dst_port\", \"query\": \"dst_ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "definition": "{\"find\": \"terms\", \"field\": \"dst_port\", \"query\": \"interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
         "description": null,
         "error": null,
         "hide": 0,
@@ -3160,7 +3164,7 @@
         "multi": true,
         "name": "dst_port",
         "options": [],
-        "query": "{\"find\": \"terms\", \"field\": \"dst_port\", \"query\": \"dst_ip:$wan_ip interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
+        "query": "{\"find\": \"terms\", \"field\": \"dst_port\", \"query\": \"interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -3202,6 +3206,7 @@
     "to": "now"
   },
   "timepicker": {
+    "hidden": false,
     "refresh_intervals": [
       "10s"
     ]
@@ -3209,5 +3214,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 270
+  "version": 288
 }
