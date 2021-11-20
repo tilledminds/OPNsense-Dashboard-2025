@@ -54,14 +54,23 @@ You must edit this file and put in your InfluxDB URL, InfluxDB Telegraf API toke
 
 You will need to place this config in /usr/local/etc on your OPNsense system.
 
-After this is done, use `sudo service telegraf start` to start telegraf.
-
 #### Telegraf [Plugins](plugins)
 
 **Plugins must be copied to your OPNsense system**
 
 Place [telegraf_pfifgw.php](plugins/telegraf_pfifgw.php) and [telegraf_temperature.sh](plugins/telegraf_temperature.sh) in /usr/local/bin and chmod them to 755.
-   
+
+Test these out before starting the telegraf service by executing them
+
+`./telegraf_pfifgw.php`
+
+`./telegraf_temperature.sh`
+
+The temperature plugin may not work on every system, if you receive `sysctl: unknown oid 'hw.acpi.thermal'` comment out or remove that line from the plugin.
+
+
+After this is done, use `sudo service telegraf start` to start telegraf.
+
 ## Graylog
 
 #### Add GeoIP to Graylog
