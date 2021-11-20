@@ -31,3 +31,8 @@ This single script collects information for Interfaces and gateways.
 * Stddev
 * Loss (%)
 * Status (Online/Offline/etc.)
+
+
+# telegraf_temperature.sh
+
+Provides information for temperature sensors. 
