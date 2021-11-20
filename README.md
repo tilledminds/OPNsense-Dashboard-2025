@@ -56,6 +56,13 @@ You will need to place this config in /usr/local/etc on the router.
 
 After this is done, use `sudo service telegraf start` to start telegraf.
 
+# Plugins
+[Plugins](plugins)
+
+**Plugins get copied to your OPNsense system**
+
+Place the plugins in /usr/local/bin and chmod them to 755
+   
 ## Graylog
 
 #### Add GeoIP to Graylog
@@ -128,13 +135,6 @@ WAN - $WAN is a static variable defined so that a separate dashboard panel can b
 LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as LAN. The filtering happens in the "Regex" field. I use a negative lookahead regex to match the interfaces I want excluded.  It should be pretty easy to understand what you need to do here. I have excluded igb0 (WAN) and igb1,igb2,igb3 (only used to host vlans).
 
 
-### Plugins
-[Plugins](plugins)
-
-**Plugins get copied to your OPNsense system**
-
-Place the plugins in /usr/local/bin and chmod them to 755
-   
 ## Troubleshooting
 
 ### Telegraf Plugins
