@@ -1,4 +1,4 @@
-## What's Monitored
+# What's Monitored
 - Active Users
 - Uptime
 - CPU Load total
@@ -15,7 +15,7 @@
 - LAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 - Firewall Statistics - Blocked Ports, Protocols, Events, Blocked IP Locations, and Top Blocked IP
 
-## Changelog
+# Changelog
 
 
 Converted InfluxQL queries to Flux.
@@ -28,22 +28,23 @@ Added Firewall panels.
 
 ![Screenshot](Grafana-OPNsense.png)
 
-## Running on
+# Running on
 
     Grafana 8.2.4
     InfluxDB 2.1.1
     Graylog 4.2
 
+
+# Configuration
+
 I've included a docker-compose.yaml that should have everything needed for the dashboard. After you bring up your docker-compose, follow the configuration below.
 
-## Configuration
+## InfluxDB
+After InfluxDB is started, go to http://(ip of docker server):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your telegraf configuration. I recommend generating another API token for Grafana. Click on API tokens -> Generate API Token -> Read/Write Access -> Click on your bucket under Read -> and Save. Copy this somewhere as well, you'll need it for Grafana.
 
-### InfluxDB
-After InfluxDB is started, go to http://(ip or hostname of docker server):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your telegraf configuration. I recommend generating another API token for Grafana. Click on API tokens -> Generate API Token -> Read/Write Access -> Click on your bucket under Read -> and Save. Copy this somewhere as well, you'll need it for Grafana.
+## Telegraf
 
-### Telegraf
-
-You must manually install Telegraf on OPNsense, as OPNsense does not currently support custom telegraf configuration.  To do so, SSH into your OPNsense router and type in:
+You must manually install Telegraf on OPNsense, as the OPNsense Telegraf plugin does not currently support custom telegraf configuration.  To do so, SSH into your OPNsense router and type in:
 
 `sudo pkg install telegraf`
 
@@ -55,11 +56,17 @@ You will need to place this config in /usr/local/etc on the router.
 
 After this is done, use `sudo service telegraf start` to start telegraf.
 
-### Graylog
+#### Telegraf Plugins
+
+**Plugins must be copied to your OPNsense system**
+
+Place the [plugins](plugins) in /usr/local/bin and chmod them to 755
+   
+## Graylog
 
 #### Add GeoIP to Graylog
 
-To make the map work on Grafana, you must create a MaxMind account here https://www.maxmind.com/en/geolite2/signup. Then generate a license key by going to Account -> Manage License Keys -> Generate New License Key. Copy this key somewhere else because you'll need it again soon.
+To make the map work on Grafana, you must create a MaxMind account here https://www.maxmind.com/en/geolite2/signup. Then generate a license key by going to Account -> Manage License Keys -> Generate New License Key. Copy this key somewhere because you'll need it again soon.
 
 You'll need to download the GeoIP database file to your Graylog container. Access your Graylog container's shell from your Docker host like so
 
@@ -69,12 +76,11 @@ Then download the database file, replace YOUR_LICENSE_KEY with the key you gener
 
 `curl "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=YOUR_LICENSE_KEY&suffix=tar.gz" -o GeoLite2-Country.tar.gz \
   && tar -xzvf GeoLite2-Country.tar.gz \
-  && mkdir -p /var/opt/maxmind/ \
   && mv GeoLite2-Country_*/GeoLite2-Country.mmdb /usr/share/graylog/data/data/`
 
-### Configuring Graylog
+#### Configuring Graylog
 
-In a browser navigate to http://(ip or hostname of docker server):9000 and login.
+In a browser navigate to http://(ip of docker server):9000 and login.
 
 For Graylog, it's recommended to create an index set. To do so, navigate to System -> Indices. Create an index set with the name "OPNsense / filterlog" and set the index prefix to "opnsense_filterlog".
 
@@ -94,24 +100,30 @@ Port: 1514
 
 Add a description if you'd like, then click save.
 
-### Grafana
+## Grafana
 
 #### Add InfluxDB and ElasticSearch data sources
 
-You will need to add the data sources on Grafana. Navigate to http://(ip or hostname of docker server):3000, login and click on the cog wheel and Add a Data Source.
+You will need to add the data sources on Grafana. Navigate to http://(ip of docker server):3000, login and click on the cog wheel and Add a Data Source.
 
 For InfluxDB, make the following configurations
 
 Query Language: Flux
-URL: influxdb:9000
+
+URL: influxdb:8086
+
 Organization: Your InfluxDB organization
+
 Token: Your InfluxDB Grafana token
+
 Default Bucket: Your bucket
 
 For ElasticSearch, make the following configurations
 
 URL: elasticsearch:9200
+
 Time field name: timestamp
+
 Version: 7.0+
 
 #### Import Dashboard
@@ -127,13 +139,6 @@ WAN - $WAN is a static variable defined so that a separate dashboard panel can b
 LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as LAN. The filtering happens in the "Regex" field. I use a negative lookahead regex to match the interfaces I want excluded.  It should be pretty easy to understand what you need to do here. I have excluded igb0 (WAN) and igb1,igb2,igb3 (only used to host vlans).
 
 
-### Plugins
-[Plugins](plugins)
-
-**Plugins get copied to your OPNsense system**
-
-Place the plugins in /usr/local/bin and chmod them to 755
-   
 ## Troubleshooting
 
 ### Telegraf Plugins
