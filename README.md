@@ -58,7 +58,7 @@ After this is done, use `sudo service telegraf start` to start telegraf.
 
 #### Telegraf Plugins
 
-**Plugins get copied to your OPNsense system**
+**Plugins must be copied to your OPNsense system**
 
 Place the [plugins](plugins) in /usr/local/bin and chmod them to 755
    
