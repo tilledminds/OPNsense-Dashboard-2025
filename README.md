@@ -20,11 +20,11 @@
 
 Converted InfluxQL queries to Flux.
 
-
 Converted pFSense functions to OPNsense.
 
-
 Added Firewall panels.
+
+Added subnet info to Interface Summary panels
 
 ![Screenshot](Grafana-OPNsense.png)
 
