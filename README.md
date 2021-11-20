@@ -50,7 +50,7 @@ You must manually install Telegraf on OPNsense, as the OPNsense Telegraf plugin 
 
 You will need the [telegraf config](config/telegraf.conf) file. 
 
-You must edit this file and put in your InfluxDB URL, InfluxDB API token, organization, and bucket under [[outputs.influxdb_v2]].
+You must edit this file and put in your InfluxDB URL, InfluxDB Telegraf API token, organization, and bucket under [[outputs.influxdb_v2]].
 
 You will need to place this config in /usr/local/etc on the router.
 
