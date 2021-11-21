@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637453403708,
+  "iteration": 1637458378138,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -1599,11 +1599,7 @@
       "options": {
         "frameIndex": 0,
         "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false
-          }
-        ]
+        "sortBy": []
       },
       "pluginVersion": "8.2.4",
       "targets": [
@@ -1916,7 +1912,8 @@
       "id": 28,
       "options": {
         "frameIndex": 7,
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "8.2.4",
       "targets": [
@@ -2006,7 +2003,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "WAN Traffic - $WAN (Bits/sec)",
+      "title": "WAN Traffic - Bits/sec",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2133,7 +2130,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "WAN Traffic - $WAN (Bits/sec)",
+      "title": "WAN Traffic - Bits/sec",
       "transformations": [
         {
           "id": "concatenate",
@@ -2150,8 +2147,8 @@
             },
             "indexByName": {},
             "renameByName": {
-              "bytes_recv": "${WAN} - Bits Recv",
-              "bytes_sent": "${WAN} - Bits Sent"
+              "bytes_recv": "Bits Recv",
+              "bytes_sent": "Bits Sent"
             }
           }
         }
@@ -2218,13 +2215,13 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: last)\r\n  |> difference(nonNegative: true)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: last)\r\n  |> difference(nonNegative: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
       "timeFrom": "now/M",
       "timeShift": null,
-      "title": "WAN $WAN",
+      "title": "WAN",
       "transformations": [
         {
           "id": "concatenate",
@@ -2239,8 +2236,8 @@
             "excludeByName": {},
             "indexByName": {},
             "renameByName": {
-              "bytes_recv": "${WAN} - Bytes Recv - This Month",
-              "bytes_sent": "${WAN} - Bytes Sent - This Month"
+              "bytes_recv": "Bytes Recv - This Month",
+              "bytes_sent": "Bytes Sent - This Month"
             }
           }
         }
@@ -2305,7 +2302,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "WAN Throughput - $WAN",
+      "title": "WAN Throughput",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2535,7 +2532,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "LAN Traffic - $LAN (Bits/sec)",
+      "title": "${LAN} Traffic - Bits/sec",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2661,7 +2658,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "LAN Traffic - $LAN (Bits/sec)",
+      "title": "${LAN} Traffic - Bits/sec",
       "transformations": [
         {
           "id": "concatenate",
@@ -2676,10 +2673,14 @@
             "excludeByName": {
               "Time": true
             },
-            "indexByName": {},
+            "indexByName": {
+              "Time": 0,
+              "bytes_recv": 2,
+              "bytes_sent": 1
+            },
             "renameByName": {
-              "bytes_recv": "${LAN} - Bits Recv",
-              "bytes_sent": "${LAN} - Bits Sent"
+              "bytes_recv": "Bits Sent",
+              "bytes_sent": "Bits Recv"
             }
           }
         }
@@ -2746,13 +2747,13 @@
       "pluginVersion": "8.2.4",
       "targets": [
         {
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: last)\r\n  |> difference(nonNegative: true)\r\n  |> fill(usePrevious: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: last)\r\n  |> difference(nonNegative: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
       "timeFrom": "now/M",
       "timeShift": null,
-      "title": "LAN $LAN",
+      "title": "${LAN}",
       "transformations": [
         {
           "id": "concatenate",
@@ -2765,10 +2766,14 @@
           "id": "organize",
           "options": {
             "excludeByName": {},
-            "indexByName": {},
+            "indexByName": {
+              "Time": 0,
+              "bytes_recv": 2,
+              "bytes_sent": 1
+            },
             "renameByName": {
-              "bytes_recv": "${LAN} - Bytes Recv - This Month",
-              "bytes_sent": "${LAN} - Bytes Sent - This Month"
+              "bytes_recv": "Bytes Sent - This Month",
+              "bytes_sent": "Bytes Recv - This Month"
             }
           }
         }
@@ -2835,7 +2840,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "LAN Throughput - $LAN",
+      "title": "${LAN} Throughput",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -3036,7 +3041,7 @@
           ]
         },
         "datasource": "${dataSource}",
-        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\"\r\n  )\r\n  |> keyValues(keyColumns: [\"interface\"])\r\n  |> group()\r\n  |> keep(columns: [\"interface\"])\r\n  |> distinct(column: \"interface\")",
+        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r._measurement == \"interface\"\r\n  )\r\n  |> keyValues(keyColumns: [\"name\"])\r\n  |> group()\r\n  |> keep(columns: [\"name\"])\r\n  |> sort(columns: [\"name\"])\r\n",
         "description": null,
         "error": null,
         "hide": 0,
@@ -3045,9 +3050,9 @@
         "multi": true,
         "name": "LAN",
         "options": [],
-        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"net\"\r\n  )\r\n  |> keyValues(keyColumns: [\"interface\"])\r\n  |> group()\r\n  |> keep(columns: [\"interface\"])\r\n  |> distinct(column: \"interface\")",
+        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r._measurement == \"interface\"\r\n  )\r\n  |> keyValues(keyColumns: [\"name\"])\r\n  |> group()\r\n  |> keep(columns: [\"name\"])\r\n  |> sort(columns: [\"name\"])\r\n",
         "refresh": 1,
-        "regex": "/^(?!enc0$|igb0$|igb2$|igb3$|ovpnc1$)/",
+        "regex": "/^(?!enc0$|igb0$|igb2$|igb3$|ovpnc1$|wg0$)/",
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
@@ -3202,7 +3207,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -3214,5 +3219,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 299
+  "version": 316
 }
