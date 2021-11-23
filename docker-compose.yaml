@@ -6,12 +6,17 @@ services:
     volumes:
       - mongodb_data:/data/db
     restart: "unless-stopped"
+    environment:
+      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
+      - TZ=CST6CDT
   elasticsearch:
     container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
     volumes:
       - es_data:/usr/share/elasticsearch/data
     environment:
+      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
+      - TZ=CST6CDT
       - http.host=0.0.0.0
       - transport.host=localhost
       - network.host=0.0.0.0
@@ -28,6 +33,8 @@ services:
     volumes:
       - graylog_data:/usr/share/graylog/data
     environment:
+      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
+      - TZ=CST6CDT
       # CHANGE ME (must be at least 16 characters)!
       - GRAYLOG_PASSWORD_SECRET=ZDcwMzQ3NTE4ZTIwM
       # Username is "admin"
@@ -60,6 +67,9 @@ services:
       - '8086:8086'
     volumes:
       - influxdb2_data:/var/lib/influxdb2
+    environment:
+      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
+      - TZ=CST6CDT
     restart: "unless-stopped"
   grafana:
     container_name: grafana
@@ -71,6 +81,8 @@ services:
     depends_on:
       - influxdb
     environment:
+      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
+      - TZ=CST6CDT
       # Change these
       - GF_SECURITY_ADMIN_USER=opnsense
       - GF_SECURITY_ADMIN_PASSWORD=opnsense
