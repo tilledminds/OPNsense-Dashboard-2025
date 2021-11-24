@@ -48,7 +48,7 @@ You must manually install Telegraf on OPNsense, as the OPNsense Telegraf plugin 
 
 `sudo pkg install telegraf`
 
-After this use this command
+After that, use this command
 
 `printf 'telegraf_user="root" \ntelegraf_group="wheel" \ntelegraf_enable="YES"' > /etc/rc.conf.d/telegraf`
 
