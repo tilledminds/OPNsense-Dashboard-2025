@@ -48,11 +48,11 @@ You must manually install Telegraf on OPNsense, as the OPNsense Telegraf plugin 
 
 `sudo pkg install telegraf`
 
-After that, use this command
+After that, use these commands. The first, enables Telegraf to start on boot, and the second, adds Telegraf to sudoers and restricts nopasswd to only what Telegraf needs to run as root.
 
-`printf 'telegraf_user="root" \ntelegraf_group="wheel" \ntelegraf_enable="YES"' > /etc/rc.conf.d/telegraf`
+`printf 'telegraf_enable="YES"' > /etc/rc.conf.d/telegraf`
 
-This will create a config file for Telegraf to start on boot and run as root.
+`printf 'telegraf ALL=(root) NOPASSWD: /sbin/pfctl -s info,/usr/local/bin/telegraf_pfifgw.php,/usr/local/bin/telegraf_temperature.sh' >> /usr/local/etc/sudoers`
 
 You will need the [telegraf config](config/telegraf.conf) file. 
 
