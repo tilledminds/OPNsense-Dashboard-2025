@@ -44,11 +44,15 @@ After InfluxDB is started, go to http://(ip of docker server):8086, you will nee
 
 ## Telegraf
 
-You must manually install Telegraf on OPNsense, as the OPNsense Telegraf plugin does not currently support custom telegraf configuration.  To do so, SSH into your OPNsense router and type in:
+You must manually install Telegraf on OPNsense, as the OPNsense Telegraf plugin does not currently support custom telegraf configuration.  To do so, SSH into your OPNsense router and use the command
 
 `sudo pkg install telegraf`
 
-After this, install the OPNsense Telegraf plugin in the UI, this is done solely to build the initial configuration that is needed for Telegraf to start on boot, uninstall the plugin after it installs.
+After this use this command
+
+`printf 'telegraf_user="root" \ntelegraf_group="wheel" \ntelegraf_enable="YES"' > /etc/rc.conf.d/telegraf`
+
+This will create a config file for Telegraf to start on boot and run as root.
 
 You will need the [telegraf config](config/telegraf.conf) file. 
 
