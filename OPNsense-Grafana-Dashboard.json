@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637458378138,
+  "iteration": 1637794686684,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -213,7 +213,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu =~ /cpu[0-3]$/ \r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> aggregateWindow(every: 10s, fn: last)",
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu =~ /cpu[0-${Cpus}]$/ \r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> aggregateWindow(every: 10s, fn: last)",
           "refId": "A"
         }
       ],
@@ -2221,7 +2221,7 @@
       ],
       "timeFrom": "now/M",
       "timeShift": null,
-      "title": "WAN",
+      "title": "WAN - Bandwidth",
       "transformations": [
         {
           "id": "concatenate",
@@ -2753,7 +2753,7 @@
       ],
       "timeFrom": "now/M",
       "timeShift": null,
-      "title": "${LAN}",
+      "title": "${LAN} - Bandwidth",
       "transformations": [
         {
           "id": "concatenate",
@@ -3088,7 +3088,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
             "All"
           ],
@@ -3203,11 +3203,35 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": null,
+        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"system\" and\r\n    r._field == \"n_cpus\"\r\n  )\r\n  |>keep(columns: [\"_value\"])",
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": true,
+        "label": "CPUs",
+        "multi": false,
+        "name": "Cpus",
+        "options": [],
+        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"system\" and\r\n    r._field == \"n_cpus\"\r\n  )\r\n  |>keep(columns: [\"_value\"])",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -3219,5 +3243,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 316
+  "version": 322
 }
