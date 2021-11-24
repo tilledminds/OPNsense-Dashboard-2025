@@ -52,7 +52,7 @@ After that, use these commands. The first, enables Telegraf to start on boot, an
 
 `printf 'telegraf_enable="YES"' > /etc/rc.conf.d/telegraf`
 
-`printf 'telegraf ALL=(root) NOPASSWD: /sbin/pfctl -s info,/usr/local/bin/telegraf_pfifgw.php,/usr/local/bin/telegraf_temperature.sh' >> /usr/local/etc/sudoers`
+`printf 'telegraf ALL=(root) NOPASSWD: /sbin/pfctl -s info,/usr/local/bin/telegraf_pfifgw.php' >> /usr/local/etc/sudoers`
 
 You will need the [telegraf config](config/telegraf.conf) file. 
 
