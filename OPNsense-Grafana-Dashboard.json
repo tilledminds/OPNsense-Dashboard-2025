@@ -23,7 +23,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637794686684,
+  "iteration": 1637976221496,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -95,7 +95,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"system\" and\r\n    r._field == \"n_users\"\r\n  )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()",
@@ -158,7 +158,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu == \"cpu-total\"\r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()",
@@ -203,7 +203,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -213,7 +213,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu =~ /cpu[0-${Cpus}]$/ \r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> aggregateWindow(every: 10s, fn: last)",
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\")\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> drop(columns: [\"host\"])",
           "refId": "A"
         }
       ],
@@ -232,6 +232,23 @@
           "id": "labelsToFields",
           "options": {
             "valueLabel": "cpu"
+          }
+        },
+        {
+          "id": "concatenate",
+          "options": {
+            "frameNameLabel": "frame",
+            "frameNameMode": "drop"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "cpu-total": true
+            },
+            "indexByName": {},
+            "renameByName": {}
           }
         }
       ],
@@ -310,7 +327,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"processes\" and\r\n    r._field =~ /running|idle|sleeping|wait|blocked|zombies/\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
@@ -394,7 +411,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -509,7 +526,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"system\" and\r\n    r._field == \"uptime_format\"\r\n  )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()\r\n",
@@ -560,7 +577,7 @@
       "options": {
         "showHeader": true
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"pf\" and\r\n    r._field =~ /match|state-mismatch|state-insert/\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
@@ -644,7 +661,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -751,7 +768,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -855,7 +872,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -992,7 +1009,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "bucketAggs": [
@@ -1166,7 +1183,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "bucketAggs": [
@@ -1447,7 +1464,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1601,7 +1618,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"interface\"\r\n  )\r\n  |> bottom(n:1)\r\n  |> group()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"ip4_subnet\", \"mac_address\", \"name\", \"_value\"])\r\n  |> sort(columns:[\"name\"])",
@@ -1669,7 +1686,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1787,7 +1804,7 @@
           }
         ]
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"gateways\" and\r\n    r._field =~ /gwdescr|source|monitor|status|gateway_name|interface/\r\n    )\r\n  |> bottom(n:1)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n    \r\n",
@@ -1915,7 +1932,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> bottom(n:1)\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
@@ -1985,7 +2002,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2121,7 +2138,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
@@ -2212,7 +2229,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: last)\r\n  |> difference(nonNegative: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
@@ -2284,7 +2301,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2302,7 +2319,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "WAN Throughput",
+      "title": "WAN - Throughput",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2444,7 +2461,7 @@
         "frameIndex": 7,
         "showHeader": true
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> bottom(n:1)\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
@@ -2514,7 +2531,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2649,7 +2666,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -1m)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
@@ -2744,7 +2761,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: last)\r\n  |> difference(nonNegative: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
@@ -2822,7 +2839,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.4",
+      "pluginVersion": "8.2.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2840,7 +2857,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "${LAN} Throughput",
+      "title": "${LAN} - Throughput",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -3203,30 +3220,6 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": null,
-        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"system\" and\r\n    r._field == \"n_cpus\"\r\n  )\r\n  |>keep(columns: [\"_value\"])",
-        "description": null,
-        "error": null,
-        "hide": 0,
-        "includeAll": true,
-        "label": "CPUs",
-        "multi": false,
-        "name": "Cpus",
-        "options": [],
-        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"system\" and\r\n    r._field == \"n_cpus\"\r\n  )\r\n  |>keep(columns: [\"_value\"])",
-        "refresh": 1,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
       }
     ]
   },
@@ -3243,5 +3236,5 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 322
+  "version": 324
 }
