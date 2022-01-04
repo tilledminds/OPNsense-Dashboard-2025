@@ -86,7 +86,7 @@ services:
       # Change these
       - GF_SECURITY_ADMIN_USER=opnsense
       - GF_SECURITY_ADMIN_PASSWORD=opnsense
-      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
+      - GF_INSTALL_PLUGINS=grafana-worldmap-panel
     restart: "unless-stopped"
 volumes:
   grafana_data:
