@@ -159,12 +159,6 @@ Version: 7.0+
 
 To import the dashboard, copy the JSON in [OPNsense-Grafana-Dashboard.json](OPNsense-Grafana-Dashboard.json) and navigate to Dashboards -> Import and paste under Import via panel json.
 
-#### Install Worldmap Panel
-
-You will also need to install the world map panel on Grafana. Navigate to the cog wheel -> Plugins -> search for "Worldmap" and install the plugin
-
-The Config for the dashboard relies on the variables defined within the dashboard in Grafana.  When importing the dashboard, make sure to select your datasource. 
-
 Dashboard Settings -> Variables
 
 WAN - $WAN is a static variable defined so that a separate dashboard panel can be created for WAN interfaces stats.  Use a comma-separated list for multiple WAN interfaces.
