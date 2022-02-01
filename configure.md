@@ -136,7 +136,7 @@ You will need to place this config in /usr/local/etc on your OPNsense system.
 
 ```
 cd /usr/local/etc
-curl https://github.com/bsmithio/OPNsense-Dashboard/blob/master/config/telegraf.conf
+curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/telegraf.conf
 # Make the necessary changes with vi, if you wish to edit with nano you'll need to install nano with pkg install nano
 vi telegraf.conf
 ```
