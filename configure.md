@@ -272,6 +272,11 @@ Replace with the section below.
   # Detect alert logs
   alerts = false
 ```
+
+Restart telegraf to load changes.
+
+`service telegraf restart`
+
 ### Configure logging to UNIX socket
 
 Now append the following section to /usr/local/etc/suricata/custom.yaml.
