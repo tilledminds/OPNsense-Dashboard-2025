@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1644706756813,
+  "iteration": 1644706756867,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -1756,9 +1756,15 @@
           "mappings": [
             {
               "options": {
-                "1": {
+                "0": {
+                  "color": "red",
                   "index": 0,
-                  "text": "online"
+                  "text": "OFFLINE"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 1,
+                  "text": "ONLINE"
                 }
               },
               "type": "value"
@@ -3210,6 +3216,6 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 359,
+  "version": 362,
   "weekStart": ""
 }
