@@ -20,16 +20,14 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1637976221496,
+  "iteration": 1644706756813,
   "links": [],
   "liveNow": true,
   "panels": [
     {
       "collapsed": false,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -42,7 +40,9 @@
       "type": "row"
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -95,7 +95,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"system\" and\r\n    r._field == \"n_users\"\r\n  )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()",
@@ -106,7 +106,9 @@
       "type": "stat"
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -158,7 +160,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"cpu\" and\r\n    r._field == \"usage_idle\" and\r\n    r.cpu == \"cpu-total\"\r\n  )\r\n  |> map(fn: (r) => ({\r\n        r with\r\n        _value: r._value * -1.0 + 100.0\r\n      })\r\n    )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()",
@@ -173,7 +175,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -203,7 +207,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -218,9 +222,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "CPU",
       "tooltip": {
         "shared": true,
@@ -254,9 +256,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -265,7 +265,6 @@
           "$$hashKey": "object:39",
           "decimals": 0,
           "format": "percent",
-          "label": null,
           "logBase": 1,
           "max": "100",
           "min": "0",
@@ -275,20 +274,18 @@
           "$$hashKey": "object:40",
           "decimals": 2,
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -323,11 +320,18 @@
       },
       "id": 8,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 0,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"processes\" and\r\n    r._field =~ /running|idle|sleeping|wait|blocked|zombies/\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
@@ -381,7 +385,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -411,7 +417,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -426,9 +432,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Load",
       "tooltip": {
         "shared": true,
@@ -437,9 +441,7 @@
       },
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -448,29 +450,24 @@
           "$$hashKey": "object:112",
           "decimals": 1,
           "format": "none",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:113",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -526,7 +523,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"system\" and\r\n    r._field == \"uptime_format\"\r\n  )\r\n  |> keep(columns: [\"_value\"])\r\n  |> last()\r\n",
@@ -537,7 +534,9 @@
       "type": "stat"
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -575,9 +574,16 @@
       },
       "id": 16,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "showHeader": true
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"pf\" and\r\n    r._field =~ /match|state-mismatch|state-insert/\r\n  )\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
@@ -624,7 +630,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -661,7 +669,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -677,9 +685,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Disk Utilization",
       "tooltip": {
         "shared": true,
@@ -696,9 +702,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -706,7 +710,6 @@
         {
           "$$hashKey": "object:206",
           "format": "percent",
-          "label": null,
           "logBase": 1,
           "max": "100",
           "min": "0",
@@ -715,16 +718,12 @@
         {
           "$$hashKey": "object:207",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -732,7 +731,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "percent"
@@ -768,7 +769,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -783,9 +784,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Ram",
       "tooltip": {
         "shared": true,
@@ -806,9 +805,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -816,7 +813,6 @@
         {
           "$$hashKey": "object:416",
           "format": "percent",
-          "label": null,
           "logBase": 1,
           "max": "100",
           "min": "0",
@@ -825,16 +821,12 @@
         {
           "$$hashKey": "object:417",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
@@ -842,7 +834,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -872,7 +866,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -887,9 +881,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Temperature Sensors",
       "tooltip": {
         "shared": true,
@@ -906,9 +898,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -916,30 +906,22 @@
         {
           "$$hashKey": "object:33",
           "format": "celsius",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:34",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
       "collapsed": false,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -952,8 +934,9 @@
       "type": "row"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "${ESdataSource}",
+      "datasource": {
+        "uid": "${ESdataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -987,7 +970,6 @@
         "y": 13
       },
       "id": 111,
-      "interval": null,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -1009,7 +991,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "bucketAggs": [
@@ -1039,7 +1021,6 @@
           "timeField": "timestamp"
         }
       ],
-      "timeFrom": null,
       "title": "Firewall Blocked Events on $iface",
       "type": "stat"
     },
@@ -1052,7 +1033,9 @@
         "#C4162A",
         "#8F3BB8"
       ],
-      "datasource": "${ESdataSource}",
+      "datasource": {
+        "uid": "${ESdataSource}"
+      },
       "decimals": 0,
       "esGeoPoint": "src_location",
       "esLocationName": "src_ip",
@@ -1135,8 +1118,9 @@
       "valueName": "total"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "${ESdataSource}",
+      "datasource": {
+        "uid": "${ESdataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -1160,7 +1144,6 @@
         "y": 13
       },
       "id": 67,
-      "interval": null,
       "links": [],
       "maxDataPoints": 100,
       "options": {
@@ -1183,7 +1166,7 @@
         "text": {},
         "textMode": "value"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "bucketAggs": [
@@ -1221,8 +1204,9 @@
       "type": "stat"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "${ESdataSource}",
+      "datasource": {
+        "uid": "${ESdataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1248,7 +1232,6 @@
         "y": 16
       },
       "id": 61,
-      "interval": null,
       "links": [],
       "maxDataPoints": 1,
       "options": {
@@ -1320,8 +1303,10 @@
       "type": "piechart"
     },
     {
-      "cacheTimeout": null,
-      "datasource": "${ESdataSource}",
+      "datasource": {
+        "type": "elasticsearch",
+        "uid": "${ESdataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1347,7 +1332,6 @@
         "y": 16
       },
       "id": 65,
-      "interval": null,
       "links": [],
       "maxDataPoints": 1,
       "options": {
@@ -1399,6 +1383,10 @@
               "type": "date_histogram"
             }
           ],
+          "datasource": {
+            "type": "elasticsearch",
+            "uid": "${ESdataSource}"
+          },
           "dsType": "elasticsearch",
           "metrics": [
             {
@@ -1418,7 +1406,6 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1435,7 +1422,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1464,7 +1453,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1479,9 +1468,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Gateway RTT - $Gateway ",
       "tooltip": {
         "shared": true,
@@ -1498,9 +1485,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -1508,29 +1493,25 @@
         {
           "$$hashKey": "object:164",
           "format": "ms",
-          "label": null,
           "logBase": 10,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:165",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1614,14 +1595,25 @@
       },
       "id": 32,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 0,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"interface\"\r\n  )\r\n  |> bottom(n:1)\r\n  |> group()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"ip4_subnet\", \"mac_address\", \"name\", \"_value\"])\r\n  |> sort(columns:[\"name\"])",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "xvNJQycnz"
+          },
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"interface\"\r\n  )\r\n  |> last()\r\n  |> group()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"ip4_subnet\", \"mac_address\", \"name\", \"_value\"])\r\n  |> sort(columns:[\"name\"])",
           "refId": "A"
         }
       ],
@@ -1657,7 +1649,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -1686,7 +1680,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -1701,9 +1695,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "Gateway Loss - $Gateway ",
       "tooltip": {
         "shared": true,
@@ -1720,9 +1712,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -1731,7 +1721,6 @@
           "$$hashKey": "object:97",
           "decimals": 0,
           "format": "percent",
-          "label": null,
           "logBase": 1,
           "max": "100",
           "min": "0",
@@ -1740,20 +1729,19 @@
         {
           "$$hashKey": "object:98",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1796,6 +1784,13 @@
       },
       "id": 46,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 3,
         "showHeader": true,
         "sortBy": [
@@ -1804,10 +1799,14 @@
           }
         ]
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"gateways\" and\r\n    r._field =~ /gwdescr|source|monitor|status|gateway_name|interface/\r\n    )\r\n  |> bottom(n:1)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n    \r\n",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "xvNJQycnz"
+          },
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"gateways\" and\r\n    r._field =~ /gwdescr|source|monitor|status|gateway_name|interface/\r\n    )\r\n  |> last()\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
         }
       ],
@@ -1841,7 +1840,7 @@
             "renameByName": {
               "gwdescr": "Gateway Description",
               "monitor": "Monitor IP",
-              "source": "Gateway IP",
+              "source": "Source IP",
               "status": "Status"
             }
           }
@@ -1851,7 +1850,6 @@
     },
     {
       "collapsed": false,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1865,7 +1863,10 @@
       "type": "row"
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1928,14 +1929,25 @@
       },
       "id": 28,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 7,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> bottom(n:1)\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "xvNJQycnz"
+          },
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
           "refId": "A"
         }
       ],
@@ -1971,7 +1983,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "decimals": 2,
       "description": "",
       "fill": 1,
@@ -2002,7 +2016,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2017,9 +2031,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "WAN Traffic - Bits/sec",
       "tooltip": {
         "shared": true,
@@ -2049,9 +2061,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -2060,30 +2070,25 @@
           "$$hashKey": "object:63",
           "decimals": 2,
           "format": "bps",
-          "label": null,
           "logBase": 2,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:64",
           "decimals": 2,
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2138,15 +2143,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "WAN Traffic - Bits/sec",
       "transformations": [
         {
@@ -2173,7 +2176,9 @@
       "type": "stat"
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2229,7 +2234,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: last)\r\n  |> difference(nonNegative: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
@@ -2237,7 +2242,6 @@
         }
       ],
       "timeFrom": "now/M",
-      "timeShift": null,
       "title": "WAN - Bandwidth",
       "transformations": [
         {
@@ -2266,7 +2270,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "short"
@@ -2301,7 +2307,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2316,9 +2322,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "WAN - Throughput",
       "tooltip": {
         "shared": true,
@@ -2347,9 +2351,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -2358,30 +2360,22 @@
           "$$hashKey": "object:191",
           "decimals": 2,
           "format": "short",
-          "label": null,
           "logBase": 2,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:192",
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
       "collapsed": false,
-      "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2395,7 +2389,10 @@
       "type": "row"
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2458,13 +2455,24 @@
       },
       "id": 52,
       "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": 7,
         "showHeader": true
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> bottom(n:1)\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "xvNJQycnz"
+          },
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
           "refId": "A"
         }
       ],
@@ -2500,7 +2508,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "decimals": 2,
       "description": "",
       "fill": 1,
@@ -2531,7 +2541,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2546,9 +2556,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "${LAN} Traffic - Bits/sec",
       "tooltip": {
         "shared": true,
@@ -2577,9 +2585,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -2588,30 +2594,25 @@
           "$$hashKey": "object:63",
           "decimals": 2,
           "format": "bps",
-          "label": null,
           "logBase": 2,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
           "$$hashKey": "object:64",
           "decimals": 2,
           "format": "short",
-          "label": null,
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2666,15 +2667,13 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -1m)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> derivative(unit:1s)\r\n  |> map(fn: (r) => ({\r\n      r with\r\n      _value: r._value * 8.0\r\n    })\r\n  )\r\n  |> aggregateWindow(every: 10s, fn: last)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))\r\n  |> last()",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "${LAN} Traffic - Bits/sec",
       "transformations": [
         {
@@ -2705,7 +2704,9 @@
       "type": "stat"
     },
     {
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2761,7 +2762,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "targets": [
         {
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30d)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.interface =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"net\" and\r\n    r._field =~ /bytes_recv|bytes_sent/\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: last)\r\n  |> difference(nonNegative: true)\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
@@ -2769,7 +2770,6 @@
         }
       ],
       "timeFrom": "now/M",
-      "timeShift": null,
       "title": "${LAN} - Bandwidth",
       "transformations": [
         {
@@ -2802,7 +2802,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${dataSource}",
+      "datasource": {
+        "uid": "${dataSource}"
+      },
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -2839,7 +2841,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.2.5",
+      "pluginVersion": "8.3.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -2854,9 +2856,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": null,
       "timeRegions": [],
-      "timeShift": null,
       "title": "${LAN} - Throughput",
       "tooltip": {
         "shared": true,
@@ -2885,9 +2885,7 @@
       ],
       "type": "graph",
       "xaxis": {
-        "buckets": null,
         "mode": "time",
-        "name": null,
         "show": true,
         "values": []
       },
@@ -2896,10 +2894,7 @@
           "$$hashKey": "object:176",
           "decimals": 2,
           "format": "short",
-          "label": null,
           "logBase": 2,
-          "max": null,
-          "min": null,
           "show": true
         },
         {
@@ -2908,19 +2903,16 @@
           "format": "short",
           "label": "",
           "logBase": 1,
-          "max": null,
-          "min": null,
           "show": true
         }
       ],
       "yaxis": {
-        "align": false,
-        "alignLevel": null
+        "align": false
       }
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 32,
+  "schemaVersion": 34,
   "style": "dark",
   "tags": [
     "OPNsense",
@@ -2935,8 +2927,6 @@
           "text": "InfluxDB",
           "value": "InfluxDB"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "InfluxDB",
@@ -2956,8 +2946,6 @@
           "text": "Elasticsearch",
           "value": "Elasticsearch"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "ElasticSearch",
@@ -2971,7 +2959,6 @@
         "type": "datasource"
       },
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -2981,10 +2968,10 @@
             "$__all"
           ]
         },
-        "datasource": "${dataSource}",
+        "datasource": {
+          "uid": "${dataSource}"
+        },
         "definition": "from(bucket: v.defaultBucket)\r\n|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n|> filter(fn:(r) => r._measurement == \"pf\")\r\n|> keyValues(keyColumns: [\"host\"])\r\n|> group()\r\n|> keep(columns: [\"host\"])\r\n|> distinct(column: \"host\")",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "OPNsense",
@@ -2999,19 +2986,17 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "${dataSource}",
+        "datasource": {
+          "uid": "${dataSource}"
+        },
         "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn:(r) => r._measurement == \"disk\" and\r\n  r.host =~ /^${Host:regex}$/)\r\n  |> keyValues(keyColumns: [\"device\"])\r\n  |> group()\r\n  |> keep(columns: [\"device\"])\r\n  |> distinct(column: \"device\")",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": false,
         "name": "Disk",
         "options": [],
@@ -3023,19 +3008,17 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
           "selected": false,
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "${dataSource}",
+        "datasource": {
+          "uid": "${dataSource}"
+        },
         "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn:(r) => r._measurement == \"temperature\" and\r\n    r.host =~ /^${Host:regex}$/)\r\n  |> keyValues(keyColumns: [\"sensor\"])\r\n  |> group()\r\n  |> keep(columns: [\"sensor\"])\r\n  |> distinct(column: \"sensor\")",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": false,
         "name": "Sensor",
         "options": [],
@@ -3047,7 +3030,6 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -3057,10 +3039,10 @@
             "$__all"
           ]
         },
-        "datasource": "${dataSource}",
+        "datasource": {
+          "uid": "${dataSource}"
+        },
         "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r._measurement == \"interface\"\r\n  )\r\n  |> keyValues(keyColumns: [\"name\"])\r\n  |> group()\r\n  |> keep(columns: [\"name\"])\r\n  |> sort(columns: [\"name\"])\r\n",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "",
@@ -3075,7 +3057,6 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -3085,13 +3066,12 @@
             "$__all"
           ]
         },
-        "datasource": "${dataSource}",
+        "datasource": {
+          "uid": "${dataSource}"
+        },
         "definition": "from(bucket: v.defaultBucket)\r\n|> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n|> filter(fn:(r) => r._measurement == \"gateways\" and\r\n  r.host =~ /^${Host:regex}$/)\r\n|> keyValues(keyColumns: [\"gateway_name\"])\r\n|> group()\r\n|> keep(columns: [\"gateway_name\"])\r\n|> distinct(column: \"gateway_name\")",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": true,
         "name": "Gateway",
         "options": [],
@@ -3103,7 +3083,6 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -3113,11 +3092,8 @@
             "$__all"
           ]
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": true,
         "name": "WAN",
         "options": [
@@ -3138,7 +3114,6 @@
         "type": "custom"
       },
       {
-        "allValue": null,
         "current": {
           "selected": true,
           "text": [
@@ -3148,10 +3123,7 @@
             "$__all"
           ]
         },
-        "datasource": "${dataSource}",
         "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"name\"])",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "FW_Interface",
@@ -3176,10 +3148,11 @@
             "$__all"
           ]
         },
-        "datasource": "Elasticsearch",
+        "datasource": {
+          "type": "elasticsearch",
+          "uid": "DWyDwl57z"
+        },
         "definition": "{\"find\": \"terms\", \"field\": \"dst_port\", \"query\": \"interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "FW_Destination Port",
@@ -3204,10 +3177,11 @@
             "$__all"
           ]
         },
-        "datasource": "Elasticsearch",
+        "datasource": {
+          "type": "elasticsearch",
+          "uid": "DWyDwl57z"
+        },
         "definition": "{\"find\": \"terms\", \"field\": \"src_ip\", \"query\": \"interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "FW_Source IP",
@@ -3236,5 +3210,6 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 324
+  "version": 359,
+  "weekStart": ""
 }
