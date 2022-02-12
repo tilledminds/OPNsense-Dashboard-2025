@@ -165,7 +165,7 @@ The temperature plugin may not work on every system, if you receive `sysctl: unk
 
 After this is done, use `sudo service telegraf restart` to start telegraf with the new configuration.
 
-## Suricata configuration #Optional
+## Configuration for the Suricata dashboard #Optional
 This section assumes you have already configured Suricata.
 
 ### Update Telegraf.conf
