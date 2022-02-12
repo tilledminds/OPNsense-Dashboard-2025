@@ -26,6 +26,8 @@ Added Firewall panels.
 
 Added subnet info to Interface Summary panels
 
+Added Suricata panels
+
 ![Screenshot](Grafana-OPNsense.png)
 
 # Running on
@@ -37,6 +39,3 @@ Added subnet info to Interface Summary panels
 
 # Configuration
 Configuration instructions can be found [here](./configure.md).
-
-# TODO
-- Add Suricata section and panels
