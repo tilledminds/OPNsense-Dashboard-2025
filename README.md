@@ -28,12 +28,14 @@ Added subnet info to Interface Summary panels
 
 Added Suricata dashboard
 
-![Screenshot](Grafana-OPNsense.png)
+![Main Dashboard](Grafana-OPNsense.png)
+
+![Suricata Dashboard](Grafana-OPNsense-Suricata.png)
 
 # Running on
 
-    Grafana 8.2.4
-    InfluxDB 2.1.1
+    Grafana 8.3
+    InfluxDB 2.1
     Graylog 4.2
 
 
