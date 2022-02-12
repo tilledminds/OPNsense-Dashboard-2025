@@ -26,7 +26,7 @@ Added Firewall panels.
 
 Added subnet info to Interface Summary panels
 
-Added Suricata dashboard
+Added Suricata dashboard, see instructions [here](./configure.md#configuration-for-the-suricata-dashboard-optional)
 
 ![Main Dashboard](Grafana-OPNsense.png)
 
