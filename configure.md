@@ -165,6 +165,71 @@ The temperature plugin may not work on every system, if you receive `sysctl: unk
 
 After this is done, use `sudo service telegraf restart` to start telegraf with the new configuration.
 
+## Suricata configuration #Optional
+This section assumes you have already configured Suricata.
+
+### Update Telegraf.conf
+If you previously used the telegraf.conf in this repo you'll need to modify your telegraf.conf. Otherwise, you can skip this step.
+
+Remove the following section.
+
+```
+[[inputs.tail]]
+  data_format = "json"
+  files = ["/var/log/suricata/eve.json"]
+  name_override = "suricata"
+  tag_keys = ["event_type","src_ip","src_port","dest_ip","dest_port"]
+  json_string_fields = ["*"]
+```
+
+Replace with the section below.
+
+```
+[[inputs.suricata]]
+  ## Data sink for Suricata stats log.
+  # This is expected to be a filename of a
+  # unix socket to be created for listening.
+  source = "/tmp/suricata-stats.sock"
+
+  # Delimiter for flattening field keys, e.g. subitem "alert" of "detect"
+  # becomes "detect_alert" when delimiter is "_".
+  delimiter = "_"
+
+  # Detect alert logs
+  alerts = false
+```
+### Configure logging to UNIX socket
+
+Now append the following section to /usr/local/etc/suricata/custom.yaml.
+
+```
+outputs:
+  # Extensible Event Format (nicknamed EVE) to UNIX-socket
+  - eve-log:
+      enabled: yes
+      filetype: unix_stream
+      filename: /tmp/suricata-stats.sock
+      types:
+        - stats:
+           threads: yes
+        - alert:
+             # packet: yes              # enable dumping of packet (without stream segments)
+             # metadata: no             # enable inclusion of app layer metadata with alert. Default yes
+             # http-body: yes           # Requires metadata; enable dumping of http body in Base64
+             # http-body-printable: yes # Requires metadata; enable dumping of http body in printable format
+
+             # Enable the logging of tagged packets for rules using the
+             # "tag" keyword.
+             tagged-packets: yes
+
+             http: yes
+             tls: yes
+```
+
+After that, restart Suricata.
+
+Please let me know if you have any issues with this, as I've only tested this on my own OPNsense router.
+
 ## Configuring Graylog
 
 ### Add GeoIP to Graylog
