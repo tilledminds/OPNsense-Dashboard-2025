@@ -279,7 +279,7 @@ Restart telegraf to load changes.
 
 ### Configure logging to UNIX socket
 
-Now append the following section to /usr/local/etc/suricata/custom.yaml.
+Now add the following section to /usr/local/etc/suricata/custom.yaml.
 
 ```
 outputs:
@@ -305,7 +305,7 @@ outputs:
              tls: yes
 ```
 
-After that, restart Suricata.
+After that, navigate to the OPNsense IDS GUI at Services -> Intrusion Detection -> Administration and click Apply. 
 
 ### Import the Suricata Dashboard
 
