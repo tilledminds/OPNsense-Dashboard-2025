@@ -307,6 +307,8 @@ outputs:
 
 After that, navigate to the OPNsense IDS GUI at Services -> Intrusion Detection -> Administration and click Apply. 
 
+`service suricata restart`
+
 ### Import the Suricata Dashboard
 
 To import the dashboard, copy the JSON from [OPNsense-Grafana-Dashboard-Suricata.json](https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/OPNsense-Grafana-Dashboard-Suricata.json) and navigate to Dashboards -> Browse -> Import and paste under Import via panel json.
