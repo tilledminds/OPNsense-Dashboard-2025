@@ -21,8 +21,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 20,
-  "iteration": 1644704072379,
+  "id": 23,
+  "iteration": 1644864155168,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -50,8 +50,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -105,8 +104,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -282,8 +280,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -340,8 +337,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -551,8 +547,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           }
@@ -658,7 +653,7 @@
             "type": "influxdb",
             "uid": "${dataSource}"
           },
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"suricata\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"alert_signature\")\r\n  |> group()\r\n  |> tail(n: 100)",
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"suricata\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"alert_signature\")\r\n  |> group()\r\n  |> sort(columns: [\"_time\"], desc: true)\r\n  |> limit(n:100)",
           "refId": "A"
         }
       ],
@@ -751,13 +746,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "OPNsense Suricata",
   "uid": "94raP_-7z",
-  "version": 11,
+  "version": 5,
   "weekStart": ""
 }
