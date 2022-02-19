@@ -1611,7 +1611,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "xvNJQycnz"
+            "uid": "${dataSource}"
           },
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r.host =~ /^${Host:regex}$/ and\r\n    r._measurement == \"interface\"\r\n  )\r\n  |> last()\r\n  |> group()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"ip4_subnet\", \"mac_address\", \"name\", \"_value\"])\r\n  |> sort(columns:[\"name\"])",
           "refId": "A"
@@ -1810,7 +1810,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "xvNJQycnz"
+            "uid": "${dataSource}"
           },
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"gateways\" and\r\n    r._field =~ /gwdescr|source|monitor|status|gateway_name|interface/\r\n    )\r\n  |> last()\r\n  |> map(fn: (r) => ({_value:r._value, _time:r._time, _field:r._field}))",
           "refId": "A"
@@ -1951,7 +1951,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "xvNJQycnz"
+            "uid": "${dataSource}"
           },
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${WAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
           "refId": "A"
@@ -2476,7 +2476,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "xvNJQycnz"
+            "uid": "${dataSource}"
           },
           "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
           "refId": "A"
@@ -3129,7 +3129,11 @@
             "$__all"
           ]
         },
-        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"name\"])",
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${dataSource}"
+        },
+        "definition": "from(bucket: v.defaultBucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"interface\" and\n    r.name =~ /^${WAN:regex}$/\n  )\n  |> last()\n  |> group(columns: [\"tag\"])\n  |> keep(columns: [\"name\"])",
         "hide": 0,
         "includeAll": true,
         "label": "FW_Interface",
