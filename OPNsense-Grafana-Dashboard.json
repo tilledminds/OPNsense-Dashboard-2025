@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1644706756867,
+  "iteration": 1645295032646,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -2478,7 +2478,7 @@
             "type": "influxdb",
             "uid": "xvNJQycnz"
           },
-          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
+          "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: -30s)\r\n  |> filter(fn: (r) => \r\n    r.host =~ /^${Host:regex}$/ and\r\n    r.name =~ /^${LAN:regex}$/ and\r\n    r._measurement == \"interface\" and\r\n    r._field == \"status\")\r\n  |> group()\r\n  |> last()\r\n  |> keep(columns: [\"friendlyname\", \"ip4_address\", \"name\", \"ip4_subnet\" \"mac_address\", \"_value\"])",
           "refId": "A"
         }
       ],
@@ -3156,7 +3156,7 @@
         },
         "datasource": {
           "type": "elasticsearch",
-          "uid": "DWyDwl57z"
+          "uid": "${ESdataSource}"
         },
         "definition": "{\"find\": \"terms\", \"field\": \"dst_port\", \"query\": \"interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
         "hide": 0,
@@ -3185,7 +3185,7 @@
         },
         "datasource": {
           "type": "elasticsearch",
-          "uid": "DWyDwl57z"
+          "uid": "${ESdataSource}"
         },
         "definition": "{\"find\": \"terms\", \"field\": \"src_ip\", \"query\": \"interface:$iface\", \"timestamp\": {\n\"timestamp\" : \"now-$__Interval_ms\"\n}}",
         "hide": 0,
@@ -3216,6 +3216,6 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 362,
+  "version": 364,
   "weekStart": ""
 }
