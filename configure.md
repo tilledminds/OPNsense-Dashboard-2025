@@ -1,3 +1,4 @@
+
 - [Docker](#docker)
 - [Configuring InfluxDB](#configuring-influxdb)
 - [Configuring Telegraf](#configuring-telegraf)
@@ -142,30 +143,47 @@ Once you have your docker containers running, follow the steps below.
 ## Configuring InfluxDB
 After InfluxDB is started, go to http://(ip of docker server):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your telegraf configuration. I recommend generating another API token for Grafana. Click on API tokens -> Generate API Token -> Read/Write Access -> Click on your bucket under Read -> and Save. Copy this somewhere as well, you'll need it for Grafana.
 
+
 ## Configuring Telegraf
 
-You must manually install Telegraf on OPNsense, as the OPNsense Telegraf plugin does not currently support custom telegraf configuration.  To do so, SSH into your OPNsense router and use the command
+### Install the plugin and configure options
+Install the Telegraf plugin on OPNsense, to do so, navigate to System -> Firmware -> Plugins -> Search for telegraf, and click the plus icon to install.
 
-`sudo pkg install telegraf`
+![](https://i.imgur.com/vowGSSx.png)
 
-After that, use these commands. The first, enables Telegraf to start on boot, and the second, adds Telegraf to sudoers and restricts nopasswd to only what Telegraf needs to run as root.
+Navigate to Services -> Telegraf -> Input
+
+Enable Network and PF Inputs.
+
+![](https://i.imgur.com/WskfVlS.png)
+
+Then click Save.
+
+Now navigate to Services -> Telegraf -> Output
+
+Enable Influx v2 Output and fill in the following:
+
+Influx v2 Token: Your InfluxDB Token
+Influx v2 URL: Your InfluxDB URL, this will be the IP address or hostname of your system that is running InfluxDB. E.g http://192.168.1.10:8086
+Influx v2 Organization: Your InfluxDB Organization
+Influx v2 Bucket: Your InfluxDB Bucket
+
+![](https://i.imgur.com/VS4FKU7.png)
+
+Then click Save.
+
+### Add telegraf to sudoers
+
+After that, we need to add telegraf to sudoers and use nopasswd to restrict telegraf to only what it needs to run as root.
 
 ```
-printf 'telegraf_enable="YES"' > /etc/rc.conf.d/telegraf
-
-printf 'telegraf ALL=(root) NOPASSWD: /sbin/pfctl,/usr/local/bin/telegraf_pfifgw.php' >> /usr/local/etc/sudoers
+printf 'telegraf ALL=(root) NOPASSWD: /usr/local/bin/telegraf_pfifgw.php' >> /usr/local/etc/sudoers
 ```
-You will need this [telegraf config](https://github.com/bsmithio/OPNsense-Dashboard/blob/master/config/telegraf.conf) file. 
 
-You must edit this file and type in your InfluxDB URL, InfluxDB Telegraf API token, organization, and bucket under [[outputs.influxdb_v2]].
-
-You will need to place this config in /usr/local/etc on your OPNsense system.
+Add the  [custom.conf](../config/custom.conf) telegraf config to /usr/local/etc/telegraf.d
 
 ```
-cd /usr/local/etc
-curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/telegraf.conf
-# Make the necessary changes with vi, if you wish to edit with nano you'll need to install nano with pkg install nano
-vi telegraf.conf
+curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/custom.conf -o /usr/local/etc/telegraf.d/custom.conf
 ```
 
 ### Telegraf Plugins
@@ -176,21 +194,25 @@ Place [telegraf_pfifgw.php](https://raw.githubusercontent.com/bsmithio/OPNsense-
 
 ```
 cd /usr/local/bin
-curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php
-curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh
+curl "https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php" -o telegraf_pfifgw.php
+curl "https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh" -o telegraf_temperature.sh
 chmod 755 telegraf_temperature.sh telegraf_pfifgw.php
 ```
 
 Test these out before starting the telegraf service by executing them
 
-`./telegraf_pfifgw.php`
+`sudo ./telegraf_pfifgw.php`
 
 `./telegraf_temperature.sh`
 
 The temperature plugin may not work on every system, if you receive `sysctl: unknown oid 'hw.acpi.thermal'` comment out or remove that line from the plugin.
 
 
-After this is done, use `sudo service telegraf restart` to start telegraf with the new configuration.
+After this is done, navigate to Services -> Telegraf -> General -> Enable Telegraf Agent.
+
+Lastly, check if Telegraf is running
+
+`sudo service telegraf status`
 
 ## Configuring Graylog
 
@@ -232,7 +254,7 @@ Ensure that all of these are enabled, and click save.
 
 ### Add Graylog server as syslog target on OPNsense
 
-Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / targets. Add a new target with the following options: 
+Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / targets. Add a new target with the following options:
 
 ![OPNsense Syslog Target](https://www.bsmithio.com/post/opnsense-dashboard/opnsensesyslog.png)
 
@@ -260,7 +282,7 @@ To import the dashboard, copy the JSON from [OPNsense-Grafana-Dashboard.json](ht
 ### Configure Variables
 Dashboard Settings -> Variables
 
-WAN - $WAN is a static variable defined so that a separate dashboard panel can be created for WAN interfaces stats.  Use a comma-separated list for multiple WAN interfaces.
+WAN - $WAN is a static variable defined so that a separate dashboard panel can be created for WAN interfaces stats.  Use a comma-separated list for multiple WAN interfaces.
 
 LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as LAN. The filtering happens in the "Regex" field. I use a negative lookahead regex to match the interfaces I want excluded.  It should be pretty easy to understand what you need to do here. I have excluded igb0 (WAN),igb2,igb3,ovpnc1, and ovpnc1.
 
@@ -269,76 +291,37 @@ Lastly, I don't recommend setting the time range beyond 24 hours, due to how man
 ## Configuration for the Suricata dashboard #Optional
 This section assumes you have already configured Suricata.
 
-### Update Telegraf.conf
-If you previously used the telegraf.conf in this repo you'll need to modify your telegraf.conf. Otherwise, you can skip this step.
+### Add the necessary files
 
-Remove the following section.
+Add [suricata.conf](../config/suricata/suricata.conf) to /usr/local/etc/telegraf.d
 
-```
-[[inputs.tail]]
-  data_format = "json"
-  files = ["/var/log/suricata/eve.json"]
-  name_override = "suricata"
-  tag_keys = ["event_type","src_ip","src_port","dest_ip","dest_port"]
-  json_string_fields = ["*"]
-```
+`curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/suricata.conf' -o /usr/local/etc/telegraf.d/suricata.conf`
 
-Replace with the section below.
+Add [custom.yaml](../config/suricata/custom.yaml) to /usr/local/opnsense/service/templates/OPNsense/IDS
+
+`curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/custom.yaml' -o /usr/local/opnsense/service/templates/OPNsense/IDS/custom.yaml`
+
+Create the log file and give telegraf permissions to read it
 
 ```
-[[inputs.suricata]]
-  ## Data sink for Suricata stats log.
-  # This is expected to be a filename of a
-  # unix socket to be created for listening.
-  source = "/tmp/suricata-stats.sock"
-
-  # Delimiter for flattening field keys, e.g. subitem "alert" of "detect"
-  # becomes "detect_alert" when delimiter is "_".
-  delimiter = "_"
-
-  # Detect alert logs
-  alerts = false
+touch /tmp/eve.json
+chown :telegraf /tmp/eve.json
+chmod 640 /tmp/eve.json
 ```
 
-Restart telegraf to load changes.
+### Restart Suricata and Telegraf
 
-`service telegraf restart`
+Restart Suricata from Services -> Intrusion Detection -> Administration
 
-### Configure logging to UNIX socket
+Uncheck Enabled and apply.
+Check Enabled and apply.
 
-Now add the following section to /usr/local/etc/suricata/custom.yaml.
+`sudo service telegraf restart`
 
-```
-outputs:
-  # Extensible Event Format (nicknamed EVE) to UNIX-socket
-  - eve-log:
-      enabled: yes
-      filetype: unix_stream
-      filename: /tmp/suricata-stats.sock
-      types:
-        - stats:
-           threads: yes
-        - alert:
-             # packet: yes              # enable dumping of packet (without stream segments)
-             # metadata: no             # enable inclusion of app layer metadata with alert. Default yes
-             # http-body: yes           # Requires metadata; enable dumping of http body in Base64
-             # http-body-printable: yes # Requires metadata; enable dumping of http body in printable format
-
-             # Enable the logging of tagged packets for rules using the
-             # "tag" keyword.
-             tagged-packets: yes
-
-             http: yes
-             tls: yes
-```
-
-After that, navigate to the OPNsense IDS GUI at Services -> Intrusion Detection -> Administration and click Apply. 
 
 ### Import the Suricata Dashboard
 
 To import the dashboard, copy the JSON from [OPNsense-Grafana-Dashboard-Suricata.json](https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/OPNsense-Grafana-Dashboard-Suricata.json) and navigate to Dashboards -> Browse -> Import and paste under Import via panel json.
-
-Please let me know if you have any issues with this, as I've only tested this on my own OPNsense router.
 
 ## Troubleshooting
 
@@ -367,7 +350,7 @@ To troubleshoot plugins further, add the following lines to the agent block in /
     # kill -HUP <pid of telegraf proces>
 
 Now go read /var/log/telegraf/telegraf.log
-    
+
 ### InfluxDB
 When in doubt, run a few queries to see if the data you are looking for is being populated.
 I recommend doing this in Grafana's Explore tab.
@@ -376,18 +359,18 @@ I recommend doing this in Grafana's Explore tab.
     import "influxdata/influxdb/schema"
 
     schema.measurements(bucket: "opnsense")
-    
+
 ### View field values
 
     from(bucket: "opnsense")
       |> range(start: -24h)
       |> filter(fn: (r) => r["_measurement"] == "system")
       |> limit(n:10)
-    
+
 ### How to drop an InfluxDB v2 measurement
 
 You must access your influx instance's shell to do this.
-To do so run 
+To do so run
 `sudo docker exec -it influxdb /bin/bash`
 on your docker host.
 
@@ -395,7 +378,7 @@ Then use the following
 
     bash-4.4# influx delete --bucket "$YourBucket" --predicate '_measurement="$Example"' -o $organization --start "1970-01-01T00:00:00Z" --stop "2050-12-31T23:59:00Z" --token "$YourAPIToken"
 
-### Learn more about Flux queries 
+### Learn more about Flux queries
 
 https://docs.influxdata.com/influxdb/cloud/query-data/flux/query-fields/
 
