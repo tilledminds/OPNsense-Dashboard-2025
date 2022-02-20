@@ -50,10 +50,6 @@ services:
       - 1514:1514/udp
       # Syslog TCP
       - 1514:1514
-      # GELF TCP
-      - 12201:12201
-      # GELF UDP
-      - 12201:12201/udp
     restart: "unless-stopped"
   influxdb:
     container_name: influxdb
