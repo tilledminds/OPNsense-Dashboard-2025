@@ -281,11 +281,21 @@ You will need to add the data sources on Grafana. Navigate to http://(ip of dock
 
 For InfluxDB, make the following configurations
 
+Query Language: Flux
+URL: http://influxdb:8086
+Organization: Your InfluxDB Organization
+Token: Your Grafana InfluxDB API Token
+Default Bucket: Your opnsense bucket. This will be the bucket that the panel queries will use.
 ![Grafana InfluxDB Configuration](https://www.bsmithio.com/post/opnsense-dashboard/influxdb.png)
+
+
 
 
 For ElasticSearch, make the following configurations
 
+URL: http://elasticsearch:9200
+Time field name: timestamp
+Version: 7.10+
 ![Grafana ElasticSearch Configuration](https://www.bsmithio.com/post/opnsense-dashboard/elasticsearch.png)
 
 ### Import Dashboard
@@ -298,6 +308,8 @@ Dashboard Settings -> Variables
 WAN - $WAN is a static variable defined so that a separate dashboard panel can be created for WAN interfaces stats.  Use a comma-separated list for multiple WAN interfaces.
 
 LAN - $LAN uses a regex to remove any interfaces you don't want to be grouped as LAN. The filtering happens in the "Regex" field. I use a negative lookahead regex to match the interfaces I want excluded.  It should be pretty easy to understand what you need to do here. I have excluded igb0 (WAN),igb2,igb3,ovpnc1, and ovpnc1.
+
+iface - $iface is the interface variable for the Firewall panels, I have it set to igb0 by default. You can either remove igb0 so you can select all interfaces, or use a comma separated list of interfaces.
 
 Lastly, I don't recommend setting the time range beyond 24 hours, due to how many data points that will return in Grafana.
 
