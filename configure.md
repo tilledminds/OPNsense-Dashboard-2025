@@ -155,9 +155,7 @@ If you previously used the pkg install version of telegraf, follow these instruc
 
 Run `sudo pkg remove telegraf` to remove telegraf.
 
-Delete the line that starts with telegraf in /usr/local/etc/sudoers and replace with the line below.
-
-`telegraf ALL=(root) NOPASSWD: /usr/local/bin/telegraf_pfifgw.php`
+Delete the line that starts with telegraf in /usr/local/etc/sudoers.
 
 Once those are done you can continue with the new configuration.
 
