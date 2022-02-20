@@ -1,0 +1,17 @@
+%YAML 1.1
+---
+outputs:
+  - eve-log:
+      enabled: yes
+      filetype: regular
+      filename: /tmp/eve.json
+      filemode: 660
+      types:
+        - alert:
+             tagged-packets: yes
+             http: yes
+             tls: yes
+
+        - drop:
+            alerts: yes
+            flows: start
