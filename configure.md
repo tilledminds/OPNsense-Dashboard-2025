@@ -1,7 +1,8 @@
-
 - [Docker](#docker)
 - [Configuring InfluxDB](#configuring-influxdb)
 - [Configuring Telegraf](#configuring-telegraf)
+  * [Install the plugin and configure options](#install-the-plugin-and-configure-options)
+  * [Add telegraf to sudoers](#add-telegraf-to-sudoers)
   * [Telegraf Plugins](#telegraf-plugins)
 - [Configuring Graylog](#configuring-graylog)
   * [Add GeoIP to Graylog](#add-geoip-to-graylog)
@@ -12,8 +13,8 @@
   * [Import Dashboard](#import-dashboard)
   * [Configure Variables](#configure-variables)
 - [Configuration for the Suricata dashboard #Optional](#configuration-for-the-suricata-dashboard-optional)
-  * [Update Telegraf.conf](#update-telegrafconf)
-  * [Configure logging to UNIX socket](#configure-logging-to-unix-socket)
+  * [Add the necessary files](#add-the-necessary-files)
+  * [Restart Suricata and Telegraf](#restart-suricata-and-telegraf)
   * [Import the Suricata Dashboard](#import-the-suricata-dashboard)
 - [Troubleshooting](#troubleshooting)
   * [Telegraf Plugins](#telegraf-plugins-1)
@@ -25,6 +26,7 @@
   * [View field values](#view-field-values)
   * [How to drop an InfluxDB v2 measurement](#how-to-drop-an-influxdb-v2-measurement)
   * [Learn more about Flux queries](#learn-more-about-flux-queries)
+
 
 ## Docker
 
@@ -295,11 +297,15 @@ This section assumes you have already configured Suricata.
 
 Add [suricata.conf](./config/suricata/suricata.conf) to /usr/local/etc/telegraf.d
 
-`curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/suricata.conf' -o /usr/local/etc/telegraf.d/suricata.conf`
+```
+curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/suricata.conf' -o /usr/local/etc/telegraf.d/suricata.conf
+```
 
 Add [custom.yaml](./config/suricata/custom.yaml) to /usr/local/opnsense/service/templates/OPNsense/IDS
 
-`curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/custom.yaml' -o /usr/local/opnsense/service/templates/OPNsense/IDS/custom.yaml`
+```
+curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/custom.yaml' -o /usr/local/opnsense/service/templates/OPNsense/IDS/custom.yaml
+```
 
 Create the log file and give telegraf permissions to read it
 
