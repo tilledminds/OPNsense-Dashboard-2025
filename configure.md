@@ -32,116 +32,21 @@
 
 ## Docker
 
-To simplify everything, we'll use a docker compose file.
+To simplify everything, we'll use a Docker Compose file.
 
-You'll need to have Docker and Docker-Compose installed on the server that will host the dashboard.
-
+You will need to have Docker and Docker Compose installed on a server that will host the dashboard.
 
 [Install Docker](https://docs.docker.com/engine/install/)
 
 [Install Docker Compose](https://docs.docker.com/compose/install/)
 
-After you've installed Docker and Docker Compose, copy this code block to a file named docker-compose.yaml.
+After you've installed Docker and Docker Compose, download the docker-compose.yaml from this repo.
+
+`curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/docker-compose.yaml -o docker-compose.yaml`
+
 It's important that you change the TZ environment variable to your timezone for everything to work properly.
 I also recommend you change the passwords in this compose file as well.
 After you've made the necessary changes, run `docker-compose up -d` in the same directory as your docker-compose.yaml.
-
-```
-version: '3'
-services:
-  mongodb:
-    container_name: mongodb
-    image: mongo:4.4.10
-    volumes:
-      - mongodb_data:/data/db
-    restart: "unless-stopped"
-    environment:
-      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
-  elasticsearch:
-    container_name: elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
-    volumes:
-      - es_data:/usr/share/elasticsearch/data
-    environment:
-      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
-      - http.host=0.0.0.0
-      - transport.host=localhost
-      - network.host=0.0.0.0
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    mem_limit: 1g
-    restart: "unless-stopped"
-  graylog:
-    container_name: graylog
-    image: graylog/graylog:4.2.4
-    volumes:
-      - graylog_data:/usr/share/graylog/data
-    environment:
-      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
-      # CHANGE ME (must be at least 16 characters)!
-      - GRAYLOG_PASSWORD_SECRET=ZDcwMzQ3NTE4ZTIwM
-      # Username is "admin"
-      # Password is "admin", change this to your own hashed password. 'echo -n "password" | sha256sum'
-      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
-    entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
-    links:
-      - mongodb:mongo
-      - elasticsearch
-    depends_on:
-      - mongodb
-      - elasticsearch
-    ports:
-      # Graylog web interface and REST API
-      - 9000:9000
-      # Syslog UDP
-      - 1514:1514/udp
-      # Syslog TCP
-      - 1514:1514
-    restart: "unless-stopped"
-  influxdb:
-    container_name: influxdb
-    image: influxdb:2.1.1
-    ports:
-      - '8086:8086'
-    volumes:
-      - influxdb2_data:/var/lib/influxdb2
-    environment:
-      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
-    restart: "unless-stopped"
-  grafana:
-    container_name: grafana
-    image: grafana/grafana:8.3.3
-    ports:
-      - '3000:3000'
-    volumes:
-      - grafana_data:/var/lib/grafana
-    depends_on:
-      - influxdb
-    environment:
-      # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
-      # Change these
-      - GF_SECURITY_ADMIN_USER=opnsense
-      - GF_SECURITY_ADMIN_PASSWORD=opnsense
-      - GF_INSTALL_PLUGINS=grafana-worldmap-panel
-    restart: "unless-stopped"
-volumes:
-  grafana_data:
-  influxdb2_data:
-  graylog_data:
-  es_data:
-  mongodb_data:
-```
-
-
 Once you have your docker containers running, follow the steps below.
 
 ## Configuring InfluxDB
