@@ -1,6 +1,7 @@
 - [Docker](#docker)
 - [Configuring InfluxDB](#configuring-influxdb)
 - [Configuring Telegraf](#configuring-telegraf)
+- * [For previous users](#for-previous-users)
   * [Install the plugin and configure options](#install-the-plugin-and-configure-options)
   * [Add telegraf to sudoers](#add-telegraf-to-sudoers)
   * [Telegraf Plugins](#telegraf-plugins)
@@ -147,6 +148,18 @@ After InfluxDB is started, go to http://(ip of docker server):8086, you will nee
 
 
 ## Configuring Telegraf
+
+### For previous users
+
+If you previously used the pkg install version of telegraf, follow these instructions.
+
+Run `sudo pkg remove telegraf` to remove telegraf.
+
+Delete the line that starts with telegraf in /usr/local/etc/sudoers and replace with the line below.
+
+`telegraf ALL=(root) NOPASSWD: /usr/local/bin/telegraf_pfifgw.php`
+
+Once those are done you can continue with the new configuration.
 
 ### Install the plugin and configure options
 Install the Telegraf plugin on OPNsense, to do so, navigate to System -> Firmware -> Plugins -> Search for telegraf, and click the plus icon to install.
