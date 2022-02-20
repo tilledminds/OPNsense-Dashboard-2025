@@ -180,7 +180,7 @@ After that, we need to add telegraf to sudoers and use nopasswd to restrict tele
 printf 'telegraf ALL=(root) NOPASSWD: /usr/local/bin/telegraf_pfifgw.php' >> /usr/local/etc/sudoers
 ```
 
-Add the  [custom.conf](../config/custom.conf) telegraf config to /usr/local/etc/telegraf.d
+Add the  [custom.conf](./config/custom.conf) telegraf config to /usr/local/etc/telegraf.d
 
 ```
 curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/custom.conf -o /usr/local/etc/telegraf.d/custom.conf
@@ -293,11 +293,11 @@ This section assumes you have already configured Suricata.
 
 ### Add the necessary files
 
-Add [suricata.conf](../config/suricata/suricata.conf) to /usr/local/etc/telegraf.d
+Add [suricata.conf](./config/suricata/suricata.conf) to /usr/local/etc/telegraf.d
 
 `curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/suricata.conf' -o /usr/local/etc/telegraf.d/suricata.conf`
 
-Add [custom.yaml](../config/suricata/custom.yaml) to /usr/local/opnsense/service/templates/OPNsense/IDS
+Add [custom.yaml](./config/suricata/custom.yaml) to /usr/local/opnsense/service/templates/OPNsense/IDS
 
 `curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/custom.yaml' -o /usr/local/opnsense/service/templates/OPNsense/IDS/custom.yaml`
 
