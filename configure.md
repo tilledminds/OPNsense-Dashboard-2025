@@ -27,6 +27,7 @@
   * [View field values](#view-field-values)
   * [How to drop an InfluxDB v2 measurement](#how-to-drop-an-influxdb-v2-measurement)
   * [Learn more about Flux queries](#learn-more-about-flux-queries)
+  * [Suricata Troubleshooting](#suricata-troubleshooting)
 
 
 ## Docker
@@ -414,3 +415,24 @@ Then use the following
 https://docs.influxdata.com/influxdb/cloud/query-data/flux/query-fields/
 
 https://docs.influxdata.com/influxdb/cloud/query-data/flux/explore-schema/
+
+### Suricata Troubleshooting
+
+If there is no data on the Suricata dashboard, verify if there are any alerts in /tmp/eve.json.
+
+If there is nothing in /tmp/eve.json, verify that /usr/local/opnsense/service/templates/OPNsense/IDS/custom.yaml and /usr/local/etc/suricata/custom.yaml are identical to the one in this repo.
+
+If /usr/local/etc/suricata/custom.yaml is not identical, but /usr/local/opnsense/service/templates/OPNsense/IDS/custom.yaml is, you will need to reload Suricata from the GUI. To do so you would uncheck Enable in the Suricata GUI, click Apply, then check Enable, and click Apply again. You will need to wait for Suricata to reload. If you have a lot of rules this can take some time. 
+
+If you've verified and done all the steps above, and still see nothing, you could try using [tmNIDS](https://github.com/3CORESec/testmynids.org) to generate alerts. You will need bash installed on your OPNsense system for this. 
+
+`sudo pkg install bash`
+
+Once you have bash installed, you can use this one-liner to download and execute tmNIDS.
+
+```
+curl https://raw.githubusercontent.com/3CORESec/testmynids.org/master/tmNIDS -o /tmp/tmNIDS && chmod +x /tmp/tmNIDS && bash /tmp/tmNIDS
+```
+
+You can then run the tests through the CLI.
+![](https://i.imgur.com/PhoKWxN.png)
