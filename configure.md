@@ -345,11 +345,13 @@ chmod 640 /tmp/eve.json
 
 Restart Suricata from Services -> Intrusion Detection -> Administration
 
-Uncheck Enabled and apply.
-Check Enabled and apply.
+Uncheck Enabled and click Apply.
+
+Check Enabled and click Apply.
+
+Restart telegraf by running
 
 `sudo service telegraf restart`
-
 
 ### Import the Suricata Dashboard
 
@@ -363,25 +365,17 @@ To import the dashboard, copy the JSON from [OPNsense-Grafana-Dashboard-Suricata
 - If you're copying from a windows system, make sure the [CRLF is correct](https://www.cyberciti.biz/faq/howto-unix-linux-convert-dos-newlines-cr-lf-unix-text-format/)
 - The below command should display unix line endings (\n or LF) as $ and Windows line endings (\r\n or CRLF) as ^M$.
 
-`# cat -e /usr/local/bin/telegraf_pfinterface.php`
+`cat -e /usr/local/bin/telegraf_pfifgw.php`
 
 ### Telegraf Troubleshooting
-If you get no good output from running the plugin directly, try the following command before moving to the below step.
+If you get no good output from running the plugin directly, try the following command before moving to the step below.
 
-    # telegraf --test --config /usr/local/etc/telegraf.conf
+`sudo su -m telegraf -c 'telegraf --test --config /usr/local/etc/telegraf.conf --config-directory /usr/local/etc/telegraf.d'`
 
-To troubleshoot plugins further, add the following lines to the agent block in /usr/local/etc/telegraf.conf and send a HUP to the telegraf pid. You're going to need to do this from a ssh shell. Once you update the config you are going to need to tell telegraf to read the new configs. If you restart telegraf from OPNsense, this will not work since it will overwrite your changes.
+To troubleshoot plugins further, enable Debug Log and disable Quiet Log in the Telegraf GUI then click Save. Run the above command again.
 
-### Telegraf Config (Paste in to [agent] section)
-    debug = true
-    quiet = false
-    logfile = "/var/log/telegraf/telegraf.log"
+`sudo su -m telegraf -c 'telegraf --test --config /usr/local/etc/telegraf.conf --config-directory /usr/local/etc/telegraf.d'`
 
-### Restarting Telegraf
-    # ps aux | grep '[t]elegraf.conf'
-    # kill -HUP <pid of telegraf proces>
-
-Now go read /var/log/telegraf/telegraf.log
 
 ### InfluxDB
 When in doubt, run a few queries to see if the data you are looking for is being populated.
@@ -401,14 +395,19 @@ I recommend doing this in Grafana's Explore tab.
 
 ### How to drop an InfluxDB v2 measurement
 
-You must access your influx instance's shell to do this.
+You must access your InfluxDB instance's shell to do this.
+
 To do so run
+
 `sudo docker exec -it influxdb /bin/bash`
+
 on your docker host.
 
 Then use the following
 
-    bash-4.4# influx delete --bucket "$YourBucket" --predicate '_measurement="$Example"' -o $organization --start "1970-01-01T00:00:00Z" --stop "2050-12-31T23:59:00Z" --token "$YourAPIToken"
+```
+influx delete --bucket "$YourBucket" --predicate '_measurement="$Example"' -o $organization --start "1970-01-01T00:00:00Z" --stop "2050-12-31T23:59:00Z" --token "$YourAPIToken"
+```
 
 ### Learn more about Flux queries
 
