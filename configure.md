@@ -191,16 +191,22 @@ You will need to add the data sources on Grafana. Navigate to http://(ip of dock
 For InfluxDB, make the following configurations
 
 Query Language: Flux
+
 URL: http://influxdb:8086
+
 Organization: Your InfluxDB Organization
+
 Token: Your Grafana InfluxDB API Token
+
 Default Bucket: Your opnsense bucket. This will be the bucket that the panel queries will use.
 ![Grafana InfluxDB Configuration](https://www.bsmithio.com/post/opnsense-dashboard/influxdb.png)
 
 For ElasticSearch, make the following configurations
 
 URL: http://elasticsearch:9200
+
 Time field name: timestamp
+
 Version: 7.10+
 ![Grafana ElasticSearch Configuration](https://www.bsmithio.com/post/opnsense-dashboard/elasticsearch.png)
 
