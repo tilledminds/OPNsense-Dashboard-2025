@@ -83,8 +83,11 @@ Now navigate to Services -> Telegraf -> Output
 Enable Influx v2 Output and fill in the following:
 
 Influx v2 Token: Your InfluxDB Token
+
 Influx v2 URL: Your InfluxDB URL, this will be the IP address or hostname of your system that is running InfluxDB. E.g http://192.168.1.10:8086
+
 Influx v2 Organization: Your InfluxDB Organization
+
 Influx v2 Bucket: Your InfluxDB Bucket
 
 ![](https://i.imgur.com/VS4FKU7.png)
