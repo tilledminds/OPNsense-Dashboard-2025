@@ -22,7 +22,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1645295032646,
+  "iteration": 1645431848722,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -2922,8 +2922,7 @@
   "style": "dark",
   "tags": [
     "OPNsense",
-    "telegraf",
-    "suricata"
+    "telegraf"
   ],
   "templating": {
     "list": [
@@ -2959,6 +2958,7 @@
         "name": "ESdataSource",
         "options": [],
         "query": "elasticsearch",
+        "queryValue": "",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -3133,14 +3133,14 @@
           "type": "influxdb",
           "uid": "${dataSource}"
         },
-        "definition": "from(bucket: v.defaultBucket)\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) =>\n    r._measurement == \"interface\" and\n    r.name =~ /^${WAN:regex}$/\n  )\n  |> last()\n  |> group(columns: [\"tag\"])\n  |> keep(columns: [\"name\"])",
+        "definition": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"interface\")\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"name\"])",
         "hide": 0,
         "includeAll": true,
         "label": "FW_Interface",
         "multi": true,
         "name": "iface",
         "options": [],
-        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"interface\" and\r\n    r.name =~ /^${WAN:regex}$/\r\n  )\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"name\"])",
+        "query": "from(bucket: v.defaultBucket)\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r._measurement == \"interface\")\r\n  |> last()\r\n  |> group(columns: [\"tag\"])\r\n  |> keep(columns: [\"name\"])",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -3220,6 +3220,6 @@
   "timezone": "",
   "title": "OPNsense",
   "uid": "suTmk8c7k",
-  "version": 364,
+  "version": 372,
   "weekStart": ""
 }
