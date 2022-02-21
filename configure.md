@@ -83,8 +83,11 @@ Now navigate to Services -> Telegraf -> Output
 Enable Influx v2 Output and fill in the following:
 
 Influx v2 Token: Your InfluxDB Token
+
 Influx v2 URL: Your InfluxDB URL, this will be the IP address or hostname of your system that is running InfluxDB. E.g http://192.168.1.10:8086
+
 Influx v2 Organization: Your InfluxDB Organization
+
 Influx v2 Bucket: Your InfluxDB Bucket
 
 ![](https://i.imgur.com/VS4FKU7.png)
@@ -188,17 +191,25 @@ You will need to add the data sources on Grafana. Navigate to http://(ip of dock
 For InfluxDB, make the following configurations
 
 Query Language: Flux
+
 URL: http://influxdb:8086
+
 Organization: Your InfluxDB Organization
+
 Token: Your Grafana InfluxDB API Token
+
 Default Bucket: Your opnsense bucket. This will be the bucket that the panel queries will use.
+
 ![Grafana InfluxDB Configuration](https://www.bsmithio.com/post/opnsense-dashboard/influxdb.png)
 
 For ElasticSearch, make the following configurations
 
 URL: http://elasticsearch:9200
+
 Time field name: timestamp
+
 Version: 7.10+
+
 ![Grafana ElasticSearch Configuration](https://www.bsmithio.com/post/opnsense-dashboard/elasticsearch.png)
 
 ### Import Dashboard
