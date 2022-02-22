@@ -99,13 +99,20 @@ Then click Save.
 After that, we need to add telegraf to sudoers and use nopasswd to restrict telegraf to only what it needs to run as root.
 
 ```
-printf 'telegraf ALL=(root) NOPASSWD: /usr/local/bin/telegraf_pfifgw.php' >> /usr/local/etc/sudoers
+printf 'telegraf ALL=(root) NOPASSWD: /usr/local/bin/telegraf_pfifgw.php\n' | sudo tee -a /usr/local/etc/sudoers > /dev/null
+```
+
+You may also wish to disable sudo logging for telegraf_pfifgw.php, otherwise you'll see many sudo logs from telegraf running the script every 10 seconds.
+
+```
+printf 'Cmnd_Alias PFIFGW = /usr/local/bin/telegraf_pfifgw.php\n' | sudo tee -a /usr/local/etc/sudoers > /dev/null
+printf 'Defaults\!PFIFGW \!log_allowed\n' | sudo tee -a /usr/local/etc/sudoers > /dev/null
 ```
 
 Add the  [custom.conf](./config/custom.conf) telegraf config to /usr/local/etc/telegraf.d
 
 ```
-curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/custom.conf -o /usr/local/etc/telegraf.d/custom.conf
+sudo curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/custom.conf -o /usr/local/etc/telegraf.d/custom.conf
 ```
 
 ### Telegraf Plugins
@@ -115,20 +122,18 @@ curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config
 Place [telegraf_pfifgw.php](https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php) and [telegraf_temperature.sh](https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh) in /usr/local/bin and chmod them to 755.
 
 ```
-cd /usr/local/bin
-curl "https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php" -o telegraf_pfifgw.php
-curl "https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh" -o telegraf_temperature.sh
-chmod 755 telegraf_temperature.sh telegraf_pfifgw.php
+curl "https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php" -o /usr/local/bin/telegraf_pfifgw.php
+curl "https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh" -o /usr/local/bin/telegraf_temperature.sh
+chmod 755 /usr/local/bin/telegraf_temperature.sh /usr/local/bin/telegraf_pfifgw.php
 ```
 
 Test these out before starting the telegraf service by executing them
 
-`sudo ./telegraf_pfifgw.php`
+`sudo telegraf_pfifgw.php`
 
-`./telegraf_temperature.sh`
+`telegraf_temperature.sh`
 
 The temperature plugin may not work on every system, if you receive `sysctl: unknown oid 'hw.acpi.thermal'` comment out or remove that line from the plugin.
-
 
 After this is done, navigate to Services -> Telegraf -> General -> Enable Telegraf Agent.
 
@@ -240,21 +245,21 @@ This section assumes you have already configured Suricata.
 Add [suricata.conf](./config/suricata/suricata.conf) to /usr/local/etc/telegraf.d
 
 ```
-curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/suricata.conf' -o /usr/local/etc/telegraf.d/suricata.conf
+sudo curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/suricata.conf' -o /usr/local/etc/telegraf.d/suricata.conf
 ```
 
 Add [custom.yaml](./config/suricata/custom.yaml) to /usr/local/opnsense/service/templates/OPNsense/IDS
 
 ```
-curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/custom.yaml' -o /usr/local/opnsense/service/templates/OPNsense/IDS/custom.yaml
+sudo curl 'https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/custom.yaml' -o /usr/local/opnsense/service/templates/OPNsense/IDS/custom.yaml
 ```
 
 Create the log file and give telegraf permissions to read it
 
 ```
-touch /tmp/eve.json
-chown :telegraf /tmp/eve.json
-chmod 640 /tmp/eve.json
+sudo touch /tmp/eve.json
+sudo chown :telegraf /tmp/eve.json
+sudo chmod 640 /tmp/eve.json
 ```
 
 ### Restart Suricata and Telegraf
