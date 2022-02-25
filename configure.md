@@ -112,6 +112,9 @@ printf 'Defaults\!PFIFGW \!log_allowed\n' | sudo tee -a /usr/local/etc/sudoers >
 Add the  [custom.conf](./config/custom.conf) telegraf config to /usr/local/etc/telegraf.d
 
 ```
+sudo mkdir /usr/local/etc/telegraf.d
+sudo chown telegraf:telegraf /usr/local/etc/telegraf.d
+sudo chmod 750 /usr/local/etc/telegraf.d
 sudo curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/custom.conf -o /usr/local/etc/telegraf.d/custom.conf
 ```
 
