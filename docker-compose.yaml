@@ -30,7 +30,7 @@ services:
     environment:
       # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
       - TZ=CST6CDT
-      # CHANGE ME (must be at least 16 characters)!
+      # CHANGE ME (must be at least 16 characters)! This is not your password, this is meant for salting the password below.
       - GRAYLOG_PASSWORD_SECRET=ZDcwMzQ3NTE4ZTIwM
       # Username is "admin"
       # Password is "admin", change this to your own hashed password. 'echo -n "password" | sha256sum' 
