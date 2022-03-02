@@ -15,9 +15,9 @@ foreach ($iflist as $ifname => $friendly) {
     $ifstatus = $ifinfo['status'];
     $realif = get_real_interface($ifname);
     $ip4addr = get_interface_ip($ifname);
-    $ip4subnet = interfaces_primary_address($realif, $ifconfig_details);
+    $ip4subnet = interfaces_primary_address($realif, $ifconfig_details)[1];
     $ip6addr = get_interface_ipv6($ifname);
-    $ip6subnet = interfaces_primary_address6($realif, $ifconfig_details);
+    $ip6subnet = interfaces_primary_address6($realif, $ifconfig_details)[1];
     $mac = get_interface_mac($realif);
 
     if (!isset($ifinfo)) {
@@ -42,7 +42,7 @@ foreach ($iflist as $ifname => $friendly) {
         $ip4addr = "Unassigned";
     }
     if (!isset($ip4subnet)) {
-        $ip4subnet = "0";
+        $ip4subnet = "Unassigned";
     }
     if (!isset($ip6addr)) {
         $ip6addr = "Unassigned";
@@ -62,9 +62,9 @@ foreach ($iflist as $ifname => $friendly) {
         $host,
         $realif,
         $ip4addr,
-        $ip4subnet[1],
+        $ip4subnet,
         $ip6addr,
-        $ip6subnet[1],
+        $ip6subnet,
         $mac,
         $friendly,
         $source,
