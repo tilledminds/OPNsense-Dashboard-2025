@@ -15,9 +15,9 @@ foreach ($iflist as $ifname => $friendly) {
     $ifstatus = $ifinfo['status'];
     $realif = get_real_interface($ifname);
     $ip4addr = get_interface_ip($ifname);
-    $ip4subnet = find_interface_network($realif, true, $ifconfig_details);
+    $ip4subnet = interfaces_primary_address($realif, $ifconfig_details);
     $ip6addr = get_interface_ipv6($ifname);
-    $ip6subnet = find_interface_networkv6($realif, true, $ifconfig_details);
+    $ip6subnet = interfaces_primary_address6($realif, $ifconfig_details);
     $mac = get_interface_mac($realif);
 
     if (!isset($ifinfo)) {
@@ -62,9 +62,9 @@ foreach ($iflist as $ifname => $friendly) {
         $host,
         $realif,
         $ip4addr,
-        $ip4subnet,
+        $ip4subnet[1],
         $ip6addr,
-        $ip6subnet,
+        $ip6subnet[1],
         $mac,
         $friendly,
         $source,
