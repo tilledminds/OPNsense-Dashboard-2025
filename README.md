@@ -20,7 +20,7 @@
 
 Converted InfluxQL queries to Flux.
 
-Converted pFSense functions to OPNsense.
+Converted pfSense functions to OPNsense.
 
 Added Firewall panels.
 
