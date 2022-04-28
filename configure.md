@@ -188,6 +188,10 @@ Once that is all done, login to your OPNsense router and navigate to System -> S
 
 ![OPNsense Syslog Target](https://www.bsmithio.com/post/opnsense-dashboard/opnsensesyslog.png)
 
+If you are on OPNsense 22.1+ use the following options:
+
+![OPNsense 22.1+ Syslog Target](https://i.imgur.com/l1AksLD.png)
+
 Add a description if you'd like, then click save.
 
 ## Configuring Grafana
