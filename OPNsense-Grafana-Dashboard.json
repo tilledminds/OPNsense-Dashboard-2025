@@ -2701,8 +2701,8 @@
               "bytes_sent": 1
             },
             "renameByName": {
-              "bytes_recv": "Bits Sent",
-              "bytes_sent": "Bits Recv"
+              "bytes_recv": "Bits Recv",
+              "bytes_sent": "Bits Sent"
             }
           }
         }
@@ -2795,8 +2795,8 @@
               "bytes_sent": 1
             },
             "renameByName": {
-              "bytes_recv": "Bytes Sent - This Month",
-              "bytes_sent": "Bytes Recv - This Month"
+              "bytes_recv": "Bytes Recv - This Month",
+              "bytes_sent": "Bytes Sent - This Month"
             }
           }
         }
