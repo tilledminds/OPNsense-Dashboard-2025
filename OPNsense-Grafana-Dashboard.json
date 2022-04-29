@@ -2697,8 +2697,8 @@
             },
             "indexByName": {
               "Time": 0,
-              "bytes_recv": 2,
-              "bytes_sent": 1
+              "bytes_recv": 1,
+              "bytes_sent": 2
             },
             "renameByName": {
               "bytes_recv": "Bits Recv",
