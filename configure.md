@@ -190,9 +190,13 @@ Once that is all done, login to your OPNsense router and navigate to System -> S
 
 If you are on OPNsense 22.1+ use the following options:
 
-![OPNsense 22.1+ Syslog Target](https://i.imgur.com/AbrUDWj.png)
+![OPNsense 22.1+ Syslog Target](https://i.imgur.com/1oAMcde.png)
 
 Add a description if you'd like, then click save.
+
+If you plan on using the Suricata dashboard you will need to set the following options:
+
+[!OPNsense Syslog Target if using the Suricata dashboard](https://i.imgur.com/LmmaXxz.png)
 
 ## Configuring Grafana
 
