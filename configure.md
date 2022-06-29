@@ -196,7 +196,7 @@ Add a description if you'd like, then click save.
 
 If you plan on using the Suricata dashboard you will need to set the following options:
 
-[!OPNsense Syslog Target if using the Suricata dashboard](https://i.imgur.com/LmmaXxz.png)
+![OPNsense Syslog Target if using the Suricata dashboard](https://i.imgur.com/LmmaXxz.png)
 
 ## Configuring Grafana
 
