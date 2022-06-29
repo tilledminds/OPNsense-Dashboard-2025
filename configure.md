@@ -190,7 +190,7 @@ Once that is all done, login to your OPNsense router and navigate to System -> S
 
 If you are on OPNsense 22.1+ use the following options:
 
-![OPNsense 22.1+ Syslog Target](https://i.imgur.com/l1AksLD.png)
+![OPNsense 22.1+ Syslog Target](https://i.imgur.com/AbrUDWj.png)
 
 Add a description if you'd like, then click save.
 
