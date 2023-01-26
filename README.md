@@ -34,9 +34,9 @@ Added Suricata dashboard, see instructions [here](./configure.md#configuration-f
 
 # Running on
 
-    Grafana 8.3
-    InfluxDB 2.1
-    Graylog 4.2
+    Grafana 9.2.10
+    InfluxDB 2.6.1
+    Graylog 5.0.2
 
 
 # Configuration
