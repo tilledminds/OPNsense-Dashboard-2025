@@ -91,12 +91,13 @@ foreach ($gw_array as $gw => $gateway) {
     $delay = $gw_statuses[$gw]["delay"];
     $stddev = $gw_statuses[$gw]["stddev"];
     $status = $gw_statuses[$gw]["status"];
+    $loss = $gw_statuses[$gw]["loss"];
 
     $interface = $gateway["interface"];
     $gwdescr = $gateway["descr"];
     $monitor = $gateway["monitor"];
     $source = $gateway["gateway"];
-    $loss = $gateway["loss"];
+    
     if (!isset($monitor)) {
         $monitor = "Unavailable";
     }
