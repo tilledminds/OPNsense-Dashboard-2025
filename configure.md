@@ -28,6 +28,7 @@
   * [How to drop an InfluxDB v2 measurement](#how-to-drop-an-influxdb-v2-measurement)
   * [Learn more about Flux queries](#learn-more-about-flux-queries)
   * [Suricata Troubleshooting](#suricata-troubleshooting)
+  * [Map Issues](#map-issues)
 
 
 ## Docker
@@ -363,3 +364,9 @@ curl https://raw.githubusercontent.com/3CORESec/testmynids.org/master/tmNIDS -o 
 
 You can then run the tests through the CLI.
 ![](https://i.imgur.com/PhoKWxN.png)
+
+### Map Issues
+
+If you see no GeoIP data on the map make sure you rearranged the Message Processors in System -> Configurations, and reorder like so:
+
+![Graylog Message Processors](https://www.bsmithio.com/post/opnsense-dashboard/processors.png)
