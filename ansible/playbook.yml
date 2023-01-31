@@ -1,0 +1,81 @@
+---
+- name: Configure Opnsense for Grafana
+  hosts: all
+  become: true
+
+  tasks:
+  - name: Add telegraf to sudoers
+    lineinfile:
+      path: /usr/local/etc/sudoers
+      state: present
+      regexp: '^telegraf\s+ALL='
+      line: 'telegraf ALL=(root) NOPASSWD: /usr/local/bin/telegraf_pfifgw.php'
+      validate: '/usr/local/sbin/visudo -cf %s'
+
+  - name: Add telegraf cmd alias to sudoers
+    lineinfile:
+      path: /usr/local/etc/sudoers
+      state: present
+      regexp: '^Cmnd_Alias\s+PFIGW'
+      line: 'Cmnd_Alias PFIFGW = /usr/local/bin/telegraf_pfifgw.php'
+      validate: '/usr/local/sbin/visudo -cf %s'
+        #  - name: disable logging for pfifgw script
+
+  - name: Disable logging for PFIGW
+    lineinfile:
+      path: /usr/local/etc/sudoers
+      state: present
+      regexp: '^Defaults!PFIGW'
+      line: 'Defaults!PFIFGW !log_allowed'
+      validate: '/usr/local/sbin/visudo -cf %s'
+
+  - name: Create telegraf directory
+    file:
+      path: /usr/local/etc/telegraf.d
+      state: directory
+      owner: telegraf
+      group: telegraf
+      mode: '0750'
+
+  - name: Download telegraf config
+    get_url:
+      url: https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/custom.conf
+      dest: /usr/local/etc/telegraf.d/custom.conf
+      mode: '0644'
+
+  - name: Download telegraf_pfifgw.php
+    get_url:
+      url: https://raw.githubusercontent.com/Bsmith101/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php
+      dest: /usr/local/bin/telegraf_pfifgw.php
+      mode: '0755'
+
+  - name: Download telegraf_temperature.sh
+    get_url:
+      url: https://raw.githubusercontent.com/Bsmith101/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh
+      dest: /usr/local/bin/telegraf_temperature.sh
+      mode: '0755'
+
+  - name: Download Suricata.conf
+    get_url:
+      url: https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/suricata.conf
+      dest: /usr/local/etc/telegraf.d/suricata.conf
+      mode: '0644'
+
+  - name: Download suricata custom.yaml
+    get_url:
+      url: https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/suricata/custom.yaml
+      dest: /usr/local/opnsense/service/templates/OPNsense/IDS/custom.yaml
+      mode: '0644'
+
+  - name: create eve.json
+    file:
+      path: /tmp/eve.json
+      owner: telegraf
+      state: touch
+      group: telegraf
+      mode: '0640'
+
+  - name: Restart Telegraf service
+    service:
+      name: telegraf
+      state: restarted
