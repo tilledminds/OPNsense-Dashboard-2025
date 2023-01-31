@@ -1,6 +1,6 @@
 ---
 - name: Configure Opnsense for Grafana
-  hosts: 192.168.1.1
+  hosts: all
   become: true
 
   tasks:
