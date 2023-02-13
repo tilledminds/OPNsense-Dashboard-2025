@@ -1,8 +1,9 @@
 - [Docker](#docker)
 - [Configuring InfluxDB](#configuring-influxdb)
 - [Configuring Telegraf](#configuring-telegraf)
-- * [For previous users](#for-previous-users)
+  * [For previous users](#for-previous-users)
   * [Install the plugin and configure options](#install-the-plugin-and-configure-options)
+  * [Alternative OPNSense Configuration via Ansible](#alternative-opnsense-configuration-via-ansible)
   * [Add telegraf to sudoers](#add-telegraf-to-sudoers)
   * [Telegraf Plugins](#telegraf-plugins)
 - [Configuring Graylog](#configuring-graylog)
@@ -20,8 +21,6 @@
 - [Troubleshooting](#troubleshooting)
   * [Telegraf Plugins](#telegraf-plugins-1)
   * [Telegraf Troubleshooting](#telegraf-troubleshooting)
-  * [Telegraf Config (Paste in to [agent] section)](#telegraf-config-paste-in-to-agent-section)
-  * [Restarting Telegraf](#restarting-telegraf)
   * [InfluxDB](#influxdb)
   * [View measurements](#view-measurements)
   * [View field values](#view-field-values)
@@ -66,6 +65,7 @@ Delete the line that starts with telegraf in /usr/local/etc/sudoers.
 
 Once those are done you can continue with the new configuration.
 
+
 ### Install the plugin and configure options
 Install the Telegraf plugin on OPNsense, to do so, navigate to System -> Firmware -> Plugins -> Search for telegraf, and click the plus icon to install.
 
@@ -94,6 +94,11 @@ Influx v2 Bucket: Your InfluxDB Bucket
 ![](https://i.imgur.com/VS4FKU7.png)
 
 Then click Save.
+
+
+### Alternative OPNSense Configuration via Ansible
+
+You can use Ansible to automate a few sections. Install Ansible on your linux server and use the files at https://github.com/bsmithio/OPNsense-Dashboard/tree/master/ansible. If you use this method you can skip these sections: Add telegraf to sudoers, Telegraf Plugins, and Configuration for the Suricata dashboard.
 
 ### Add telegraf to sudoers
 
