@@ -98,7 +98,7 @@ Then click Save.
 
 ### Alternative OPNSense Configuration via Ansible
 
-You can use Ansible to automate a few sections. Install Ansible on your linux server and use the files at https://github.com/bsmithio/OPNsense-Dashboard/tree/master/ansible. If you use this method you can skip these sections: Add telegraf to sudoers, Telegraf Plugins, and Configuration for the Suricata dashboard.
+You can use Ansible to automate a few sections. Install [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/installation_distros.html) on your linux server and use the files at https://github.com/bsmithio/OPNsense-Dashboard/tree/master/ansible. If you use this method you can skip these sections: Add telegraf to sudoers, Telegraf Plugins, and Configuration for the Suricata dashboard.
 
 ### Add telegraf to sudoers
 
