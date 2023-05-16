@@ -184,7 +184,7 @@ Now, add your index set from earlier to the "OPNsense / filterlog" stream. Navig
 
 There's one more step we need to do here, navigate to System -> Configurations -> click on Update under Message Processors, and reorder like so:
 
-![Graylog Message Processors](https://www.bsmithio.com/post/opnsense-dashboard/processors.png)
+![Graylog Message Processors](https://i.imgur.com/0pqxtyr.png)
 
 Ensure that all of these are enabled, and click save.
 
@@ -374,4 +374,4 @@ You can then run the tests through the CLI.
 
 If you see no GeoIP data on the map make sure you rearranged the Message Processors in System -> Configurations, and reorder like so:
 
-![Graylog Message Processors](https://www.bsmithio.com/post/opnsense-dashboard/processors.png)
+![Graylog Message Processors](https://i.imgur.com/0pqxtyr.png)
