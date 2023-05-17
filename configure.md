@@ -29,7 +29,6 @@
   * [Suricata Troubleshooting](#suricata-troubleshooting)
   * [Map Issues](#map-issues)
 
-
 ## Docker
 
 To simplify everything, we'll use a Docker Compose file.
@@ -69,13 +68,13 @@ Once those are done you can continue with the new configuration.
 ### Install the plugin and configure options
 Install the Telegraf plugin on OPNsense, to do so, navigate to System -> Firmware -> Plugins -> Search for telegraf, and click the plus icon to install.
 
-![](https://i.imgur.com/vowGSSx.png)
+![](https://www.bsmithio.com/post/opnsense-dashboard/plugin.png)
 
 Navigate to Services -> Telegraf -> Input
 
 Enable Network and PF Inputs.
 
-![](https://i.imgur.com/WskfVlS.png)
+![](https://www.bsmithio.com/post/opnsense-dashboard/pfinput.png)
 
 Then click Save.
 
@@ -91,7 +90,7 @@ Influx v2 Organization: Your InfluxDB Organization
 
 Influx v2 Bucket: Your InfluxDB Bucket
 
-![](https://i.imgur.com/VS4FKU7.png)
+![](https://www.bsmithio.com/post/opnsense-dashboard/influxbucket.png)
 
 Then click Save.
 
@@ -184,7 +183,7 @@ Now, add your index set from earlier to the "OPNsense / filterlog" stream. Navig
 
 There's one more step we need to do here, navigate to System -> Configurations -> click on Update under Message Processors, and reorder like so:
 
-![Graylog Message Processors](https://i.imgur.com/0pqxtyr.png)
+![Graylog Message Processors](https://www.bsmithio.com/post/opnsense-dashboard/processors.png)
 
 Ensure that all of these are enabled, and click save.
 
@@ -196,7 +195,7 @@ Once that is all done, login to your OPNsense router and navigate to System -> S
 
 If you are on OPNsense 22.1+ use the following options:
 
-![OPNsense 22.1+ Syslog Target](https://i.imgur.com/1oAMcde.png)
+![OPNsense 22.1+ Syslog Target](https://www.bsmithio.com/post/opnsense-dashboard/opnsense22-1-syslog.png)
 
 Add a description if you'd like, then click save.
 
@@ -368,10 +367,11 @@ curl https://raw.githubusercontent.com/3CORESec/testmynids.org/master/tmNIDS -o 
 ```
 
 You can then run the tests through the CLI.
-![](https://i.imgur.com/PhoKWxN.png)
+![](https://www.bsmithio.com/post/opnsense-dashboard/tmnids.png)
 
 ### Map Issues
 
 If you see no GeoIP data on the map make sure you rearranged the Message Processors in System -> Configurations, and reorder like so:
 
-![Graylog Message Processors](https://i.imgur.com/0pqxtyr.png)
+![Graylog Message Processors](https://www.bsmithio.com/post/opnsense-dashboard/processors.png)
+
