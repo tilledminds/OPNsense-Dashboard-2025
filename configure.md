@@ -191,11 +191,7 @@ Ensure that all of these are enabled, and click save.
 
 Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / targets. Add a new target with the following options:
 
-![OPNsense Syslog Target](https://www.bsmithio.com/post/opnsense-dashboard/opnsensesyslog.png)
-
-If you are on OPNsense 22.1+ use the following options:
-
-![OPNsense 22.1+ Syslog Target](https://www.bsmithio.com/post/opnsense-dashboard/opnsense22-1-syslog.png)
+![OPNsense Syslog Target](https://i.nuuls.com/XQATf.png)
 
 Add a description if you'd like, then click save.
 
