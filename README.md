@@ -14,7 +14,7 @@
 - WAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 - LAN Statistics - Traffic & Throughput (Identified by dashboard variable)
 - Firewall Statistics - Blocked Ports, Protocols, Events, Blocked IP Locations, and Top Blocked IP
-
+- 
 # Changelog
 
 
@@ -27,6 +27,8 @@ Added Firewall panels.
 Added subnet info to Interface Summary panels
 
 Added Suricata dashboard, see instructions [here](./configure.md#configuration-for-the-suricata-dashboard-optional)
+
+Added RFC5424 support thanks to [subract](https://github.com/IRQ10/Graylog-OPNsense_Extractors/pull/11)
 
 ![Main Dashboard](Grafana-OPNsense.png)
 
