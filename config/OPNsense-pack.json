@@ -1,286 +1,21 @@
 {
-  "v": 1,
-  "id": "f68cf7f1-f238-4c1a-a1b5-ceb7e0ffbdd1",
-  "rev": 1,
+  "v": "1",
+  "id": "6f88399d-9c58-4a70-b7fe-30d4a057132a",
+  "rev": 2,
   "name": "OPNsense Dashboard",
-  "summary": "OPNsense Dashboard",
+  "summary": "This pack includes everything needed to setup Graylog for the dashboard.",
   "description": "",
   "vendor": "bsmithio",
-  "url": "https://github.com/bsmithio/OPNsense-Dashboard/",
+  "url": "https://github.com/bsmithio/OPNsense-Dashboard",
   "parameters": [],
   "entities": [
-    {
-      "v": "1",
-      "type": {
-        "name": "lookup_table",
-        "version": "1"
-      },
-      "id": "f3295aa2-d219-4db3-8f01-e23e852da4e5",
-      "data": {
-        "default_single_value_type": {
-          "@type": "string",
-          "@value": "NULL"
-        },
-        "cache_name": {
-          "@type": "string",
-          "@value": "6f974ae8-5d78-4552-afa9-0ec512ee5273"
-        },
-        "name": {
-          "@type": "string",
-          "@value": "geoip"
-        },
-        "default_multi_value_type": {
-          "@type": "string",
-          "@value": "NULL"
-        },
-        "default_multi_value": {
-          "@type": "string",
-          "@value": ""
-        },
-        "data_adapter_name": {
-          "@type": "string",
-          "@value": "0be5d392-f0bf-49af-b6c5-680ab356b9a0"
-        },
-        "_scope": {
-          "@type": "string",
-          "@value": "DEFAULT"
-        },
-        "title": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "default_single_value": {
-          "@type": "string",
-          "@value": ""
-        },
-        "description": {
-          "@type": "string",
-          "@value": "Geo IP Lookup"
-        }
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=5.0.2+59d96f8"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "pipeline",
-        "version": "1"
-      },
-      "id": "bde4c008-a0c9-4049-ad0c-60881fa545d8",
-      "data": {
-        "title": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "description": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "source": {
-          "@type": "string",
-          "@value": "pipeline \"GeoIP\"\nstage 0 match either\nrule \"GeoIP lookup: src_ip\"\nend"
-        },
-        "connected_streams": [
-          {
-            "@type": "string",
-            "@value": "df7d5f2d-ff6a-4a4b-9044-cbd6238da087"
-          }
-        ]
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=5.0.2+59d96f8"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "lookup_cache",
-        "version": "1"
-      },
-      "id": "6f974ae8-5d78-4552-afa9-0ec512ee5273",
-      "data": {
-        "_scope": {
-          "@type": "string",
-          "@value": "DEFAULT"
-        },
-        "name": {
-          "@type": "string",
-          "@value": "geoip"
-        },
-        "title": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "description": {
-          "@type": "string",
-          "@value": "GeoIP Cache"
-        },
-        "configuration": {
-          "type": {
-            "@type": "string",
-            "@value": "guava_cache"
-          },
-          "max_size": {
-            "@type": "integer",
-            "@value": 1000
-          },
-          "expire_after_access": {
-            "@type": "long",
-            "@value": 1
-          },
-          "expire_after_access_unit": {
-            "@type": "string",
-            "@value": "SECONDS"
-          },
-          "expire_after_write": {
-            "@type": "long",
-            "@value": 0
-          }
-        }
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=5.0.2+59d96f8"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "stream",
-        "version": "1"
-      },
-      "id": "df7d5f2d-ff6a-4a4b-9044-cbd6238da087",
-      "data": {
-        "alarm_callbacks": [],
-        "outputs": [],
-        "remove_matches": {
-          "@type": "boolean",
-          "@value": true
-        },
-        "title": {
-          "@type": "string",
-          "@value": "OPNsense / filterlog"
-        },
-        "stream_rules": [
-          {
-            "type": {
-              "@type": "string",
-              "@value": "CONTAINS"
-            },
-            "field": {
-              "@type": "string",
-              "@value": "message"
-            },
-            "value": {
-              "@type": "string",
-              "@value": "filterlog"
-            },
-            "inverted": {
-              "@type": "boolean",
-              "@value": false
-            },
-            "description": {
-              "@type": "string",
-              "@value": ""
-            }
-          }
-        ],
-        "alert_conditions": [],
-        "matching_type": {
-          "@type": "string",
-          "@value": "AND"
-        },
-        "disabled": {
-          "@type": "boolean",
-          "@value": false
-        },
-        "description": {
-          "@type": "string",
-          "@value": "OPNsense filter logs"
-        },
-        "default_stream": {
-          "@type": "boolean",
-          "@value": false
-        }
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=5.0.2+59d96f8"
-        }
-      ]
-    },
-    {
-      "v": "1",
-      "type": {
-        "name": "lookup_adapter",
-        "version": "1"
-      },
-      "id": "0be5d392-f0bf-49af-b6c5-680ab356b9a0",
-      "data": {
-        "_scope": {
-          "@type": "string",
-          "@value": "DEFAULT"
-        },
-        "name": {
-          "@type": "string",
-          "@value": "geoip"
-        },
-        "title": {
-          "@type": "string",
-          "@value": "GeoIP"
-        },
-        "description": {
-          "@type": "string",
-          "@value": "Geo IP Lookup Table"
-        },
-        "configuration": {
-          "type": {
-            "@type": "string",
-            "@value": "maxmind_geoip"
-          },
-          "path": {
-            "@type": "string",
-            "@value": "/usr/share/graylog/data/data/GeoLite2-Country.mmdb"
-          },
-          "database_type": {
-            "@type": "string",
-            "@value": "MAXMIND_COUNTRY"
-          },
-          "check_interval": {
-            "@type": "long",
-            "@value": 1
-          },
-          "check_interval_unit": {
-            "@type": "string",
-            "@value": "MINUTES"
-          }
-        }
-      },
-      "constraints": [
-        {
-          "type": "server-version",
-          "version": ">=5.0.2+59d96f8"
-        }
-      ]
-    },
     {
       "v": "1",
       "type": {
         "name": "input",
         "version": "1"
       },
-      "id": "1f88a480-2960-4ee9-9ea4-87e38b22e92c",
+      "id": "a9e59e12-e4a8-4a9f-acda-960e78b8f9b6",
       "data": {
         "title": {
           "@type": "string",
@@ -682,14 +417,212 @@
     {
       "v": "1",
       "type": {
-        "name": "pipeline_rule",
+        "name": "lookup_adapter",
         "version": "1"
       },
-      "id": "ae3c665d-5f80-4040-bbe6-0261e890d1dc",
+      "id": "056ed2d3-38f8-41cc-8cb0-b9fdb8d95d32",
+      "data": {
+        "_scope": {
+          "@type": "string",
+          "@value": "DEFAULT"
+        },
+        "name": {
+          "@type": "string",
+          "@value": "geoip"
+        },
+        "title": {
+          "@type": "string",
+          "@value": "GeoIP"
+        },
+        "description": {
+          "@type": "string",
+          "@value": "Geo IP Lookup Table"
+        },
+        "configuration": {
+          "type": {
+            "@type": "string",
+            "@value": "maxmind_geoip"
+          },
+          "path": {
+            "@type": "string",
+            "@value": "/usr/share/graylog/data/data/GeoLite2-Country.mmdb"
+          },
+          "database_type": {
+            "@type": "string",
+            "@value": "MAXMIND_COUNTRY"
+          },
+          "check_interval": {
+            "@type": "long",
+            "@value": 1
+          },
+          "check_interval_unit": {
+            "@type": "string",
+            "@value": "MINUTES"
+          }
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=5.0.2+59d96f8"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "lookup_cache",
+        "version": "1"
+      },
+      "id": "776809e0-ea08-45e0-9df3-f06bb15585ed",
+      "data": {
+        "_scope": {
+          "@type": "string",
+          "@value": "DEFAULT"
+        },
+        "name": {
+          "@type": "string",
+          "@value": "geoip"
+        },
+        "title": {
+          "@type": "string",
+          "@value": "GeoIP"
+        },
+        "description": {
+          "@type": "string",
+          "@value": "GeoIP Cache"
+        },
+        "configuration": {
+          "type": {
+            "@type": "string",
+            "@value": "guava_cache"
+          },
+          "max_size": {
+            "@type": "integer",
+            "@value": 1000
+          },
+          "expire_after_access": {
+            "@type": "long",
+            "@value": 1
+          },
+          "expire_after_access_unit": {
+            "@type": "string",
+            "@value": "SECONDS"
+          },
+          "expire_after_write": {
+            "@type": "long",
+            "@value": 0
+          }
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=5.0.2+59d96f8"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "lookup_table",
+        "version": "1"
+      },
+      "id": "19a27a83-5ffc-4f8d-a39c-a00d7c4ea36a",
+      "data": {
+        "default_single_value_type": {
+          "@type": "string",
+          "@value": "NULL"
+        },
+        "cache_name": {
+          "@type": "string",
+          "@value": "776809e0-ea08-45e0-9df3-f06bb15585ed"
+        },
+        "name": {
+          "@type": "string",
+          "@value": "geoip"
+        },
+        "default_multi_value_type": {
+          "@type": "string",
+          "@value": "NULL"
+        },
+        "default_multi_value": {
+          "@type": "string",
+          "@value": ""
+        },
+        "data_adapter_name": {
+          "@type": "string",
+          "@value": "056ed2d3-38f8-41cc-8cb0-b9fdb8d95d32"
+        },
+        "_scope": {
+          "@type": "string",
+          "@value": "DEFAULT"
+        },
+        "title": {
+          "@type": "string",
+          "@value": "GeoIP"
+        },
+        "default_single_value": {
+          "@type": "string",
+          "@value": ""
+        },
+        "description": {
+          "@type": "string",
+          "@value": "Geo IP Lookup"
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=5.0.2+59d96f8"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "pipeline",
+        "version": "1"
+      },
+      "id": "5a7ec7eb-d413-4d6f-96e1-70a73f4df8e1",
       "data": {
         "title": {
           "@type": "string",
-          "@value": "GeoIP lookup: src_ip"
+          "@value": "GeoIP"
+        },
+        "description": {
+          "@type": "string",
+          "@value": "GeoIP"
+        },
+        "source": {
+          "@type": "string",
+          "@value": "pipeline \"GeoIP\"\nstage 0 match either\nrule \"GeoIP lookup: src-ip\"\nend"
+        },
+        "connected_streams": [
+          {
+            "@type": "string",
+            "@value": "67c8983f-c842-4a33-9650-94f19a793e0d"
+          }
+        ]
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=5.0.2+59d96f8"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "pipeline_rule",
+        "version": "1"
+      },
+      "id": "9bea4894-60ec-495b-8531-0f5e27fc8025",
+      "data": {
+        "title": {
+          "@type": "string",
+          "@value": "GeoIP lookup: src-ip"
         },
         "description": {
           "@type": "string",
@@ -697,7 +630,74 @@
         },
         "source": {
           "@type": "string",
-          "@value": "rule \"GeoIP lookup: src_ip\"\nwhen\nhas_field(\"src_ip\")\nthen\nlet geo = lookup(\"geoip\", to_string($message.\"src_ip\"));\nset_field(\"src_ip_geo_location\", geo[\"coordinates\"]);\nset_field(\"src_ip_geo_country\", geo[\"country\"].iso_code);\nset_field(\"src_ip_geo_city\", geo[\"city\"].names.en);\nend"
+          "@value": "rule \"GeoIP lookup: src-ip\"\nwhen\nhas_field(\"src-ip\")\nthen\nlet geo = lookup(\"geoip\", to_string($message.\"src-ip\"));\nset_field(\"src-ip-geo-location\", geo[\"coordinates\"]);\nset_field(\"src-ip-geo-country\", geo[\"country\"].iso_code);\nset_field(\"src-ip-geo-city\", geo[\"city\"].names.en);\nend"
+        }
+      },
+      "constraints": [
+        {
+          "type": "server-version",
+          "version": ">=5.0.2+59d96f8"
+        }
+      ]
+    },
+    {
+      "v": "1",
+      "type": {
+        "name": "stream",
+        "version": "1"
+      },
+      "id": "67c8983f-c842-4a33-9650-94f19a793e0d",
+      "data": {
+        "alarm_callbacks": [],
+        "outputs": [],
+        "remove_matches": {
+          "@type": "boolean",
+          "@value": true
+        },
+        "title": {
+          "@type": "string",
+          "@value": "OPNsense / filterlog"
+        },
+        "stream_rules": [
+          {
+            "type": {
+              "@type": "string",
+              "@value": "CONTAINS"
+            },
+            "field": {
+              "@type": "string",
+              "@value": "application_name"
+            },
+            "value": {
+              "@type": "string",
+              "@value": "filterlog"
+            },
+            "inverted": {
+              "@type": "boolean",
+              "@value": false
+            },
+            "description": {
+              "@type": "string",
+              "@value": ""
+            }
+          }
+        ],
+        "alert_conditions": [],
+        "matching_type": {
+          "@type": "string",
+          "@value": "OR"
+        },
+        "disabled": {
+          "@type": "boolean",
+          "@value": false
+        },
+        "description": {
+          "@type": "string",
+          "@value": "OPNsense filter logs"
+        },
+        "default_stream": {
+          "@type": "boolean",
+          "@value": false
         }
       },
       "constraints": [
