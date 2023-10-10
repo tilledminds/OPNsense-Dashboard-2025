@@ -1,7 +1,7 @@
 version: '3'
 services:
   mongodb:
-    container_name: mongodb
+    container_name: mongo
     image: mongo:6.0.4
     volumes:
       - mongodb_data:/data/db
@@ -9,6 +9,8 @@ services:
     environment:
       # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
       - TZ=CST6CDT
+    networks:
+      - graylog  
   elasticsearch:
     container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
@@ -22,6 +24,8 @@ services:
       - network.host=0.0.0.0
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     restart: "unless-stopped"
+    networks:
+      - graylog
   graylog:
     container_name: graylog
     image: graylog/graylog:5.0.2
@@ -38,10 +42,8 @@ services:
       # Password is "admin", change this to your own hashed password. 'echo -n "password" | sha256sum' 
       - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
-    entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
-    links:
-      - mongodb:mongo
-      - elasticsearch
+    networks:
+      - graylog
     depends_on:
       - mongodb
       - elasticsearch
@@ -50,8 +52,8 @@ services:
       - 9000:9000
       # Syslog UDP
       - 1514:1514/udp
-      # Syslog TCP
-      - 1514:1514
+      # Syslog TCP Optional
+      #- 1514:1514
     restart: "unless-stopped"
   influxdb:
     container_name: influxdb
@@ -64,6 +66,8 @@ services:
       # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
       - TZ=CST6CDT
     restart: "unless-stopped"
+    networks:
+      - graylog
   grafana:
     container_name: grafana
     image: grafana/grafana:9.2.10
@@ -81,6 +85,11 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=opnsense
       - GF_INSTALL_PLUGINS=grafana-worldmap-panel
     restart: "unless-stopped"
+    networks:
+      - graylog
+networks:
+  graylog:
+    driver: bridge
 volumes:
   grafana_data:
   influxdb2_data:
