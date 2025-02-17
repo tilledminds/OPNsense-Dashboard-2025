@@ -120,18 +120,18 @@ Add the  [custom.conf](./config/custom.conf) telegraf config to /usr/local/etc/t
 sudo mkdir /usr/local/etc/telegraf.d
 sudo chown telegraf:telegraf /usr/local/etc/telegraf.d
 sudo chmod 750 /usr/local/etc/telegraf.d
-sudo curl https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/custom.conf -o /usr/local/etc/telegraf.d/custom.conf
+sudo curl https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/config/custom.conf -o /usr/local/etc/telegraf.d/custom.conf
 ```
 
 ### Telegraf Plugins
 
 **Plugins must be copied to your OPNsense system**
 
-Place [telegraf_pfifgw.php](https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php) and [telegraf_temperature.sh](https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh) in /usr/local/bin and chmod them to 755.
+Place [telegraf_pfifgw.php](https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php) and [telegraf_temperature.sh](https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh) in /usr/local/bin and chmod them to 755.
 
 ```
-curl "https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php" -o /usr/local/bin/telegraf_pfifgw.php
-curl "https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh" -o /usr/local/bin/telegraf_temperature.sh
+curl "https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php" -o /usr/local/bin/telegraf_pfifgw.php
+curl "https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh" -o /usr/local/bin/telegraf_temperature.sh
 chmod 755 /usr/local/bin/telegraf_temperature.sh /usr/local/bin/telegraf_pfifgw.php
 ```
 
@@ -288,7 +288,7 @@ Restart telegraf by running
 
 ### Import the Suricata Dashboard
 
-To import the dashboard, copy the JSON from [OPNsense-Grafana-Dashboard-Suricata.json](https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/OPNsense-Grafana-Dashboard-Suricata.json) and navigate to Dashboards -> Browse -> Import and paste under Import via panel json.
+To import the dashboard, copy the JSON from [OPNsense-Grafana-Dashboard-Suricata.json](https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/OPNsense-Grafana-Dashboard-Suricata.json) and navigate to Dashboards -> Browse -> Import and paste under Import via panel json.
 
 ## Troubleshooting
 
