@@ -5,9 +5,6 @@ require_once("interfaces.inc");
 require_once("plugins.inc.d/dpinger.inc");
 require_once("util.inc");
 
-
-
-
 # Added function get_interface_info. Function was removed from interface.in in OPNsense version 24.1
 function get_interfaces_info($include_unlinked = false)
 {
@@ -161,7 +158,8 @@ function get_interfaces_info($include_unlinked = false)
         if (file_exists("/var/run/{$link_type}_{$ifdescr}.pid")) {
             $sec = intval(shell_safe('/usr/local/opnsense/scripts/interfaces/ppp-uptime.sh %s', $ifinfo['if']));
             if ($sec) {
-                $ifinfo['ppp_uptime'] = convert_seconds_to_hms($sec);
+                $t = round($sec);
+		$ifinfo['ppp_uptime'] = sprintf('%02d:%02d:%02d', $t/3600, floor($t/60)%60, $t%60);
             }
         }
 
@@ -222,7 +220,6 @@ function get_interfaces_info($include_unlinked = false)
 
     return $result;
 }
-
 
 $host = gethostname();
 $source = "pfconfig";
@@ -316,7 +313,7 @@ foreach ($gw_array as $gw => $gateway) {
     $gwdescr = $gateway["descr"];
     $monitor = $gateway["monitor"];
     $source = $gateway["gateway"];
-    
+
     if (!isset($monitor)) {
         $monitor = "Unavailable";
     }
