@@ -1,52 +1,65 @@
-version: '3'
 services:
   mongodb:
     container_name: mongo
-    image: mongo:6.0.4
+    image: mongo:6.0
     volumes:
       - mongodb_data:/data/db
     restart: "unless-stopped"
     environment:
       # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
+      - TZ=EST5EDT
     networks:
-      - graylog  
+      - graylog
   elasticsearch:
     container_name: elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.22
     volumes:
       - es_data:/usr/share/elasticsearch/data
     environment:
       # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
+      - TZ=EST5EDT
+      # Explicitly disable security and SSL for an http connection
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
       - http.host=0.0.0.0
       - transport.host=localhost
       - network.host=0.0.0.0
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     restart: "unless-stopped"
     networks:
       - graylog
   graylog:
     container_name: graylog
-    image: graylog/graylog:5.0.2
+    image: graylog/graylog:6.3.1
     volumes:
-      - graylog_data:/usr/share/graylog/data
+          - graylog_data:/usr/share/graylog/data
     environment:
       # Change these to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
-      - ROOT_TIMEZONE=CST6CDT
-      - GRAYLOG_TIMEZONE=CST6CDT
+      - TZ=EST5EDT
+      - ROOT_TIMEZONE=EST5EDT
+      - GRAYLOG_TIMEZONE=EST5EDT
       # CHANGE ME (must be at least 16 characters)! This is not your password, this is meant for salting the password below.
       - GRAYLOG_PASSWORD_SECRET=ZDcwMzQ3NTE4ZTIwM
       # Username is "admin"
-      # Password is "admin", change this to your own hashed password. 'echo -n "password" | sha256sum' 
-      - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      # Password is "passwd", change this to your own hashed password. 'echo -n "password" | sha256sum'
+      - GRAYLOG_ROOT_PASSWORD_SHA2=0c403dcdbe5b1931250ae3d23a87687687687697d969fcf18703e02d3cabf
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+      - GRAYLOG_MONGODB_URI=mongodb://mongo:27017/graylog
+      # Point to the new elasticsearch service
+      - GRAYLOG_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     networks:
       - graylog
     depends_on:
-      - mongodb
-      - elasticsearch
+      mongodb:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
     ports:
       # Graylog web interface and REST API
       - 9000:9000
@@ -57,20 +70,20 @@ services:
     restart: "unless-stopped"
   influxdb:
     container_name: influxdb
-    image: influxdb:2.6.1
+    image: influxdb:latest
     ports:
       - '8086:8086'
     volumes:
       - influxdb2_data:/var/lib/influxdb2
     environment:
       # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
+            - TZ=EST5EDT
     restart: "unless-stopped"
     networks:
       - graylog
   grafana:
     container_name: grafana
-    image: grafana/grafana:9.2.10
+    image: grafana/grafana:latest
     ports:
       - '3000:3000'
     volumes:
@@ -79,7 +92,7 @@ services:
       - influxdb
     environment:
       # Change this to your time zone, valid time zones can be found here: https://www.joda.org/joda-time/timezones.html
-      - TZ=CST6CDT
+      - TZ=EST5EDT
       # Change these
       - GF_SECURITY_ADMIN_USER=opnsense
       - GF_SECURITY_ADMIN_PASSWORD=opnsense
