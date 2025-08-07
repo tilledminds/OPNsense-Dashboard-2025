@@ -90,7 +90,7 @@ Influx v2 Organization: Your InfluxDB Organization
 
 Influx v2 Bucket: Your InfluxDB Bucket
 
-![](https://www.bsmithio.com/post/opnsense-dashboard/influxbucket.png)
+![](images/influx-confirm.png)
 
 Then click Save.
 
@@ -176,7 +176,7 @@ For Graylog, it's recommended to create an index set. To do so, navigate to Syst
 
 Create an index set with the name "OPNsense / filterlog" and set the index prefix to `opnsense_filterlog`. 
 
-![Graylog Index Set](https://www.bsmithio.com/post/opnsense-dashboard/indexset.png)
+![Graylog Index Set](images/create-index-set.png)
 
 Leave the other values as defaulted and click Create index set.
 
@@ -188,11 +188,11 @@ Go back to the content packs and install the one you just uploaded
 
 Now, add your index set from earlier to the "OPNsense / filterlog" stream. Navigate to Streams. To the far right of your new index set select More -> Edit Stream and click Update stream.
 
-![Graylog Stream Index Set](https://www.bsmithio.com/post/opnsense-dashboard/streamindex.png)
+![Graylog Stream Index Set](images/editing-stream.png)
 
 There's one more step we need to do here, navigate to System -> Configurations -> Message Processors, and reorder like so:
 
-![Graylog Message Processors](https://www.bsmithio.com/post/opnsense-dashboard/processors.png)
+![Graylog Message Processors](images/messages-processors-config.png)
 
 Ensure that all of these are enabled, and click save.
 
@@ -379,5 +379,5 @@ You can then run the tests through the CLI.
 
 If you see no GeoIP data on the map make sure you rearranged the Message Processors in System -> Configurations, and reorder like so:
 
-![Graylog Message Processors](https://www.bsmithio.com/post/opnsense-dashboard/processors.png)
+![Graylog Message Processors](images/messages-processors-config.png)
 
