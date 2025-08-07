@@ -90,8 +90,6 @@ Influx v2 Organization: Your InfluxDB Organization
 
 Influx v2 Bucket: Your InfluxDB Bucket
 
-![](images/influx-confirm.png)
-
 Then click Save.
 
 
@@ -225,6 +223,8 @@ Token: Your Grafana InfluxDB API Token
 Default Bucket: Your opnsense bucket. This will be the bucket that the panel queries will use.
 
 Click Save & test, this should confirm the data source is connected correctly.
+
+![](images/influx-confirm.png)
 
 For ElasticSearch, make the following configurations
 
