@@ -16,18 +16,7 @@
 - Firewall Statistics - Blocked Ports, Protocols, Events, Blocked IP Locations, and Top Blocked IP
 # Changelog
 
-
-Converted InfluxQL queries to Flux.
-
-Converted pfSense functions to OPNsense.
-
-Added Firewall panels.
-
-Added subnet info to Interface Summary panels
-
-Added Suricata dashboard, see instructions [here](./configure.md#configuration-for-the-suricata-dashboard-optional)
-
-Added RFC5424 support thanks to [subract](https://github.com/IRQ10/Graylog-OPNsense_Extractors/pull/11)
+Updated for later versions of Docker, ElasticSearch, Grafana, Greylog, InfluxDB, OPNsense, and Telegraf.
 
 ![Main Dashboard](Grafana-OPNsense.png)
 
