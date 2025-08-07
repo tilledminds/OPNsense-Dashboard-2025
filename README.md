@@ -24,9 +24,11 @@ Updated for later versions of Docker, ElasticSearch, Grafana, Greylog, InfluxDB,
 
 # Running on
 
-    Grafana 9.2.10
-    InfluxDB 2.6.1
-    Graylog 5.0.2
+    Grafana 12.2.0
+    EleasticSearch 7.17.22
+    InfluxDB 2.7.12
+    Graylog 6.3.1
+    Mongo 6.0
 
 
 # Configuration
