@@ -49,7 +49,7 @@ After you've made the necessary changes, run `docker-compose up -d` in the same 
 Once you have your docker containers running, follow the steps below.
 
 ## Configuring InfluxDB
-After InfluxDB is started, go to http://(ip of docker server):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system. Name it, and copy your API token, you will need this for your Telegraf configuration. You will also need to generate another API token for Grafana. Click on API tokens -> Generate API Token -> Read/Write Access -> Click on your bucket under Read -> and Save. Copy this somewhere as well, you'll need it for Grafana.
+After InfluxDB is started, go to http://(ip of docker server):8086, you will need to setup your username, password, bucket and organization here. Once that is done navigate to the Data tab, click on Telegraf, and create a configuration for a system (I chose Network Response but I don't think it matters). Name it, and copy your API token, you will need this for your Telegraf configuration. You will also need to generate another API token for Grafana. Click on Load Data -> API tokens -> Generate API Token -> All Access API Token -> Click on your bucket under Read -> and Save. Copy this somewhere as well, you'll need it later for Grafana.
 
 
 ## Configuring Telegraf
@@ -127,11 +127,11 @@ sudo curl https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/ma
 
 **Plugins must be copied to your OPNsense system**
 
-Place [telegraf_pfifgw.php](https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php) and [telegraf_temperature.sh](https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh) in /usr/local/bin and chmod them to 755.
+Place [telegraf_pfifgw.php](https://raw.githubusercontent.com//tilledminds/OPNsense-Dashboard-2025/master/plugins/telegraf_pfifgw.php) and [telegraf_temperature.sh](https://raw.githubusercontent.com//tilledminds/OPNsense-Dashboard-2025/master/plugins/telegraf_temperature.sh) in /usr/local/bin and chmod them to 755.
 
 ```
-curl "https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/plugins/telegraf_pfifgw.php" -o /usr/local/bin/telegraf_pfifgw.php
-curl "https://raw.githubusercontent.com//MansoorMajeed/OPNsense-Dashboard/master/plugins/telegraf_temperature.sh" -o /usr/local/bin/telegraf_temperature.sh
+curl "https://raw.githubusercontent.com//tilledminds/OPNsense-Dashboard-2025/master/plugins/telegraf_pfifgw.php" -o /usr/local/bin/telegraf_pfifgw.php
+curl "https://raw.githubusercontent.com//tilledminds/OPNsense-Dashboard-2025/master/plugins/telegraf_temperature.sh" -o /usr/local/bin/telegraf_temperature.sh
 chmod 755 /usr/local/bin/telegraf_temperature.sh /usr/local/bin/telegraf_pfifgw.php
 ```
 
@@ -155,14 +155,15 @@ Lastly, check if Telegraf is running
 
 To make the map work on Grafana, you must create a MaxMind account here https://www.maxmind.com/en/geolite2/signup. Then generate a license key by going to Account -> Manage License Keys -> Generate New License Key. Copy this key somewhere because you'll need it again soon.
 
-You'll need to download the GeoIP database file to your Graylog container. Access your Graylog container's shell from your Docker host like so
+You'll need to download the GeoIP database file to your Graylog container. Access your Graylog container's shell from your Docker host like so:
 
 `sudo docker exec -it graylog /bin/bash`
 
-Then download the database file, replace `YOUR_LICENSE_KEY` with the key you generated above.
+Then download the database file, replace `YOUR_ACCOUNT_ID` with your Maxmind account id (this is an integer number, not text) and `YOUR_LICENSE_KEY` with the key you generated above.
 
 ```
-curl "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=YOUR_LICENSE_KEY&suffix=tar.gz" -o GeoLite2-Country.tar.gz \
+curl -J -L -u YOUR_ACCOUNT_ID:YOUR_LICENSE_KEY \
+'https://download.maxmind.com/geoip/databases/GeoLite2-Country/download?suffix=tar.gz' -o GeoLite2-Country.tar.gz \
 && tar -xzvf GeoLite2-Country.tar.gz \
 && mv GeoLite2-Country_*/GeoLite2-Country.mmdb /usr/share/graylog/data/data/
 ```
@@ -171,21 +172,25 @@ curl "https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Countr
 
 In a browser navigate to http://(ip of docker server):9000 and login.
 
-For Graylog, it's recommended to create an index set. To do so, navigate to System -> Indices. Create an index set with the name "OPNsense / filterlog" and set the index prefix to `opnsense_filterlog`.
+For Graylog, it's recommended to create an index set. To do so, navigate to System -> Indices. Select an Index Set Template (I chose 7 Days Hot) and click Apply template.
+
+Create an index set with the name "OPNsense / filterlog" and set the index prefix to `opnsense_filterlog`. 
 
 ![Graylog Index Set](https://www.bsmithio.com/post/opnsense-dashboard/indexset.png)
 
-Once that's done, download the [content pack](https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/config/OPNsense-pack.json) and install it on Graylog by navigating to System -> Content Packs -> Upload, choose the pack, Upload
+Leave the other values as defaulted and click Create index set.
+
+Once that's done, download the [content pack](https://raw.githubusercontent.com/tilledminds/OPNsense-Dashboard-2025/master/config/OPNsense-pack.json) and install it on Graylog by navigating to System -> Content Packs -> Upload, choose the pack, Upload
 
 Go back to the content packs and install the one you just uploaded
 
 > Note: make sure you actually install the pack you just uploaded
 
-Now, add your index set from earlier to the "OPNsense / filterlog" stream. Navigate to Streams -> More Actions -> Edit Stream -> select your index set and save.
+Now, add your index set from earlier to the "OPNsense / filterlog" stream. Navigate to Streams. To the far right of your new index set select More -> Edit Stream and click Update stream.
 
 ![Graylog Stream Index Set](https://www.bsmithio.com/post/opnsense-dashboard/streamindex.png)
 
-There's one more step we need to do here, navigate to System -> Configurations -> click on Update under Message Processors, and reorder like so:
+There's one more step we need to do here, navigate to System -> Configurations -> Message Processors, and reorder like so:
 
 ![Graylog Message Processors](https://www.bsmithio.com/post/opnsense-dashboard/processors.png)
 
@@ -193,17 +198,17 @@ Ensure that all of these are enabled, and click save.
 
 ### Add Graylog server as syslog target on OPNsense
 
-Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / targets. Add a new target with the following options:
+Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / Remote. Add a new target with the following options:
 
 ![OPNsense Syslog Target](https://i.nuuls.com/XQATf.png)
 
-Add a description if you'd like, then click save.
+Add a description if you'd like, then click Save.
 
 ## Configuring Grafana
 
 ### Add InfluxDB and ElasticSearch data sources
 
-You will need to add the data sources on Grafana. Navigate to http://(ip of docker server):3000, login and click on the cog wheel and Add a Data Source.
+You will need to add the data sources on Grafana. Navigate to http://(ip of docker server):3000, login and click Connections -> Data sources and Add new data source.
 
 For InfluxDB, make the following configurations
 
@@ -211,13 +216,15 @@ Query Language: Flux
 
 URL: http://influxdb:8086
 
+Uncheck Basic auth
+
 Organization: Your InfluxDB Organization
 
 Token: Your Grafana InfluxDB API Token
 
 Default Bucket: Your opnsense bucket. This will be the bucket that the panel queries will use.
 
-![Grafana InfluxDB Configuration](https://www.bsmithio.com/post/opnsense-dashboard/influxdb.png)
+Click Save & test, this should confirm the data source is connected correctly.
 
 For ElasticSearch, make the following configurations
 
@@ -225,13 +232,12 @@ URL: http://elasticsearch:9200
 
 Time field name: timestamp
 
-Version: 7.10+
+Leave all the other values as defaulted.
 
-![Grafana ElasticSearch Configuration](https://www.bsmithio.com/post/opnsense-dashboard/elasticsearch.png)
 
 ### Import Dashboard
 
-To import the dashboard, copy the JSON from [OPNsense-Grafana-Dashboard.json](https://raw.githubusercontent.com/bsmithio/OPNsense-Dashboard/master/OPNsense-Grafana-Dashboard.json) and navigate to Dashboards -> Browse -> Import and paste under Import via panel json.
+To import the dashboard, copy the JSON from [OPNsense-Grafana-Dashboard.json](https://raw.githubusercontent.com/tilledminds/OPNsense-Dashboard-2025/master/OPNsense-Grafana-Dashboard.json) and navigate to Dashboards -> New -> Import and paste trhe copied JSON into Import via dashboard JSON model.
 
 ### Configure Variables
 
