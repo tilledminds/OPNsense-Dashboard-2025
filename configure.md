@@ -200,7 +200,7 @@ Ensure that all of these are enabled, and click save.
 
 Once that is all done, login to your OPNsense router and navigate to System -> Settings -> Logging / Remote. Add a new target with the following options:
 
-![OPNsense Syslog Target](https://i.nuuls.com/XQATf.png)
+![OPNsense Syslog Target](https://raw.githubusercontent.com/tilledminds/OPNsense-Dashboard-2025/master/images/Oopn-remote-log.png)
 
 Add a description if you'd like, then click Save.
 
