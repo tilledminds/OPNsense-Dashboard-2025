@@ -18,6 +18,8 @@
 
 Updated for later versions of Docker, ElasticSearch, Grafana, Greylog, InfluxDB, OPNsense, and Telegraf.
 
+Thanks to @bsmithio, @MansoorMajeed, u/d4rkw1n9
+
 ![Main Dashboard](Grafana-OPNsense.png)
 
 ![Suricata Dashboard](Grafana-OPNsense-Suricata.png)
